@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madiwala Interactive Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Madiwala Interactive Map</h1>
+            <p>Discover places of worship, education, healthcare & entertainment in Madiwala, Bangalore</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-controls">
+                    <button id="toggle-quadrants" class="control-btn">Toggle Quadrants</button>
+                    <button id="toggle-legend" class="control-btn">Hide Legend</button>
+                    <div class="legend" id="legend">
+                        <h3>Legend</h3>
+                        <div class="legend-item">
+                            <span class="legend-icon churches">⛪</span>
+                            <span>Churches</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon temples">🕉️</span>
+                            <span>Temples</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon mosque">🕌</span>
+                            <span>Mosques</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon schools_colleges">🎓</span>
+                            <span>Schools</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon hospitals">🏥</span>
+                            <span>Hospitals</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon bars_pubs">🍺</span>
+                            <span>Bars & Pubs</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-icon theatre">🎭</span>
+                            <span>Theatres</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="location-lists">
+                    <div class="list-section">
+                        <h3>⛪ Churches <span id="churches-count">(0)</span></h3>
+                        <ul id="churches-list" class="location-list"></ul>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h3>🕉️ Temples <span id="temples-count">(0)</span></h3>
+                        <ul id="temples-list" class="location-list"></ul>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h3>🕌 Mosques <span id="mosque-count">(0)</span></h3>
+                        <ul id="mosque-list" class="location-list"></ul>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h3>🎓 Schools & Colleges <span id="schools_colleges-count">(0)</span></h3>
+                        <ul id="schools_colleges-list" class="location-list"></ul>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h3>🏥 Hospitals <span id="hospitals-count">(0)</span></h3>
+                        <ul id="hospitals-list" class="location-list"></ul>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h3>🍺 Bars & Pubs <span id="bars_pubs-count">(0)</span></h3>
+                        <ul id="bars_pubs-list" class="location-list"></ul>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h3>🎭 Theatres <span id="theatre-count">(0)</span></h3>
+                        <ul id="theatre-list" class="location-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

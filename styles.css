@@ -1,0 +1,349 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.main-content {
+    display: flex;
+    gap: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.map-container {
+    flex: 2;
+    position: relative;
+}
+
+#map {
+    height: 600px;
+    width: 100%;
+}
+
+.map-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-width: 200px;
+}
+
+.control-btn {
+    width: 100%;
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 15px;
+    transition: background 0.3s ease;
+}
+
+.control-btn:hover {
+    background: #5a6fd8;
+}
+
+.legend h3 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 16px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.legend-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(2px);
+}
+
+.legend-item:active {
+    transform: scale(0.98);
+}
+
+.legend-item.hidden {
+    opacity: 0.5;
+}
+
+.legend-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.legend-icon.temples {
+    background: #ff6b6b;
+}
+
+.legend-icon.mosque {
+    background: #4ecdc4;
+}
+
+.legend-icon.churches {
+    background: #45b7d1;
+}
+
+.legend-icon.schools_colleges {
+    background: #28a745;
+}
+
+.legend-icon.hospitals {
+    background: #dc3545;
+}
+
+.legend-icon.bars_pubs {
+    background: #6f42c1;
+}
+
+.legend-icon.theatre {
+    background: #fd7e14;
+}
+
+.sidebar {
+    flex: 1;
+    padding: 15px;
+    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+    max-height: 600px;
+    overflow-y: auto;
+    border-left: 1px solid #dee2e6;
+}
+
+.list-section {
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e9ecef;
+}
+
+.list-section h3 {
+    color: #495057;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e9ecef;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.location-list {
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.location-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.location-list::-webkit-scrollbar-track {
+    background: #f1f3f4;
+    border-radius: 2px;
+}
+
+.location-list::-webkit-scrollbar-thumb {
+    background: #c1c8cd;
+    border-radius: 2px;
+}
+
+.location-list li {
+    padding: 6px 10px;
+    margin-bottom: 3px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.location-list li:hover {
+    background: #e3f2fd;
+    transform: translateX(3px);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.location-list li.temples {
+    border-left-color: #ff6b6b;
+}
+
+.location-list li.mosque {
+    border-left-color: #4ecdc4;
+}
+
+.location-list li.churches {
+    border-left-color: #45b7d1;
+}
+
+.location-list li.schools_colleges {
+    border-left-color: #28a745;
+}
+
+.location-list li.hospitals {
+    border-left-color: #dc3545;
+}
+
+.location-list li.bars_pubs {
+    border-left-color: #6f42c1;
+}
+
+.location-list li.theatre {
+    border-left-color: #fd7e14;
+}
+
+.location-list li.highlighted {
+    background: #fff3cd;
+    border-color: #ffc107;
+    transform: translateX(5px);
+}
+
+/* Custom marker styles */
+.custom-marker {
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.custom-marker:hover {
+    transform: scale(1.2);
+    z-index: 1000;
+}
+
+.temple-marker {
+    background: #ff6b6b;
+}
+
+.church-marker {
+    background: #4ecdc4;
+}
+
+.school-marker {
+    background: #45b7d1;
+}
+
+/* Quadrant styles */
+.quadrant-line {
+    stroke: #333;
+    stroke-width: 2;
+    stroke-dasharray: 10, 5;
+    opacity: 0.7;
+}
+
+.quadrant-label {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #333;
+    border: 2px solid #667eea;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .map-controls {
+        position: static;
+        margin-top: 10px;
+    }
+    
+    #map {
+        height: 400px;
+    }
+    
+    .sidebar {
+        max-height: none;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+}
+
+/* Popup styles */
+.leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-content {
+    margin: 15px;
+    font-size: 14px;
+}
+
+.popup-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.popup-type {
+    color: #666;
+    font-style: italic;
+}
+
+
+
+
