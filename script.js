@@ -639,8 +639,8 @@ const locations = {
         },
         {
             name: "Immanuel Prayer Hall",
-            lat: 12.9272115,
-            lng: 77.6201177
+            lat: 12.925353272360788,
+            lng: 77.6159263104418
         },
         {
             name: "Christ City Church",
@@ -1344,6 +1344,7 @@ window.mapFunctions = {
     searchLocation,
     toggleQuadrants
 };
+
 
 
 
