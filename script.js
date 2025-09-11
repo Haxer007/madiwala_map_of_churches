@@ -649,8 +649,8 @@ const locations = {
         },
         {
             name: "Emmanuel Prayer House",
-            lat: 12.925353272360788,
-            lng: 77.6159263104418
+            lat: 12.926276245972742,
+            lng: 77.61652736158982
         },
         {
             name: "Emmanuel Fellowship Church",
@@ -1344,6 +1344,7 @@ window.mapFunctions = {
     searchLocation,
     toggleQuadrants
 };
+
 
 
 
