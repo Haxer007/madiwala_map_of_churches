@@ -538,7 +538,8 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     justify-content: center;
     gap: 12px;
-    margin-top: 40px;
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 .indicator {
@@ -573,6 +574,20 @@ h1, h2, h3, h4, h5, h6 {
     color: rgba(255, 255, 255, 0.9);
     font-size: 20px;
     letter-spacing: 2px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.whats-up-subtitle a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+}
+
+.whats-up-subtitle a:hover {
+    color: #d4af37;
+    border-bottom-color: #d4af37;
 }
 
 .whats-up-carousel {
@@ -582,15 +597,21 @@ h1, h2, h3, h4, h5, h6 {
     overflow: hidden;
 }
 
+@media (min-width: 769px) {
+    .whats-up-carousel {
+        max-width: 800px;
+    }
+}
+
 .whats-up-track {
     display: flex;
     transition: transform 0.5s ease;
-    width: 400%; /* 4 slides */
+    width: 600%; /* 6 slides for infinite scroll */
 }
 
 .whats-up-slide {
-    flex: 0 0 25%; /* 100% / 4 slides */
-    padding: 25px 50px;
+    flex: 0 0 16.6667%; /* 100% / 6 slides for infinite scroll */
+    padding: 50px 50px;
 }
 
 .whats-up-grid {
@@ -1061,9 +1082,28 @@ h1, h2, h3, h4, h5, h6 {
         padding: 60px 20px;
     }
 
+    .whats-up-carousel {
+        max-width: 100%;
+    }
+
     .whats-up-image {
         max-width: 100% !important;
         height: auto;
+    }
+
+    .whats-up-card {
+        min-height: 350px;
+        margin-bottom: 20px;
+    }
+
+    .whats-up-title {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .whats-up-text {
+        font-size: 14px;
+        line-height: 1.5;
     }
 
     .promise-section {
@@ -1355,7 +1395,7 @@ h1, h2, h3, h4, h5, h6 {
                     <div class="testimonial-slide">
                         <div class="testimonial-card">
                             <div class="testimonial-image">
-                                <img src="./images/david_pastor.png" alt="Sarah Johnson">
+                                <img src="https://picsum.photos/600/520" alt="Sarah Johnson">
                                 <div class="testimonial-overlay">
                                     <div class="quote-icon">❝</div>
                                 </div>
@@ -1372,7 +1412,7 @@ h1, h2, h3, h4, h5, h6 {
                     <div class="testimonial-slide">
                         <div class="testimonial-card">
                             <div class="testimonial-image">
-                                <img src="./images/img_1.png" alt="Michael Chen">
+                                <img src="https://picsum.photos/600/510" alt="Michael Chen">
                                 <div class="testimonial-overlay">
                                     <div class="quote-icon">❝</div>
                                 </div>
@@ -1389,7 +1429,7 @@ h1, h2, h3, h4, h5, h6 {
                     <div class="testimonial-slide">
                         <div class="testimonial-card">
                             <div class="testimonial-image">
-                                <img src="./images/img_2.png" alt="Grace Patel">
+                                <img src="https://picsum.photos/600/502" alt="Grace Patel">
                                 <div class="testimonial-overlay">
                                     <div class="quote-icon">❝</div>
                                 </div>
@@ -1406,7 +1446,7 @@ h1, h2, h3, h4, h5, h6 {
                     <div class="testimonial-slide">
                         <div class="testimonial-card">
                             <div class="testimonial-image">
-                                <img src="./images/img_3.jpg" alt="John Smith">
+                                <img src="https://picsum.photos/600/501" alt="John Smith">
                                 <div class="testimonial-overlay">
                                     <div class="quote-icon">❝</div>
                                 </div>
@@ -1494,7 +1534,7 @@ h1, h2, h3, h4, h5, h6 {
                     <span class="indicator" data-slide="3"></span>
                 </div>
             </div>
-            <p class="whats-up-subtitle"><a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" style="color: rgba(255, 255, 255, 0.9); text-decoration: none;">Follow Live Stream For more INFO</a></p>
+            <p class="whats-up-subtitle"><a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank">📺 Follow Our Live Stream For More Information</a></p>
         </div>
     </section>
 
@@ -1921,8 +1961,9 @@ class WhatsUpCarousel {
     constructor() {
         this.track = document.querySelector('.whats-up-track');
         this.indicators = document.querySelectorAll('.whats-up-indicators .indicator');
-        this.currentSlide = 0;
-        this.totalSlides = 4;
+        this.currentSlide = 1; // Start from 2nd slide (index 1) which is the first real slide
+        this.realSlides = 4; // Number of actual slides
+        this.totalSlides = 6; // 4 real slides + 2 duplicates (first and last)
         this.autoPlayInterval = null;
         this.isTransitioning = false;
 
@@ -1930,8 +1971,13 @@ class WhatsUpCarousel {
     }
 
     init() {
-        // Set initial position
+        // Create circular effect by duplicating slides
+        this.createCircularSlides();
+
+        // Set initial position (start from real 2nd slide, which is index 1 in circular array)
+        this.currentSlide = 1;
         this.updateSlidePosition();
+        this.updateIndicators();
 
         // Add event listeners to indicators
         this.indicators.forEach((indicator, index) => {
@@ -1939,7 +1985,7 @@ class WhatsUpCarousel {
                 console.log('WhatsUp indicator clicked:', index, 'Current slide:', this.currentSlide, 'Is transitioning:', this.isTransitioning);
                 if (!this.isTransitioning) {
                     console.log('Going to WhatsUp slide:', index);
-                    this.goToSlide(index);
+                    this.goToSlide(index + 1); // Map indicator index to circular slide index
                 }
             });
         });
@@ -1958,8 +2004,66 @@ class WhatsUpCarousel {
 
     updateSlidePosition() {
         if (this.track) {
-            this.track.style.transform = `translateX(-${this.currentSlide * 25}%)`;
+            // Handle seamless looping by instantly repositioning when on duplicate slides
+            let transformValue = this.currentSlide * (100/6); // 6 total slides (4 real + 2 duplicates)
+
+            // If we're on the first duplicate (slide 0), instantly jump to the real last slide (slide 5)
+            if (this.currentSlide === 0) {
+                transformValue = 5 * (100/6);
+                setTimeout(() => {
+                    this.track.style.transition = 'none';
+                    this.track.style.transform = `translateX(-${transformValue}%)`;
+                    this.currentSlide = 5;
+                    // Force reflow
+                    this.track.offsetHeight;
+                    this.track.style.transition = 'transform 0.5s ease';
+                }, 500);
+            }
+            // If we're on the last duplicate (slide 5), instantly jump to the real first slide (slide 1)
+            else if (this.currentSlide === 5) {
+                transformValue = 1 * (100/6);
+                setTimeout(() => {
+                    this.track.style.transition = 'none';
+                    this.track.style.transform = `translateX(-${transformValue}%)`;
+                    this.currentSlide = 1;
+                    // Force reflow
+                    this.track.offsetHeight;
+                    this.track.style.transition = 'transform 0.5s ease';
+                }, 500);
+            }
+
+            this.track.style.transform = `translateX(-${transformValue}%)`;
         }
+    }
+
+    createCircularSlides() {
+        // Duplicate the last slide at the beginning and first slide at the end for seamless circular effect
+        const slides = Array.from(this.track.children);
+        const firstSlide = slides[0].cloneNode(true);
+        const lastSlide = slides[slides.length - 1].cloneNode(true);
+
+        // Add duplicated slides
+        this.track.insertBefore(lastSlide, slides[0]); // Add last slide at beginning
+        this.track.appendChild(firstSlide); // Add first slide at end
+
+        // Update track width for 6 slides (4 real + 2 duplicates)
+        this.track.style.width = '600%'; // 6 * 100%
+    }
+
+    updateIndicators() {
+        // Map circular slide index to real slide index for indicators
+        let realSlideIndex;
+        if (this.currentSlide === 0) {
+            realSlideIndex = 3; // Last slide (duplicate at beginning)
+        } else if (this.currentSlide === 5) {
+            realSlideIndex = 0; // First slide (duplicate at end)
+        } else {
+            realSlideIndex = this.currentSlide - 1; // Real slides are at indices 1-4
+        }
+
+        this.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === realSlideIndex);
+        });
     }
 
     goToSlide(slideIndex) {
@@ -1970,10 +2074,7 @@ class WhatsUpCarousel {
         this.currentSlide = slideIndex;
 
         // Update indicators
-        this.indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === this.currentSlide);
-        });
-
+        this.updateIndicators();
         this.updateSlidePosition();
 
         // Reset transition flag after animation completes
@@ -2031,13 +2132,13 @@ class WhatsUpCarousel {
             dragDistance = currentX - startX;
 
             // Add visual feedback during drag
-            const movePercent = (dragDistance / carousel.offsetWidth) * 25; // 25% per slide
-            const currentTransform = -this.currentSlide * 25;
+            const movePercent = (dragDistance / carousel.offsetWidth) * (100/6); // 16.6667% per slide (100/6)
+            const currentTransform = -this.currentSlide * (100/6);
             const newTransform = currentTransform + movePercent;
 
             // Limit the drag to prevent going too far
-            const maxDrag = 37.5; // Allow some over-drag for natural feel
-            const limitedTransform = Math.max(-maxDrag, Math.min((this.totalSlides - 1) * 25 + maxDrag, newTransform));
+            const maxDrag = 50; // Allow some over-drag for natural feel
+            const limitedTransform = Math.max(-maxDrag, Math.min((this.totalSlides - 1) * (100/6) + maxDrag, newTransform));
 
             this.track.style.transform = `translateX(-${limitedTransform}%)`;
         });
