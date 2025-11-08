@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <title>ZION AG CHURCH, MADIWALA</title>
+    <link rel="icon" href="./images/zion_ag_title_icon.png" />
+
+    <!-- Open Graph / Schema basics -->
+    <meta property="og:title" content="ZION AG CHURCH, MADIWALA" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.zionagmadiwala.com/" />
+    <meta property="og:description" content="ZION AG CHURCH WELCOMES YOU!" />
+    <meta property="og:image" content="./images/zion_ag_title_icon.png" />
+
+    <meta itemprop="name" content="ZION AG CHURCH, MADIWALA" />
+    <meta itemprop="description" content="ZION AG CHURCH WELCOMES YOU!" />
+    <meta itemprop="url" content="https://www.zionagmadiwala.com/" />
+    <meta itemprop="image" content="./images/zion_ag_title_icon.png" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500|Roboto:300,400,500,700|Source+Code+Pro:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Caveat:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lexend:400,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Ultra:400,700&display=swap" rel="stylesheet" />
+
+    <style>
+      /* Reset & base */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        font-family: Roboto, sans-serif;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        background: #4f4f4e;
+      }
+
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 48px;
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo-section img {
+        height: 40px;
+        margin-right: 16px;
+      }
+
+      .logo-section span {
+        color: #fff;
+        font-weight: 300;
+        font-size: 15pt;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav li {
+        margin-left: 10px;
+      }
+
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 12pt;
+        padding: 10px;
+        display: inline-block;
+        transition: opacity 0.3s;
+      }
+
+      nav a:hover {
+        opacity: 0.6;
+      }
+
+      /* Hero */
+      .hero {
+        height: 340px;
+        position: relative;
+        background: linear-gradient(rgba(91, 35, 60, 0.5), rgba(91, 35, 60, 0.5)),
+          url("./images/background.jpg") center / cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #fff;
+      }
+
+      .hero h1 {
+        font-family: Oswald, Arial, sans-serif;
+        font-weight: 700;
+        font-size: 72pt;
+        margin-bottom: 20px;
+      }
+
+      .hero h3 {
+        font-family: "Amatic SC", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 16pt;
+      }
+
+      /* Main */
+      main {
+        padding-top: 60px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Direct Me */
+      .direct-me {
+        text-align: center;
+        margin: 40px 0;
+      }
+
+      .direct-me a {
+        display: inline-block;
+        background: #5b233c;
+        color: #fff;
+        padding: 13px 22px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 13pt;
+        transition: background-color 0.3s;
+      }
+
+      .direct-me a:hover {
+        background: #4a1d31;
+      }
+
+      /* Welcome */
+      .welcome h2 {
+        text-align: center;
+        font-family: "EB Garamond", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 28pt;
+        margin-bottom: 40px;
+      }
+
+      /* Pastor */
+      .pastor {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 40px;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .pastor img {
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .pastor-info h3 {
+        font-family: Oswald, Arial, sans-serif;
+        font-weight: 700;
+        font-size: 30pt;
+        margin-bottom: 20px;
+      }
+
+      .pastor-text {
+        font-family: Quicksand, Arial, sans-serif;
+        font-size: 11pt;
+        line-height: 1.38;
+        text-align: right;
+      }
+
+      .pastor-text p {
+        margin-bottom: 12pt;
+      }
+
+      /* Services */
+      .services h2 {
+        text-align: center;
+        font-family: "Droid Sans", Arial, sans-serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 48pt;
+        margin-bottom: 40px;
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+      }
+
+      .service-item {
+        text-align: center;
+      }
+
+      .service-item img {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 20px;
+      }
+
+      .service-time {
+        font-family: Ultra, Arial, sans-serif;
+        font-size: 40pt;
+        margin-bottom: 10px;
+      }
+
+      .service-name {
+        font-family: Lexend, Arial, sans-serif;
+        font-weight: 600;
+        font-size: 13pt;
+        text-decoration: underline;
+      }
+
+      /* What's Up */
+      .whats-up h2 {
+        text-align: center;
+        font-size: 28pt;
+        margin-bottom: 40px;
+      }
+
+      /* Carousel */
+      .carousel {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+        margin: 40px 0;
+      }
+
+      .carousel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Promise */
+      .promise h2 {
+        text-align: center;
+        font-size: 28pt;
+        margin-bottom: 40px;
+      }
+
+      /* Verse image */
+      .verse-image {
+        text-align: center;
+        margin: 40px 0;
+      }
+
+      .verse-image img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Animation */
+      .animation {
+        background: linear-gradient(180deg, #f3f3f3, #cacaca);
+        padding: 40px;
+        margin: 40px auto;
+        max-width: 600px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .animation iframe {
+        width: 100%;
+        height: 300px;
+        border: none;
+      }
+
+      /* Lift tab */
+      .lift-tab {
+        display: inline-block;
+        text-align: center;
+        padding: 20px 28px;
+        margin: 20px auto;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #f3f3f3, #cacaca);
+        font-family: Caveat, Arial, sans-serif;
+        color: #333;
+        position: relative;
+        transform: translateY(-10px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+      }
+
+      .lift-tab::after {
+        content: "";
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        bottom: -14px;
+        height: 14px;
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 12px;
+        filter: blur(6px);
+        z-index: -1;
+      }
+
+      .lift-tab:active {
+        transform: translateY(-5px) scale(0.98);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .lift-tab p {
+        margin: 10px 0;
+        font-size: 24pt;
+        font-weight: 700;
+      }
+
+      .lift-tab .verse-text {
+        font-size: 20pt;
+        font-weight: 400;
+      }
+
+      /* Footer */
+      footer {
+        background: #e9e6e7;
+        padding: 20px 0;
+        text-align: center;
+      }
+
+      footer small {
+        font-size: 9pt;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          padding: 20px;
+        }
+
+        .hero h1 {
+          font-size: 41pt;
+        }
+
+        .hero h3 {
+          font-size: 12pt;
+        }
+
+        .pastor {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .pastor-text {
+          text-align: center;
+          font-size: 15pt;
+        }
+
+        .service-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .services h2 {
+          font-size: 33pt;
+        }
+
+        .service-time {
+          font-size: 32pt;
+        }
+
+        .welcome h2,
+        .promise h2,
+        .whats-up h2 {
+          font-size: 21pt;
+        }
+
+        .pastor-info h3 {
+          font-size: 27pt;
+        }
+
+        .direct-me a {
+          font-size: 13pt;
+        }
+
+        nav ul {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        nav li {
+          margin: 5px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <div class="logo-section">
+          <img src="./images/zion_ag_title_icon.png" alt="Zion AG Church Madiwala, Bangalore" />
+          <span>ZION AG CHURCH, MADIWALA</span>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/announcement">Announcement</a></li>
+            <li><a href="/Ministies">Ministries</a></li>
+            <li><a href="/Archive">Daily Manna</a></li>
+            <li><a href="/Contact">Contact</a></li>
+            <li><a href="/About">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <h1>ZION&nbsp;AG&nbsp;CHURCH</h1>
+          <h3>[ ENJOY EXPERIENCE AND ELEVATE GOD ]</h3>
+        </div>
+      </section>
+
+      <!-- Direct Me Button -->
+      <section class="direct-me">
+        <a href="https://maps.app.goo.gl/tzgnJCTCbceQYiwi7" target="_blank" rel="noopener">Direct Me!</a>
+      </section>
+
+      <!-- Welcome -->
+      <section class="welcome">
+        <div class="container">
+          <h2>ZION AG CHURCH WELCOMES YOU!</h2>
+        </div>
+      </section>
+
+      <!-- Pastor -->
+      <section class="pastor container">
+        <div>
+          <img src="./images/david_pastor.png" alt="Rev. Ps. David Paul" />
+        </div>
+        <div class="pastor-info">
+          <h3>REV.PS.DAVID PAUL</h3>
+          <div class="pastor-text">
+            <p>
+              Zion Assemblies of God Church is your sacred space to encounter the Saviour of your soul and to establish your identity as a true child of God. As you step through our doors, you'll be warmly embraced by a loving, welcoming family—exactly as you are.
+            </p>
+            <p>
+              Experience the transformative power of God during our vibrant worship sessions, where His presence can be felt in every song and every moment. Immerse yourself in life-changing, inspiring, and deeply practical messages rooted in the timeless truths of God's Word.
+            </p>
+            <p>
+              ENJOY a rich blend of musical expressions, from contemporary worship to cherished traditional hymns, catering to every heart seeking to praise Him. You'll also witness and hear living testimonies of God's unfailing love, grace, and miracles, reaffirming His divine purpose for your life.
+            </p>
+            <p>
+              Come with an <strong>OPEN&nbsp;HEART</strong>, ready to experience God's movement—not just in the service, but in your everyday life. We believe that the peace, joy, strength, and transformation He provides are best experienced, not just explained. Join us and discover what it truly means to live in the light of God's love and purpose!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section class="services">
+        <div class="container">
+          <h2>Services</h2>
+          <div class="service-grid">
+            <div class="service-item">
+              <img src="./images/david_pastor.png" alt="Service" />
+              <div class="service-time">7.00 a.m.</div>
+              <div class="service-name">KANNADA / TAMIL SERVICE</div>
+            </div>
+            <div class="service-item">
+              <img src="./images/david_pastor.png" alt="Service" />
+              <h2>9.30 a.m.</h2>
+              <div class="service-name">TELUGU/ENGLISH SERVICE</div>
+            </div>
+            <div class="service-item">
+              <img src="./images/david_pastor.png" alt="Service" />
+              <h2>6.30 p.m.</h2>
+              <div class="service-name">MIRACLE SERVICE</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- What's Up -->
+      <section class="whats-up">
+        <div class="container">
+          <h2>WHAT'S UP THIS MONTH</h2>
+        </div>
+      </section>
+
+      <!-- Carousel -->
+      <section class="carousel">
+        <img src="./images/background.jpg" alt="Church Image" />
+      </section>
+
+      <!-- Promise -->
+      <section class="promise">
+        <div class="container">
+          <h2>PROMISE OF THE MONTH OCTOBER 2024</h2>
+        </div>
+      </section>
+
+      <!-- Verse Image -->
+      <section class="verse-image">
+        <img src="https://dailyverses.net/images/simple/nlt/1-peter-3-12.png" alt="1 Peter 3:12" />
+      </section>
+
+      <!-- Animation -->
+      <section class="animation">
+        <iframe
+          src="https://www.gstatic.com/atari/embeds/83a60601c213b72fb19c1855fb0c5f26/intermediate-frame-minified.html?jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.en.J8aLcn7bYF8.O%2Fd%3D1%2Frs%3DAHpOoo-YaQN_2soL6ZNher0ZcTp3d4Q_nw%2Fm%3D__features__&r=208051883"
+          title="Custom embed"
+        ></iframe>
+      </section>
+
+      <!-- Lift Tab -->
+      <div class="lift-tab">
+        <p>1 Peter 3:12</p>
+        <p class="verse-text">
+          For the eyes of the Lord are on the righteous and his ears are attentive to their prayer, but the face of the Lord is against those who do evil.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <small>© 2025 Zion AG Church. All Rights Reserved</small>
+    </footer>
+  </body>
+</html>

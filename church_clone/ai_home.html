@@ -1,0 +1,1970 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZION AG CHURCH, MADIWALA</title>
+    <meta name="description" content="ZION AG CHURCH WELCOMES YOU!">
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(61, 61, 61, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.scrolled {
+    background: rgba(61, 61, 61, 0.98);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.nav-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+}
+
+.nav-menu li a:hover,
+.nav-menu li a.active {
+    color: #d4af37;
+}
+
+.nav-menu li a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #d4af37;
+}
+
+.search-icon svg {
+    transition: transform 0.3s ease;
+}
+
+.search-icon:hover svg {
+    transform: scale(1.1);
+}
+
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.mobile-menu-btn span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    padding-top: 8px;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
+                url('./images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero.parallax-active {
+    transition: transform 0.1s ease-out;
+}
+
+.hero.animate-bg {
+    transform: translateY(0);
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(139, 69, 19, 0.1) 100%);
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+    z-index: 2;
+    animation: fadeInUp 0.2s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    font-size: 72px;
+    font-weight: 700;
+    letter-spacing: 20px;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.3s ease 0.2s backwards;
+}
+
+.hero-subtitle {
+    font-size: 24px;
+    letter-spacing: 8px;
+    margin-bottom: 40px;
+    font-weight: 300;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.3s ease 0.4s backwards;
+}
+
+.hero-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #d4af37 0%, #c9a333 100%);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+    animation: fadeInUp 0.3s ease 0.6s backwards;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+    background: linear-gradient(135deg, #e0bb47 0%, #d4af37 100%);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* Section Title */
+.section-title {
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 60px;
+    color: #d4af37;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #d4af37, #c9a333);
+}
+
+.section-title-light {
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+/* Welcome Section */
+.welcome-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.welcome-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.pastor-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.pastor-card:hover {
+    transform: translateY(-10px);
+}
+
+.pastor-img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    min-height: 250px;
+}
+
+.pastor-name {
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #3d3d3d 0%, #555 100%);
+    color: white;
+    letter-spacing: 2px;
+}
+
+.welcome-text {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #555;
+}
+
+.welcome-text p {
+    margin-bottom: 25px;
+}
+
+.welcome-text strong {
+    color: #333;
+    font-weight: 700;
+}
+
+/* Services Section */
+.services-section {
+    padding: 100px 20px;
+    background: white;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+.service-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.service-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.service-card:hover .service-image img {
+    transform: scale(1.1);
+}
+
+.service-info {
+    padding: 30px;
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+}
+
+.service-time {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.service-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 2px;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    overflow: hidden;
+}
+
+.testimonials-carousel {
+    position: relative;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.testimonials-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 500%; /* 5 slides */
+}
+
+.testimonial-slide {
+    flex: 0 0 20%; /* 100% / 5 slides */
+    padding: 0 15px;
+}
+
+.testimonial-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.testimonial-image {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.testimonial-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.testimonial-card:hover .testimonial-image img {
+    transform: scale(1.1);
+}
+
+.testimonial-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.2) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.testimonial-card:hover .testimonial-overlay {
+    opacity: 1;
+}
+
+.quote-icon {
+    font-size: 48px;
+    color: white;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover .quote-icon {
+    transform: scale(1);
+}
+
+.testimonial-info {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.testimonial-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    font-style: italic;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.testimonial-text::before {
+    content: '"';
+    font-size: 60px;
+    color: #d4af37;
+    position: absolute;
+    left: -10px;
+    top: -15px;
+    font-family: 'Playfair Display', serif;
+}
+
+.testimonial-author h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.testimonial-author p {
+    font-size: 14px;
+    color: #d4af37;
+    font-weight: 500;
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.indicator.active {
+    background: #d4af37;
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.indicator:hover {
+    background: rgba(212, 175, 55, 0.6);
+    transform: scale(1.1);
+}
+
+/* What's Up Section */
+.whats-up-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #8B4513 0%, #6B3410 100%);
+    text-align: center;
+}
+
+.whats-up-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+.whats-up-carousel {
+    position: relative;
+    max-width: 1000px;
+    margin: 50px auto 0;
+    overflow: hidden;
+}
+
+.whats-up-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 400%; /* 4 slides */
+}
+
+.whats-up-slide {
+    flex: 0 0 25%; /* 100% / 4 slides */
+    padding: 0 15px;
+}
+
+.whats-up-grid {
+    display: flex;
+    gap: 30px;
+}
+
+.whats-up-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+}
+
+.whats-up-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+.whats-up-image {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+}
+
+.whats-up-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.whats-up-card:hover .whats-up-image img {
+    transform: scale(1.1);
+}
+
+.whats-up-content {
+    padding: 0;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.whats-up-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #8B4513;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.whats-up-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 0;
+}
+
+.whats-up-date {
+    font-size: 14px;
+    color: #d4af37;
+    font-weight: 600;
+    margin-top: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Promise Section */
+.promise-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+}
+
+.promise-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.promise-image img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.promise-text {
+    padding: 40px;
+}
+
+.promise-verse {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #d4af37;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.promise-verse:hover {
+    transform: scale(1.05);
+    color: #e0bb47;
+}
+
+/* Verse Modal/Tablet */
+.verse-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.verse-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.verse-tablet {
+    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    border: 8px solid #d4af37;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.verse-modal.active .verse-tablet {
+    transform: scale(1);
+}
+
+.verse-tablet::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 6px;
+    background: #d4af37;
+    border-radius: 3px;
+}
+
+.verse-content {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+}
+
+.verse-content h2 {
+    font-size: 28px;
+    color: #d4af37;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.verse-content blockquote {
+    font-size: 24px;
+    line-height: 1.6;
+    color: #333;
+    font-style: italic;
+    margin: 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    border-left: 4px solid #d4af37;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: text;
+}
+
+.verse-content blockquote:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.verse-content blockquote.copied {
+    background: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.close-tablet {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #d4af37;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-tablet:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: scale(1.1);
+}
+
+.promise-quote {
+    font-size: 22px;
+    line-height: 1.8;
+    color: #555;
+    font-style: italic;
+    border-left: 4px solid #d4af37;
+    padding-left: 30px;
+}
+
+.promise-quote p {
+    margin-bottom: 15px;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+    color: white;
+    padding: 60px 20px 30px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #d4af37;
+    font-weight: 600;
+}
+
+.footer-section p {
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+        z-index: 1001;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(61, 61, 61, 0.98);
+        padding: 30px;
+        gap: 20px;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .nav-menu li a {
+        padding: 12px 0;
+        font-size: 16px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-title {
+        font-size: 36px;
+        letter-spacing: 10px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+        letter-spacing: 4px;
+    }
+
+    .hero-btn {
+        padding: 16px 32px;
+        min-height: 48px;
+        font-size: 16px;
+    }
+
+    .section-title {
+        font-size: 28px;
+        margin-bottom: 40px;
+    }
+
+    .section-title-light {
+        font-size: 32px;
+    }
+
+    .welcome-section {
+        padding: 60px 20px;
+    }
+
+    .welcome-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .welcome-text {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .welcome-text p {
+        margin-bottom: 20px;
+    }
+
+    .services-section {
+        padding: 60px 20px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .service-card {
+        margin-bottom: 20px;
+    }
+
+    .service-info {
+        padding: 25px;
+    }
+
+    .whats-up-section {
+        padding: 60px 20px;
+    }
+
+    .whats-up-image {
+        max-width: 100% !important;
+        height: auto;
+    }
+
+    .promise-section {
+        padding: 60px 20px;
+    }
+
+    .promise-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .promise-image img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .promise-text {
+        padding: 20px;
+    }
+
+    .promise-verse {
+        font-size: 24px;
+    }
+
+    .promise-quote {
+        font-size: 18px;
+        padding-left: 20px;
+    }
+
+    .footer {
+        padding: 40px 20px 20px;
+    }
+
+    .footer-content {
+        gap: 30px;
+    }
+
+    .nav-title {
+        font-size: 12px;
+    }
+
+    .hero {
+        background-attachment: scroll;
+        min-height: 100vh;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    /* Improve touch targets */
+    .search-icon {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Better spacing for mobile */
+    .pastor-name {
+        padding: 15px;
+        font-size: 20px;
+    }
+
+    .service-time {
+        font-size: 32px;
+    }
+
+    .service-name {
+        font-size: 16px;
+    }
+
+    /* Testimonials Mobile Styles */
+    .testimonials-section {
+        padding: 60px 20px;
+    }
+
+    .testimonials-carousel {
+        max-width: 100%;
+    }
+
+    .testimonials-track {
+        width: 100%;
+    }
+
+    .testimonial-slide {
+        flex: 0 0 100%;
+        padding: 0;
+    }
+
+    .testimonial-card {
+        margin: 0 15px;
+        max-width: calc(100% - 30px);
+    }
+
+    .testimonial-image {
+        /* Let images size naturally on mobile */
+    }
+
+    .testimonial-info {
+        padding: 20px;
+    }
+
+    .testimonial-text {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    .testimonial-author h4 {
+        font-size: 16px;
+    }
+
+    .testimonial-author p {
+        font-size: 13px;
+    }
+
+    .carousel-indicators {
+        margin-top: 30px;
+        gap: 10px;
+    }
+
+    .indicator {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 24px;
+        letter-spacing: 4px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        hyphens: auto;
+        max-width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .hero-subtitle {
+        font-size: 11px;
+        letter-spacing: 2px;
+        line-height: 1.3;
+        word-wrap: break-word;
+        max-width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .hero-btn {
+        padding: 12px 30px;
+        font-size: 14px;
+        min-height: 44px;
+    }
+
+    .nav-container {
+        padding: 15px 15px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    .service-time {
+        font-size: 28px;
+    }
+
+    .service-name {
+        font-size: 16px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="./images/zion_ag_title_icon.png" alt="Zion Logo" class="logo-img">
+                <span class="nav-title">ZION AG CHURCH, MADIWALA</span>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#announcement">Announcement</a></li>
+                <li><a href="#ministries">Ministries</a></li>
+                <li><a href="#daily-manna">Daily Manna</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#search" class="search-icon" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">ZION  AG  CHURCH</h1>
+            <p class="hero-subtitle">[ ENJOY EXPERIENCE AND ELEVATE GOD ]</p>
+            <!-- <a href="https://www.google.com/maps/dir//22,+Maruthi+Nagar+Main+Rd+beside+Amravati+Hotel+Zuzuvadi,+Maruti+Nagar,+1st+Stage,+BTM+Layout+Bengaluru,+Karnataka+560068/@12.9255887,77.6154588,20z" target="_blank" class="hero-btn">Direct Me!</a> -->
+            <a href="https://maps.app.goo.gl/CPLcJwTzEv8WdJ31A" target="_blank" class="hero-btn">Direct Me!</a>
+            
+        </div>
+        <div class="scroll-indicator">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome-section" id="about">
+        <div class="container">
+            <h2 class="section-title">ZION AG CHURCH WELCOMES YOU!</h2>
+            <div class="welcome-content">
+                <div class="pastor-card">
+                    <img src="./images/david_pastor.png" alt="Pastor" class="pastor-img">
+                    <h3 class="pastor-name">REV.PS.DAVID PAUL</h3>
+                </div>
+                <div class="welcome-text">
+                    <p><strong>Zion Assemblies of God Church</strong> is your sacred space to encounter the Saviour of your soul and to establish your identity as a true child of God. As you step through our doors, you'll be warmly embraced by a loving, welcoming family—exactly as you are.</p>
+                    
+                    <p><strong>Experience</strong> the transformative power of God during our vibrant worship sessions, where His presence can be felt in every song and every moment. Immerse yourself in life-changing, inspiring, and deeply practical messages rooted in the timeless truths of God's Word.</p>
+                    
+                    <p><strong>ENJOY</strong> a rich blend of musical expressions, from contemporary worship to cherished traditional hymns, catering to every heart seeking to praise Him. You'll also witness and hear living testimonies of God's unfailing love, grace, and miracles, reaffirming His divine purpose for your life.</p>
+                    
+                    <p>Come with an <strong>OPEN HEART</strong>, ready to experience God's movement—not just in the service, but in your everyday life. We believe that the peace, joy, strength, and transformation He provides are best experienced, not just explained. Join us and discover what it truly means to live in the light of God's love and purpose!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="./images/img_1.png" alt="Morning Service">
+                    </div>
+                    <div class="service-info">
+                        <h3 class="service-time">7.00 a.m.</h3>
+                        <p class="service-name">KANNADA / TAMIL SERVICE</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="./images/img_2.png" alt="Telugu Service">
+                    </div>
+                    <div class="service-info">
+                        <h3 class="service-time">9.30 a.m.</h3>
+                        <p class="service-name">TELUGU/ENGLISH SERVICE</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="./images/img_3.jpg" alt="Evening Service">
+                    </div>
+                    <div class="service-info">
+                        <h3 class="service-time">6.30 p.m.</h3>
+                        <p class="service-name">MIRACLE SERVICE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">What Our Community Says</h2>
+            <div class="testimonials-carousel">
+                <div class="testimonials-track">
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./images/david_pastor.png" alt="Sarah Johnson">
+                                <div class="testimonial-overlay">
+                                    <div class="quote-icon">❝</div>
+                                </div>
+                            </div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-text">"Zion AG Church has been a blessing to our family. The worship is powerful and the community is so welcoming. We've grown spiritually and made lifelong friends here."</p>
+                                <div class="testimonial-author">
+                                    <h4>Sarah Johnson</h4>
+                                    <p>Member since 2020</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./images/img_1.png" alt="Michael Chen">
+                                <div class="testimonial-overlay">
+                                    <div class="quote-icon">❝</div>
+                                </div>
+                            </div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-text">"The teachings are life-changing and practical. Pastor David's messages always speak directly to my heart and help me apply God's Word to my daily life."</p>
+                                <div class="testimonial-author">
+                                    <h4>Michael Chen</h4>
+                                    <p>Member since 2019</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./images/img_2.png" alt="Grace Patel">
+                                <div class="testimonial-overlay">
+                                    <div class="quote-icon">❝</div>
+                                </div>
+                            </div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-text">"The miracle services have transformed my life. I've witnessed God's healing power firsthand. This church is truly a place where heaven touches earth."</p>
+                                <div class="testimonial-author">
+                                    <h4>Grace Patel</h4>
+                                    <p>Member since 2021</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./images/img_3.jpg" alt="John Smith">
+                                <div class="testimonial-overlay">
+                                    <div class="quote-icon">❝</div>
+                                </div>
+                            </div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-text">"This church has become my spiritual home. The love and support from the community is incredible. God is truly moving here."</p>
+                                <div class="testimonial-author">
+                                    <h4>John Smith</h4>
+                                    <p>Member since 2018</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./images/img_4.png" alt="Mary Davis">
+                                <div class="testimonial-overlay">
+                                    <div class="quote-icon">❝</div>
+                                </div>
+                            </div>
+                            <div class="testimonial-info">
+                                <p class="testimonial-text">"The children's ministry is outstanding. My kids love coming to church and are learning about Jesus in such a fun way."</p>
+                                <div class="testimonial-author">
+                                    <h4>Mary Davis</h4>
+                                    <p>Member since 2022</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-indicators">
+                    <span class="indicator active" data-slide="0"></span>
+                    <span class="indicator" data-slide="1"></span>
+                    <span class="indicator" data-slide="2"></span>
+                    <span class="indicator" data-slide="3"></span>
+                    <span class="indicator" data-slide="4"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Up Section -->
+    <section class="whats-up-section" id="announcement">
+        <div class="container">
+            <h2 class="section-title-light">WHAT'S UP THIS MONTH</h2>
+            <div class="whats-up-carousel">
+                <div class="whats-up-track">
+                    <div class="whats-up-slide">
+                        <div class="whats-up-card">
+                            <div class="whats-up-image">
+                                <img src="./images/img_4.png" alt="October Events">
+                            </div>
+                            <div class="whats-up-content">
+                                <h3 class="whats-up-title">OCTOBER EVENTS</h3>
+                                <p class="whats-up-text">Join us for a month filled with powerful services, special guest speakers, and transformative worship experiences.</p>
+                                <p class="whats-up-date">OCTOBER 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="whats-up-slide">
+                        <div class="whats-up-card">
+                            <div class="whats-up-image">
+                                <img src="./images/fasting_prayer.png" alt="Prayer Meeting">
+                            </div>
+                            <div class="whats-up-content">
+                                <h3 class="whats-up-title">PRAYER MEETINGS</h3>
+                                <p class="whats-up-text">Experience the power of united prayer as we seek God's presence and intercede for our community and nation.</p>
+                                <p class="whats-up-date">EVERY WEDNESDAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="whats-up-slide">
+                        <div class="whats-up-card">
+                            <div class="whats-up-image">
+                                <img src="./images/youth_meeting" alt="Youth Ministry">
+                            </div>
+                            <div class="whats-up-content">
+                                <h3 class="whats-up-title">YOUTH MINISTRY</h3>
+                                <p class="whats-up-text">Dynamic youth programs designed to inspire and equip the next generation with faith, purpose, and leadership skills.</p>
+                                <p class="whats-up-date">EVERY FRIDAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="whats-up-slide">
+                        <div class="whats-up-card">
+                            <div class="whats-up-image">
+                                <img src="./images/fasting_prayer.png" alt="Miracle Service">
+                            </div>
+                            <div class="whats-up-content">
+                                <h3 class="whats-up-title">MIRACLE SERVICE</h3>
+                                <p class="whats-up-text">Experience God's healing power and miraculous intervention in our special evening miracle services.</p>
+                                <p class="whats-up-date">EVERY SUNDAY</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-indicators whats-up-indicators">
+                    <span class="indicator active" data-slide="0"></span>
+                    <span class="indicator" data-slide="1"></span>
+                    <span class="indicator" data-slide="2"></span>
+                    <span class="indicator" data-slide="3"></span>
+                </div>
+            </div>
+            <p class="whats-up-subtitle">Follow Live Stream For more INFO</p>
+        </div>
+    </section>
+
+    <!-- Promise Section -->
+    <section class="promise-section" id="daily-manna">
+        <div class="container">
+            <h2 class="section-title">PROMISE OF THE MONTH OCTOBER 2024</h2>
+            <div class="promise-content">
+                <div class="promise-image">
+                    <img src="./images/promise_image.jpg" alt="Lion of Judah">
+                </div>
+                <div class="promise-text">
+                    <h3 class="promise-verse">✞ Genesis 49:24 ✞ </h3>
+                    <blockquote class="promise-quote">
+                        <p>But his bow remained steady,</p>
+                        <p>his strong arms stayed limber,</p>
+                        <p>because of the hand of the Mighty One of Jacob,</p>
+                        <p>because of the Shepherd, the Rock of Israel,</p>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ZION AG CHURCH</h3>
+                    <p>22, Maruthi Nagar Main Rd</p>
+                    <p>beside Amravati Hotel Zuzuvadi</p>
+                    <p>Maruti Nagar, 1st Stage, BTM Layout</p>
+                    <p>Bengaluru, Karnataka 560068</p>
+                    <a href="https://maps.app.goo.gl/CPLcJwTzEv8WdJ31A" target="_blank" class="hero-btn">Direct Me!</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Service Times</h3>
+                    <p>Sunday - 7:00 AM (Kannada/Tamil)</p>
+                    <p>Sunday - 9:30 AM (Telugu/English)</p>
+                    <p>Sunday - 6:30 PM (Miracle Service)</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <p>Follow us on our social media</p>
+                    <p>Join our live streams</p>
+                </div>
+                
+            </div>
+            <div class="footer-bottom">
+                <!-- Show on click iframe
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d486.0902137449191!2d77.61489993424571!3d12.925599459033375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1456588acf47%3A0x60f9345a86ccfede!2sZion%20A.G%20Church!5e0!3m2!1sen!2sin!4v1762455476751!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div> -->
+                <p>&copy; 2025 Zion AG Church, Madiwala. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const navMenu = document.getElementById('navMenu');
+const navbar = document.getElementById('navbar');
+
+mobileMenuBtn.addEventListener('click', () => {
+    mobileMenuBtn.classList.toggle('active');
+    navMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking on a link
+const navLinks = document.querySelectorAll('.nav-menu a');
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenuBtn.classList.remove('active');
+        navMenu.classList.remove('active');
+    });
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section');
+const navItems = document.querySelectorAll('.nav-menu a');
+
+window.addEventListener('scroll', () => {
+    let current = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= (sectionTop - 200)) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href').slice(1) === current) {
+            item.classList.add('active');
+        }
+    });
+});
+
+// Smooth scroll with offset for fixed navbar
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href !== '#search' && href !== '#') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const offsetTop = target.offsetTop - 70;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    });
+});
+
+// Intersection Observer for fade-in animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Apply animation to cards and sections
+const animatedElements = document.querySelectorAll('.service-card, .pastor-card, .promise-content,.hero');
+animatedElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.6s ease';
+    observer.observe(el);
+});
+
+
+// Testimonials Carousel
+class TestimonialsCarousel {
+    constructor() {
+        this.track = document.querySelector('.testimonials-track');
+        this.indicators = document.querySelectorAll('.indicator');
+        this.currentSlide = 0;
+        this.totalSlides = 5;
+        this.autoPlayInterval = null;
+        this.isTransitioning = false;
+
+        this.init();
+    }
+
+    init() {
+        // Set initial position
+        this.updateSlidePosition();
+
+        // Add event listeners to indicators
+        this.indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                if (!this.isTransitioning) {
+                    this.goToSlide(index);
+                }
+            });
+        });
+
+        // Start autoplay
+        this.startAutoPlay();
+
+        // Pause autoplay on hover
+        const carousel = document.querySelector('.testimonials-carousel');
+        carousel.addEventListener('mouseenter', () => this.stopAutoPlay());
+        carousel.addEventListener('mouseleave', () => this.startAutoPlay());
+
+        // Add touch/swipe support for mobile
+        this.addTouchSupport();
+
+        // Add mouse drag support for desktop
+        this.addMouseDragSupport();
+    }
+
+    updateSlidePosition() {
+        if (this.track) {
+            this.track.style.transform = `translateX(-${this.currentSlide * 20}%)`;
+        }
+    }
+
+    goToSlide(slideIndex) {
+        if (slideIndex === this.currentSlide || this.isTransitioning) return;
+
+        this.isTransitioning = true;
+        this.currentSlide = slideIndex;
+
+        // Update indicators
+        this.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === this.currentSlide);
+        });
+
+        this.updateSlidePosition();
+
+        // Reset transition flag after animation completes
+        setTimeout(() => {
+            this.isTransitioning = false;
+        }, 5000);
+    }
+
+    nextSlide() {
+        const nextSlide = (this.currentSlide + 1) % this.totalSlides;
+        this.goToSlide(nextSlide);
+    }
+
+    prevSlide() {
+        const prevSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+        this.goToSlide(prevSlide);
+    }
+
+    startAutoPlay() {
+        this.stopAutoPlay(); // Clear any existing interval
+        this.autoPlayInterval = setInterval(() => {
+            this.nextSlide();
+        }, 4000); // Change slide every 4 seconds
+    }
+
+    stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+
+    addTouchSupport() {
+        let startX = 0;
+        let endX = 0;
+        const carousel = document.querySelector('.testimonials-carousel');
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            this.stopAutoPlay();
+        });
+
+        carousel.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            this.handleSwipe(startX, endX);
+            this.startAutoPlay();
+        });
+    }
+
+    addMouseDragSupport() {
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+        let dragDistance = 0;
+        const carousel = document.querySelector('.testimonials-carousel');
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            currentX = e.clientX;
+            dragDistance = 0;
+            this.stopAutoPlay();
+            carousel.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            currentX = e.clientX;
+            dragDistance = currentX - startX;
+
+            // Add visual feedback during drag
+            const movePercent = (dragDistance / carousel.offsetWidth) * 20; // 20% per slide
+            const currentTransform = -this.currentSlide * 20;
+            const newTransform = currentTransform + movePercent;
+
+            // Limit the drag to prevent going too far
+            const maxDrag = 30; // Allow some over-drag for natural feel
+            const limitedTransform = Math.max(-maxDrag, Math.min((this.totalSlides - 1) * 20 + maxDrag, newTransform));
+
+            this.track.style.transform = `translateX(-${limitedTransform}%)`;
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+
+            isDragging = false;
+            carousel.style.cursor = 'grab';
+
+            // Determine if we should change slides based on drag distance
+            const threshold = carousel.offsetWidth * 0.1; // 10% of carousel width
+
+            if (Math.abs(dragDistance) > threshold) {
+                if (dragDistance > 0) {
+                    // Dragged right - go to previous slide
+                    this.prevSlide();
+                } else {
+                    // Dragged left - go to next slide
+                    this.nextSlide();
+                }
+            } else {
+                // Not enough drag, snap back to current slide
+                this.updateSlidePosition();
+            }
+
+            this.startAutoPlay();
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                carousel.style.cursor = 'grab';
+                this.updateSlidePosition();
+                this.startAutoPlay();
+            }
+        });
+
+        // Set initial cursor
+        carousel.style.cursor = 'grab';
+    }
+
+    handleSwipe(startX, endX) {
+        const diffX = startX - endX;
+        const threshold = 50; // Minimum swipe distance
+
+        if (Math.abs(diffX) > threshold) {
+            if (diffX > 0) {
+                // Swipe left - next slide
+                this.nextSlide();
+            } else {
+                // Swipe right - previous slide
+                this.prevSlide();
+            }
+        }
+    }
+}
+
+// What's Up Carousel
+class WhatsUpCarousel {
+    constructor() {
+        this.track = document.querySelector('.whats-up-track');
+        this.indicators = document.querySelectorAll('.whats-up-indicators .indicator');
+        this.currentSlide = 0;
+        this.totalSlides = 4;
+        this.autoPlayInterval = null;
+        this.isTransitioning = false;
+
+        this.init();
+    }
+
+    init() {
+        // Set initial position
+        this.updateSlidePosition();
+
+        // Add event listeners to indicators
+        this.indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                if (!this.isTransitioning) {
+                    this.goToSlide(index);
+                }
+            });
+        });
+
+        // Start autoplay
+        this.startAutoPlay();
+
+        // Pause autoplay on hover
+        const carousel = document.querySelector('.whats-up-carousel');
+        carousel.addEventListener('mouseenter', () => this.stopAutoPlay());
+        carousel.addEventListener('mouseleave', () => this.startAutoPlay());
+
+        // Add mouse drag support for desktop
+        this.addMouseDragSupport();
+    }
+
+    updateSlidePosition() {
+        if (this.track) {
+            this.track.style.transform = `translateX(-${this.currentSlide * 25}%)`;
+        }
+    }
+
+    goToSlide(slideIndex) {
+        if (slideIndex === this.currentSlide || this.isTransitioning) return;
+
+        this.isTransitioning = true;
+        this.currentSlide = slideIndex;
+
+        // Update indicators
+        this.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === this.currentSlide);
+        });
+
+        this.updateSlidePosition();
+
+        // Reset transition flag after animation completes
+        setTimeout(() => {
+            this.isTransitioning = false;
+        }, 5000);
+    }
+
+    nextSlide() {
+        const nextSlide = (this.currentSlide + 1) % this.totalSlides;
+        this.goToSlide(nextSlide);
+    }
+
+    prevSlide() {
+        const prevSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+        this.goToSlide(prevSlide);
+    }
+
+    startAutoPlay() {
+        this.stopAutoPlay(); // Clear any existing interval
+        this.autoPlayInterval = setInterval(() => {
+            this.nextSlide();
+        }, 1000); // Change slide every 1 second
+    }
+
+    stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+
+    addMouseDragSupport() {
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+        let dragDistance = 0;
+        const carousel = document.querySelector('.whats-up-carousel');
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            currentX = e.clientX;
+            dragDistance = 0;
+            this.stopAutoPlay();
+            carousel.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            currentX = e.clientX;
+            dragDistance = currentX - startX;
+
+            // Add visual feedback during drag
+            const movePercent = (dragDistance / carousel.offsetWidth) * 25; // 25% per slide
+            const currentTransform = -this.currentSlide * 25;
+            const newTransform = currentTransform + movePercent;
+
+            // Limit the drag to prevent going too far
+            const maxDrag = 37.5; // Allow some over-drag for natural feel
+            const limitedTransform = Math.max(-maxDrag, Math.min((this.totalSlides - 1) * 25 + maxDrag, newTransform));
+
+            this.track.style.transform = `translateX(-${limitedTransform}%)`;
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+
+            isDragging = false;
+            carousel.style.cursor = 'grab';
+
+            // Determine if we should change slides based on drag distance
+            const threshold = carousel.offsetWidth * 0.1; // 10% of carousel width
+
+            if (Math.abs(dragDistance) > threshold) {
+                if (dragDistance > 0) {
+                    // Dragged right - go to previous slide
+                    this.prevSlide();
+                } else {
+                    // Dragged left - go to next slide
+                    this.nextSlide();
+                }
+            } else {
+                // Not enough drag, snap back to current slide
+                this.updateSlidePosition();
+            }
+
+            this.startAutoPlay();
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                carousel.style.cursor = 'grab';
+                this.updateSlidePosition();
+                this.startAutoPlay();
+            }
+        });
+
+        // Set initial cursor
+        carousel.style.cursor = 'grab';
+    }
+}
+
+// Initialize carousels when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new TestimonialsCarousel();
+    new WhatsUpCarousel();
+});
+
+// Search icon click handler (placeholder)
+const searchIcon = document.querySelector('.search-icon');
+searchIcon.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Search functionality will be implemented soon!');
+});
+// const hero = document.querySelector('.hero');
+// const scrolled = window.pageYOffset;
+// hero.style.transition = 'transform 0.7s ease-out';
+// hero.style.transform = `translateY(${scrolled * 0.05}px)`;
+
+// Parallax effect removed to prevent text overlap with welcome section
+// window.addEventListener('scroll', () => {
+//     const scrolled = window.pageYOffset;
+//     const hero = document.querySelector('.hero');
+//     if (hero) {
+//         hero.style.transform = `translateY(${scrolled * 0.05}px)`;
+//     }
+// });
+
+console.log('Zion AG Church website loaded successfully!');
+    </script>
+</body>
+</html>
