@@ -421,11 +421,11 @@ h1, h2, h3, h4, h5, h6 {
 .testimonials-track {
     display: flex;
     transition: transform 0.5s ease;
-    width: 500%; /* 5 slides */
+    width: 700%; /* 7 slides (5 original + 2 duplicates) */
 }
 
 .testimonial-slide {
-    flex: 0 0 20%; /* 100% / 5 slides */
+    flex: 0 0 14.2857%; /* 100% / 7 slides */
     padding: 0 15px;
 }
 
@@ -590,7 +590,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .whats-up-slide {
     flex: 0 0 25%; /* 100% / 4 slides */
-    padding: 0 15px;
+    padding: 25px 50px;
 }
 
 .whats-up-grid {
@@ -610,25 +610,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .whats-up-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-10px) scale(1.1);
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
 }
 
 .whats-up-image {
     width: 100%;
-    height: 280px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .whats-up-image img {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: contain;
     transition: transform 0.5s ease;
 }
 
 .whats-up-card:hover .whats-up-image img {
-    transform: scale(1.1);
+    transform: scale(1.0009);
 }
 
 .whats-up-content {
@@ -670,37 +672,131 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .promise-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
     align-items: center;
+}
+
+.promise-image {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
 }
 
 .promise-image img {
     width: 100%;
-    height: 500px;
-    object-fit: cover;
+    max-height: 500px;
+    object-fit: contain;
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
-.promise-text {
+.promise-verse-card {
+    background: white;
+    border-radius: 20px;
     padding: 40px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    border: 3px solid #d4af37;
+    position: relative;
+    max-width: 800px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.promise-verse-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
 .promise-verse {
-    font-size: 32px;
-    margin-bottom: 30px;
+    font-size: 28px;
+    margin-bottom: 25px;
     color: #d4af37;
     font-weight: 700;
+    text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
 }
 
 .promise-verse:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     color: #e0bb47;
+}
+
+.promise-quote {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #555;
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+    user-select: text;
+    transition: all 0.3s ease;
+}
+
+.promise-quote:hover {
+    color: #333;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #d4af37;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.copy-btn:hover {
+    background: #e0bb47;
+    transform: scale(1.0009);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.copy-btn.copied {
+    background: #28a745;
+    animation: copiedPulse 0.6s ease;
+}
+
+@keyframes copiedPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.copy-tooltip {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.copy-tooltip.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Verse Modal/Tablet */
@@ -815,19 +911,6 @@ h1, h2, h3, h4, h5, h6 {
 .close-tablet:hover {
     background: rgba(212, 175, 55, 0.1);
     transform: scale(1.1);
-}
-
-.promise-quote {
-    font-size: 22px;
-    line-height: 1.8;
-    color: #555;
-    font-style: italic;
-    border-left: 4px solid #d4af37;
-    padding-left: 30px;
-}
-
-.promise-quote p {
-    margin-bottom: 15px;
 }
 
 /* Footer */
@@ -1065,17 +1148,17 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .testimonials-track {
-        width: 100%;
+        width: 700%; /* Keep circular functionality on mobile */
     }
 
     .testimonial-slide {
-        flex: 0 0 100%;
+        flex: 0 0 14.2857%; /* 100% / 7 slides for circular effect */
         padding: 0;
     }
 
     .testimonial-card {
-        margin: 0 15px;
-        max-width: calc(100% - 30px);
+        margin: 0 auto;
+        max-width: 100%;
     }
 
     .testimonial-image {
@@ -1103,6 +1186,8 @@ h1, h2, h3, h4, h5, h6 {
     .carousel-indicators {
         margin-top: 30px;
         gap: 10px;
+        justify-content: center;
+        align-items: center;
     }
 
     .indicator {
@@ -1335,23 +1420,6 @@ h1, h2, h3, h4, h5, h6 {
                             </div>
                         </div>
                     </div>
-                    <div class="testimonial-slide">
-                        <div class="testimonial-card">
-                            <div class="testimonial-image">
-                                <img src="./images/img_4.png" alt="Mary Davis">
-                                <div class="testimonial-overlay">
-                                    <div class="quote-icon">❝</div>
-                                </div>
-                            </div>
-                            <div class="testimonial-info">
-                                <p class="testimonial-text">"The children's ministry is outstanding. My kids love coming to church and are learning about Jesus in such a fun way."</p>
-                                <div class="testimonial-author">
-                                    <h4>Mary Davis</h4>
-                                    <p>Member since 2022</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="carousel-indicators">
                     <span class="indicator active" data-slide="0"></span>
@@ -1373,7 +1441,7 @@ h1, h2, h3, h4, h5, h6 {
                     <div class="whats-up-slide">
                         <div class="whats-up-card">
                             <div class="whats-up-image">
-                                <img src="./images/img_4.png" alt="October Events">
+                                <img src="./images/girls_fellowship.png" alt="October Events">
                             </div>
                             <div class="whats-up-content">
                                 <h3 class="whats-up-title">OCTOBER EVENTS</h3>
@@ -1409,7 +1477,7 @@ h1, h2, h3, h4, h5, h6 {
                     <div class="whats-up-slide">
                         <div class="whats-up-card">
                             <div class="whats-up-image">
-                                <img src="./images/fasting_prayer.png" alt="Miracle Service">
+                                <img src="./images/promise_image.jpg" alt="Miracle Service">
                             </div>
                             <div class="whats-up-content">
                                 <h3 class="whats-up-title">MIRACLE SERVICE</h3>
@@ -1426,7 +1494,7 @@ h1, h2, h3, h4, h5, h6 {
                     <span class="indicator" data-slide="3"></span>
                 </div>
             </div>
-            <p class="whats-up-subtitle">Follow Live Stream For more INFO</p>
+            <p class="whats-up-subtitle"><a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" style="color: rgba(255, 255, 255, 0.9); text-decoration: none;">Follow Live Stream For more INFO</a></p>
         </div>
     </section>
 
@@ -1438,13 +1506,20 @@ h1, h2, h3, h4, h5, h6 {
                 <div class="promise-image">
                     <img src="./images/promise_image.jpg" alt="Lion of Judah">
                 </div>
-                <div class="promise-text">
+                <div class="promise-verse-card">
+                    <button class="copy-btn" onclick="copyVerse()" title="Copy verse">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                    <div class="copy-tooltip">Copy to clipboard</div>
                     <h3 class="promise-verse">✞ Genesis 49:24 ✞ </h3>
                     <blockquote class="promise-quote">
-                        <p>But his bow remained steady,</p>
-                        <p>his strong arms stayed limber,</p>
-                        <p>because of the hand of the Mighty One of Jacob,</p>
-                        <p>because of the Shepherd, the Rock of Israel,</p>
+                        But his bow remained steady,<br>
+                        his strong arms stayed limber,<br>
+                        because of the hand of the Mighty One of Jacob,<br>
+                        because of the Shepherd, the Rock of Israel,
                     </blockquote>
                 </div>
             </div>
@@ -1585,8 +1660,8 @@ animatedElements.forEach(el => {
 class TestimonialsCarousel {
     constructor() {
         this.track = document.querySelector('.testimonials-track');
-        this.indicators = document.querySelectorAll('.indicator');
-        this.currentSlide = 0;
+        this.indicators = document.querySelectorAll('.testimonials-section .indicator');
+        this.currentSlide = 2; // Start from 3rd testimonial (index 2)
         this.totalSlides = 5;
         this.autoPlayInterval = null;
         this.isTransitioning = false;
@@ -1595,14 +1670,22 @@ class TestimonialsCarousel {
     }
 
     init() {
-        // Set initial position
+        // Create circular effect by duplicating slides
+        this.createCircularSlides();
+
+        // Set initial position (start from real 3rd slide, which is index 3 in circular array)
+        this.currentSlide = 3; // 3rd testimonial in circular array (index 2 of real slides + 1 duplicate)
         this.updateSlidePosition();
+        this.updateIndicators();
 
         // Add event listeners to indicators
         this.indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', () => {
+                console.log('Indicator clicked:', index, 'Current slide:', this.currentSlide, 'Is transitioning:', this.isTransitioning);
                 if (!this.isTransitioning) {
-                    this.goToSlide(index);
+                    const targetSlide = index + 1; // Map indicator index to circular slide index
+                    console.log('Going to slide:', targetSlide);
+                    this.goToSlide(targetSlide);
                 }
             });
         });
@@ -1624,8 +1707,67 @@ class TestimonialsCarousel {
 
     updateSlidePosition() {
         if (this.track) {
-            this.track.style.transform = `translateX(-${this.currentSlide * 20}%)`;
+            // Handle seamless looping by instantly repositioning when on duplicate slides
+            let transformValue = this.currentSlide * (100/7);
+
+            // If we're on the first duplicate (slide 0), instantly jump to the real last slide (slide 5)
+            if (this.currentSlide === 0) {
+                transformValue = 5 * (100/7);
+                // Use setTimeout to ensure this happens after the current transition
+                setTimeout(() => {
+                    this.track.style.transition = 'none';
+                    this.track.style.transform = `translateX(-${transformValue}%)`;
+                    this.currentSlide = 5;
+                    // Force reflow
+                    this.track.offsetHeight;
+                    this.track.style.transition = 'transform 0.5s ease';
+                }, 500);
+            }
+            // If we're on the last duplicate (slide 6), instantly jump to the real first slide (slide 1)
+            else if (this.currentSlide === 6) {
+                transformValue = 1 * (100/7);
+                setTimeout(() => {
+                    this.track.style.transition = 'none';
+                    this.track.style.transform = `translateX(-${transformValue}%)`;
+                    this.currentSlide = 1;
+                    // Force reflow
+                    this.track.offsetHeight;
+                    this.track.style.transition = 'transform 0.5s ease';
+                }, 500);
+            }
+
+            this.track.style.transform = `translateX(-${transformValue}%)`;
         }
+    }
+
+    createCircularSlides() {
+        // Duplicate the last slide at the beginning and first slide at the end for seamless circular effect
+        const slides = Array.from(this.track.children);
+        const firstSlide = slides[0].cloneNode(true);
+        const lastSlide = slides[slides.length - 1].cloneNode(true);
+
+        // Add duplicated slides
+        this.track.insertBefore(lastSlide, slides[0]); // Add last slide at beginning
+        this.track.appendChild(firstSlide); // Add first slide at end
+
+        // Update total slides count (original 5 + 2 duplicates = 7)
+        this.totalSlides = 7;
+    }
+
+    updateIndicators() {
+        // Map circular slide index to real slide index for indicators
+        let realSlideIndex;
+        if (this.currentSlide === 0) {
+            realSlideIndex = 4; // Last slide (duplicate at beginning)
+        } else if (this.currentSlide === 6) {
+            realSlideIndex = 0; // First slide (duplicate at end)
+        } else {
+            realSlideIndex = this.currentSlide - 1; // Real slides are at indices 1-5
+        }
+
+        this.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === realSlideIndex);
+        });
     }
 
     goToSlide(slideIndex) {
@@ -1634,17 +1776,14 @@ class TestimonialsCarousel {
         this.isTransitioning = true;
         this.currentSlide = slideIndex;
 
-        // Update indicators
-        this.indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === this.currentSlide);
-        });
-
+        // Update indicators immediately when slide changes
+        this.updateIndicators();
         this.updateSlidePosition();
 
         // Reset transition flag after animation completes
         setTimeout(() => {
             this.isTransitioning = false;
-        }, 5000);
+        }, 500);
     }
 
     nextSlide() {
@@ -1712,13 +1851,13 @@ class TestimonialsCarousel {
             dragDistance = currentX - startX;
 
             // Add visual feedback during drag
-            const movePercent = (dragDistance / carousel.offsetWidth) * 20; // 20% per slide
-            const currentTransform = -this.currentSlide * 20;
+            const movePercent = (dragDistance / carousel.offsetWidth) * (100/7); // 14.2857% per slide
+            const currentTransform = -this.currentSlide * (100/7);
             const newTransform = currentTransform + movePercent;
 
             // Limit the drag to prevent going too far
-            const maxDrag = 30; // Allow some over-drag for natural feel
-            const limitedTransform = Math.max(-maxDrag, Math.min((this.totalSlides - 1) * 20 + maxDrag, newTransform));
+            const maxDrag = 42.857; // Allow some over-drag for natural feel
+            const limitedTransform = Math.max(-maxDrag, Math.min((this.totalSlides - 1) * (100/7) + maxDrag, newTransform));
 
             this.track.style.transform = `translateX(-${limitedTransform}%)`;
         });
@@ -1730,7 +1869,7 @@ class TestimonialsCarousel {
             carousel.style.cursor = 'grab';
 
             // Determine if we should change slides based on drag distance
-            const threshold = carousel.offsetWidth * 0.1; // 10% of carousel width
+            const threshold = carousel.offsetWidth * 0.05; // 5% of carousel width
 
             if (Math.abs(dragDistance) > threshold) {
                 if (dragDistance > 0) {
@@ -1797,7 +1936,9 @@ class WhatsUpCarousel {
         // Add event listeners to indicators
         this.indicators.forEach((indicator, index) => {
             indicator.addEventListener('click', () => {
+                console.log('WhatsUp indicator clicked:', index, 'Current slide:', this.currentSlide, 'Is transitioning:', this.isTransitioning);
                 if (!this.isTransitioning) {
+                    console.log('Going to WhatsUp slide:', index);
                     this.goToSlide(index);
                 }
             });
@@ -1824,6 +1965,7 @@ class WhatsUpCarousel {
     goToSlide(slideIndex) {
         if (slideIndex === this.currentSlide || this.isTransitioning) return;
 
+        console.log('WhatsUp goToSlide called with:', slideIndex, 'Current:', this.currentSlide);
         this.isTransitioning = true;
         this.currentSlide = slideIndex;
 
@@ -1837,7 +1979,8 @@ class WhatsUpCarousel {
         // Reset transition flag after animation completes
         setTimeout(() => {
             this.isTransitioning = false;
-        }, 5000);
+            console.log('WhatsUp transition completed, current slide:', this.currentSlide);
+        }, 500);
     }
 
     nextSlide() {
@@ -1854,7 +1997,7 @@ class WhatsUpCarousel {
         this.stopAutoPlay(); // Clear any existing interval
         this.autoPlayInterval = setInterval(() => {
             this.nextSlide();
-        }, 1000); // Change slide every 1 second
+        }, 4000); // Change slide every 4 seconds
     }
 
     stopAutoPlay() {
@@ -1906,7 +2049,7 @@ class WhatsUpCarousel {
             carousel.style.cursor = 'grab';
 
             // Determine if we should change slides based on drag distance
-            const threshold = carousel.offsetWidth * 0.1; // 10% of carousel width
+            const threshold = carousel.offsetWidth * 0.05; // 5% of carousel width
 
             if (Math.abs(dragDistance) > threshold) {
                 if (dragDistance > 0) {
@@ -1944,6 +2087,55 @@ document.addEventListener('DOMContentLoaded', () => {
     new WhatsUpCarousel();
 });
 
+// Copy verse functionality
+function copyVerse() {
+    const verseText = document.querySelector('.promise-quote').textContent;
+    const verseReference = document.querySelector('.promise-verse').textContent;
+
+    // Combine verse reference and text
+    const fullText = `${verseReference}\n\n${verseText}`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(fullText).then(() => {
+        // Show success feedback
+        const copyBtn = document.querySelector('.copy-btn');
+        const tooltip = document.querySelector('.copy-tooltip');
+
+        copyBtn.classList.add('copied');
+        tooltip.textContent = 'Copied!';
+        tooltip.classList.add('show');
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            tooltip.classList.remove('show');
+            tooltip.textContent = 'Copy to clipboard';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = fullText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        // Show success feedback
+        const copyBtn = document.querySelector('.copy-btn');
+        const tooltip = document.querySelector('.copy-tooltip');
+        copyBtn.classList.add('copied');
+        tooltip.textContent = 'Copied!';
+        tooltip.classList.add('show');
+
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            tooltip.classList.remove('show');
+            tooltip.textContent = 'Copy to clipboard';
+        }, 2000);
+    });
+}
+
 // Search icon click handler (placeholder)
 const searchIcon = document.querySelector('.search-icon');
 searchIcon.addEventListener('click', (e) => {
@@ -1968,4 +2160,3 @@ console.log('Zion AG Church website loaded successfully!');
     </script>
 </body>
 </html>
-
