@@ -241,6 +241,15 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateX(-50%);
     z-index: 2;
     animation: bounce 2s infinite;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.scroll-indicator:hover {
+    transform: translateX(-50%) scale(1.1);
+    opacity: 0.8;
 }
 
 @keyframes bounce {
@@ -290,6 +299,91 @@ h1, h2, h3, h4, h5, h6 {
 .welcome-section {
     padding: 100px 20px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    overflow: hidden;
+}
+
+/* Animated Welcome Title */
+.welcome-title-animated {
+    display: inline-block;
+    font-size: 42px;
+    text-align: center;
+    margin-bottom: 60px;
+    color: #d4af37;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.welcome-title-animated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #d4af37, #c9a333);
+}
+
+.welcome-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+}
+
+.welcome-letter:nth-child(1) { animation-delay: 0.05s; }
+.welcome-letter:nth-child(2) { animation-delay: 0.08s; }
+.welcome-letter:nth-child(3) { animation-delay: 0.11s; }
+.welcome-letter:nth-child(4) { animation-delay: 0.14s; }
+.welcome-letter:nth-child(5) { animation-delay: 0.17s; }
+.welcome-letter:nth-child(6) { animation-delay: 0.2s; }
+.welcome-letter:nth-child(7) { animation-delay: 0.23s; }
+.welcome-letter:nth-child(8) { animation-delay: 0.26s; }
+.welcome-letter:nth-child(9) { animation-delay: 0.29s; }
+.welcome-letter:nth-child(10) { animation-delay: 0.32s; }
+.welcome-letter:nth-child(11) { animation-delay: 0.35s; }
+.welcome-letter:nth-child(12) { animation-delay: 0.38s; }
+.welcome-letter:nth-child(13) { animation-delay: 0.41s; }
+.welcome-letter:nth-child(14) { animation-delay: 0.44s; }
+.welcome-letter:nth-child(15) { animation-delay: 0.47s; }
+.welcome-letter:nth-child(16) { animation-delay: 0.5s; }
+.welcome-letter:nth-child(17) { animation-delay: 0.53s; }
+.welcome-letter:nth-child(18) { animation-delay: 0.56s; }
+.welcome-letter:nth-child(19) { animation-delay: 0.59s; }
+.welcome-letter:nth-child(20) { animation-delay: 0.62s; }
+.welcome-letter:nth-child(21) { animation-delay: 0.65s; }
+.welcome-letter:nth-child(22) { animation-delay: 0.68s; }
+.welcome-letter:nth-child(23) { animation-delay: 0.71s; }
+.welcome-letter:nth-child(24) { animation-delay: 0.74s; }
+.welcome-letter:nth-child(25) { animation-delay: 0.77s; }
+.welcome-letter:nth-child(26) { animation-delay: 0.8s; }
+.welcome-letter:nth-child(27) { animation-delay: 0.83s; }
+.welcome-letter:nth-child(28) { animation-delay: 0.86s; }
+.welcome-letter:nth-child(29) { animation-delay: 0.89s; }
+.welcome-letter:nth-child(30) { animation-delay: 0.92s; }
+
+@keyframes letterBounce {
+    0% {
+        opacity: 0;
+        transform: translateY(25px) scale(0.7) rotate(-8deg);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.05) rotate(3deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+/* Add subtle glow effect on hover without disappearing */
+.welcome-letter:hover {
+    color: #e0bb47;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px) scale(1.05);
+    transition: all 0.2s ease;
 }
 
 .welcome-content {
@@ -537,8 +631,8 @@ h1, h2, h3, h4, h5, h6 {
 .carousel-indicators {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 30px;
+    gap: 10px;
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
@@ -623,7 +717,7 @@ h1, h2, h3, h4, h5, h6 {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); */
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     display: flex;
@@ -632,7 +726,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .whats-up-card:hover {
     transform: translateY(-10px) scale(1.1);
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 24px 24px rgba(0, 0, 0, 0.3);
 }
 
 .whats-up-image {
@@ -1178,6 +1272,32 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 16px;
     }
 
+/* Welcome Title Mobile Styles */
+.welcome-title-animated {
+    font-size: 28px;
+    margin-bottom: 40px;
+    white-space: nowrap;
+    overflow: visible;
+    word-wrap: normal;
+    text-overflow: clip;
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .welcome-title-animated {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+    .welcome-title-animated {
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+}
+
     /* Testimonials Mobile Styles */
     .testimonials-section {
         padding: 60px 20px;
@@ -1331,7 +1451,9 @@ h1, h2, h3, h4, h5, h6 {
     <!-- Welcome Section -->
     <section class="welcome-section" id="about">
         <div class="container">
-            <h2 class="section-title">ZION AG CHURCH WELCOMES YOU!</h2>
+            <h2 class="welcome-title-animated">
+                <span class="welcome-letter">Z</span><span class="welcome-letter">I</span><span class="welcome-letter">O</span><span class="welcome-letter">N</span><span class="welcome-space">&nbsp;</span><span class="welcome-letter">A</span><span class="welcome-letter">G</span><span class="welcome-space">&nbsp;</span><span class="welcome-letter">C</span><span class="welcome-letter">H</span><span class="welcome-letter">U</span><span class="welcome-letter">R</span><span class="welcome-letter">C</span><span class="welcome-letter">H</span><span class="welcome-space">&nbsp;</span><span class="welcome-letter">W</span><span class="welcome-letter">E</span><span class="welcome-letter">L</span><span class="welcome-letter">C</span><span class="welcome-letter">O</span><span class="welcome-letter">M</span><span class="welcome-letter">E</span><span class="welcome-letter">S</span><span class="welcome-space">&nbsp;</span><span class="welcome-letter">Y</span><span class="welcome-letter">O</span><span class="welcome-letter">U</span><span class="welcome-letter">!</span>
+            </h2>
             <div class="welcome-content">
                 <div class="pastor-card">
                     <img src="./images/david_pastor.png" alt="Pastor" class="pastor-img">
@@ -1998,6 +2120,9 @@ class WhatsUpCarousel {
         carousel.addEventListener('mouseenter', () => this.stopAutoPlay());
         carousel.addEventListener('mouseleave', () => this.startAutoPlay());
 
+        // Add touch/swipe support for mobile
+        this.addTouchSupport();
+
         // Add mouse drag support for desktop
         this.addMouseDragSupport();
     }
@@ -2180,12 +2305,69 @@ class WhatsUpCarousel {
         // Set initial cursor
         carousel.style.cursor = 'grab';
     }
+
+    addTouchSupport() {
+        let startX = 0;
+        let endX = 0;
+        const carousel = document.querySelector('.whats-up-carousel');
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            this.stopAutoPlay();
+        });
+
+        carousel.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            this.handleSwipe(startX, endX);
+            this.startAutoPlay();
+        });
+    }
+
+    handleSwipe(startX, endX) {
+        const diffX = startX - endX;
+        const threshold = 50; // Minimum swipe distance
+
+        if (Math.abs(diffX) > threshold) {
+            if (diffX > 0) {
+                // Swipe left - next slide
+                this.nextSlide();
+            } else {
+                // Swipe right - previous slide
+                this.prevSlide();
+            }
+        }
+    }
 }
 
 // Initialize carousels when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new TestimonialsCarousel();
     new WhatsUpCarousel();
+
+    // Welcome title animation trigger
+    const welcomeTitle = document.querySelector('.welcome-title-animated');
+    if (welcomeTitle) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add animation to each letter
+                    const letters = welcomeTitle.querySelectorAll('.welcome-letter');
+                    letters.forEach((letter, index) => {
+                        letter.style.animation = `letterBounce 0.6s ease-out forwards`;
+                        letter.style.animationDelay = `${index * 0.03}s`;
+                        letter.style.animationFillMode = 'forwards';
+                    });
+                    // Stop observing after animation starts
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.3, // Trigger when 30% of the element is visible
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        observer.observe(welcomeTitle);
+    }
 });
 
 // Copy verse functionality
@@ -2236,6 +2418,57 @@ function copyVerse() {
         }, 2000);
     });
 }
+
+// Auto-scroll to welcome section after page load (if no user interaction)
+let hasUserInteracted = false;
+let autoScrollTimeout;
+
+// Track user interactions
+const trackUserInteraction = () => {
+    hasUserInteracted = true;
+    if (autoScrollTimeout) {
+        clearTimeout(autoScrollTimeout);
+        autoScrollTimeout = null;
+    }
+};
+
+// Add event listeners for user interactions
+document.addEventListener('click', trackUserInteraction);
+document.addEventListener('touchstart', trackUserInteraction);
+document.addEventListener('touchmove', trackUserInteraction);
+document.addEventListener('mousedown', trackUserInteraction);
+document.addEventListener('mousemove', trackUserInteraction);
+document.addEventListener('wheel', trackUserInteraction);
+document.addEventListener('keydown', trackUserInteraction);
+
+// Auto-scroll to welcome section after 3 seconds if no interaction
+window.addEventListener('load', () => {
+    autoScrollTimeout = setTimeout(() => {
+        if (!hasUserInteracted) {
+            const welcomeSection = document.getElementById('about');
+            if (welcomeSection) {
+                const offsetTop = welcomeSection.offsetTop - 50; // Account for fixed navbar
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }, 3000); // 3 second delay
+});
+
+// Scroll indicator click handler
+const scrollIndicator = document.querySelector('.scroll-indicator');
+scrollIndicator.addEventListener('click', () => {
+    const welcomeSection = document.getElementById('about');
+    if (welcomeSection) {
+        const offsetTop = welcomeSection.offsetTop + 40; // Account for fixed navbar
+        window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+        });
+    }
+});
 
 // Search icon click handler (placeholder)
 const searchIcon = document.querySelector('.search-icon');
