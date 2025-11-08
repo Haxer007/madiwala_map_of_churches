@@ -1028,6 +1028,188 @@ h1, h2, h3, h4, h5, h6 {
     transform: scale(1.1);
 }
 
+/* Verse of the Day Section */
+.verse-of-day-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.verse-of-day-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    border: 3px solid #d4af37;
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.verse-of-day-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.verse-loading {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #d4af37;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.verse-loading p {
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+}
+
+.verse-content {
+    text-align: center;
+}
+
+.verse-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.verse-reference {
+    font-size: 24px;
+    color: #d4af37;
+    font-weight: 700;
+    margin: 0;
+    text-align: left;
+}
+
+.verse-copy-btn {
+    background: #d4af37;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.verse-copy-btn:hover {
+    background: #e0bb47;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.verse-copy-btn.copied {
+    background: #28a745;
+    animation: copiedPulse 0.6s ease;
+}
+
+.verse-text {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #333;
+    font-style: italic;
+    margin: 0;
+    text-align: left;
+}
+
+.verse-text {
+    position: relative;
+    padding: 20px 30px;
+    border-left: 4px solid #d4af37;
+    background: rgba(212, 175, 55, 0.05);
+    border-radius: 8px;
+}
+
+.verse-text::before {
+    content: '"';
+    font-size: 48px;
+    color: #d4af37;
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    font-family: 'Playfair Display', serif;
+    opacity: 0.7;
+}
+
+.verse-text::after {
+    content: '"';
+    font-size: 48px;
+    color: #d4af37;
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    font-family: 'Playfair Display', serif;
+    opacity: 0.7;
+}
+
+.verse-text p {
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.verse-text p:last-child {
+    margin-bottom: 0;
+}
+
+.verse-text p:last-child {
+    margin-bottom: 0;
+}
+
+.verse-error {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.verse-error p {
+    color: #dc3545;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.retry-btn {
+    background: #d4af37;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.retry-btn:hover {
+    background: #e0bb47;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
 /* Footer */
 .footer {
     background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
@@ -1683,6 +1865,35 @@ h1, h2, h3, h4, h5, h6 {
                         because of the hand of the Mighty One of Jacob,<br>
                         because of the Shepherd, the Rock of Israel,
                     </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verse of the Day Section -->
+    <section class="verse-of-day-section">
+        <div class="container">
+            <h2 class="section-title">VERSE OF THE DAY</h2>
+            <div class="verse-of-day-card">
+                <div class="verse-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading today's verse...</p>
+                </div>
+                <div class="verse-content" style="display: none;">
+                    <div class="verse-header">
+                        <h3 class="verse-reference"></h3>
+                        <button class="verse-copy-btn" onclick="copyVerseOfDay()" title="Copy verse">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="verse-text"></div>
+                </div>
+                <div class="verse-error" style="display: none;">
+                    <p>Unable to load today's verse. Please try again later.</p>
+                    <button class="retry-btn" onclick="loadVerseOfDay()">Retry</button>
                 </div>
             </div>
         </div>
@@ -2468,6 +2679,144 @@ scrollIndicator.addEventListener('click', () => {
             behavior: 'smooth'
         });
     }
+});
+
+// Verse of the Day functionality
+async function loadVerseOfDay() {
+    const card = document.querySelector('.verse-of-day-card');
+    const loading = card.querySelector('.verse-loading');
+    const content = card.querySelector('.verse-content');
+    const error = card.querySelector('.verse-error');
+
+    // Show loading state
+    loading.style.display = 'block';
+    content.style.display = 'none';
+    error.style.display = 'none';
+
+    try {
+        const response = await fetch('https://labs.bible.org/api/?passage=votd&formatting=para&type=json');
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch verse');
+        }
+
+        const verses = await response.json();
+
+        if (!verses || verses.length === 0) {
+            throw new Error('No verses received');
+        }
+
+        // Hide loading and error states
+        loading.style.display = 'none';
+        error.style.display = 'none';
+        content.style.display = 'block';
+
+        // Display the verses
+        displayVerses(verses);
+
+    } catch (err) {
+        console.error('Error loading verse of the day:', err);
+
+        // Show error state
+        loading.style.display = 'none';
+        content.style.display = 'none';
+        error.style.display = 'block';
+    }
+}
+
+function displayVerses(verses) {
+    const referenceElement = document.querySelector('.verse-reference');
+    const textElement = document.querySelector('.verse-text');
+
+    // Create reference string from all verses
+    const bookName = verses[0].bookname;
+    const chapter = verses[0].chapter;
+    const firstVerse = verses[0].verse;
+    const lastVerse = verses[verses.length - 1].verse;
+
+    let reference = `${bookName} ${chapter}:${firstVerse}`;
+    if (verses.length > 1) {
+        reference += `-${lastVerse}`;
+    }
+
+    referenceElement.textContent = reference;
+
+    // Clear existing content
+    textElement.innerHTML = '';
+
+    // Combine all verses into one formatted text
+    let combinedText = '';
+
+    verses.forEach((verse, index) => {
+        // Clean up the HTML content and preserve line breaks for poetry
+        let cleanText = verse.text
+            .replace(/<p class="poetry">/g, '\n')  // Add newline before poetry
+            .replace(/<\/p>/g, '')  // Remove closing tags
+            .trim();
+
+        combinedText += cleanText;
+    });
+
+    // Split by newlines and create paragraphs
+    const lines = combinedText.split('\n').filter(line => line.trim());
+
+    lines.forEach(line => {
+        if (line.trim()) {
+            const verseElement = document.createElement('p');
+            verseElement.textContent = line.trim();
+            verseElement.style.marginBottom = '12px';
+            verseElement.style.lineHeight = '1.6';
+            verseElement.style.fontSize = '16px';  // Match promise quote font size
+            verseElement.style.fontStyle = 'italic';  // Match promise quote italic style
+            verseElement.style.color = '#555';  // Match promise quote color
+            verseElement.style.textAlign = 'center';  // Match promise quote alignment
+            verseElement.style.textIndent = '20px';  // Add small indentation
+            textElement.appendChild(verseElement);
+        }
+    });
+}
+
+function copyVerseOfDay() {
+    const reference = document.querySelector('.verse-reference').textContent;
+    const verses = document.querySelectorAll('.verse-text p');
+    const copyBtn = document.querySelector('.verse-copy-btn');
+
+    // Combine reference and all verse texts
+    let fullText = `${reference}\n\n`;
+    verses.forEach(verse => {
+        fullText += verse.textContent + '\n';
+    });
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(fullText.trim()).then(() => {
+        // Show success feedback
+        copyBtn.classList.add('copied');
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy verse:', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = fullText.trim();
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        // Show success feedback
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+        }, 2000);
+    });
+}
+
+// Load verse of the day when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    loadVerseOfDay();
 });
 
 // Search icon click handler (placeholder)
