@@ -1,0 +1,1145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A3 / Custom Sheet Verse Sheet Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      canvas {
+        width: 100% !important;
+        height: auto !important;
+      }
+    }
+    .card {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+    }
+    .field {
+      margin-bottom: 12px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    textarea,
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    input[type="color"] {
+      padding: 0;
+      height: 40px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+    }
+    button {
+      border-radius: 6px;
+      border: none;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      background: #10b981;
+      color: white;
+    }
+    .btn-secondary:hover {
+      background: #059669;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+    canvas {
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      display: block;
+      margin: 0 auto;
+      background: white;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+    }
+    .help-text {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    code {
+      background: #e5e7eb;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    .two-cols-inline {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    /* Background ranges UI */
+    #bgRangesContainer {
+      max-height: 260px;
+      overflow-y: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 8px;
+      margin-top: 6px;
+      background: #f9fafb;
+    }
+    .bg-range-block {
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      padding: 6px;
+      margin-bottom: 8px;
+      background: #ffffff;
+    }
+    .bg-range-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .bg-thumb {
+      width: 50px;
+      height: 30px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #d1d5db;
+      flex-shrink: 0;
+    }
+    .bg-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .bg-header-main {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+    }
+    .bg-info-main {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+    .bg-info-range {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .bg-remove-btn {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+    .bg-remove-btn:hover {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .bg-sliders {
+      margin-top: 4px;
+    }
+    .bg-sliders input[type="range"] {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Verse Sheet Generator (Custom Sheet & Card Size)</h1>
+
+  <div class="grid">
+    <!-- Left: Controls -->
+    <div class="card">
+      <div class="field">
+        <label for="verses">Verses (one per line)</label>
+        <textarea id="verses">Be **kind** and compassionate to one another, forgiving each other, just as in Christ God forgave you. - Ephesians 4:32
+For God so loved the world that he gave his one and only Son. - John 3:16
+The LORD is my shepherd, I lack nothing. - Psalm 23:1
+        </textarea>
+        <div class="help-text">
+          One verse per line. Use <code>... - Book&nbsp;Chapter:Verse</code> to put the reference on a new line.<br>
+          Use <code>**bold**</code> for bold text.
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fontFamily">Font family</label>
+        <select id="fontFamily">
+          <option value="Georgia, serif">Georgia</option>
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="'Times New Roman', Times, serif">Times New Roman</option>
+          <option value="'Courier New', monospace">Courier New</option>
+          <option value="Verdana, sans-serif">Verdana</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Font sizes (px)</label>
+        <div class="two-cols-inline">
+          <div>
+            <label for="verseFontSize" style="font-weight:500;font-size:12px;">Verse (max / fixed)</label>
+            <input id="verseFontSize" type="number" min="6" max="40" value="10">
+          </div>
+          <div>
+            <label for="refFontSize" style="font-weight:500;font-size:12px;">Reference</label>
+            <input id="refFontSize" type="number" min="6" max="40" value="8">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" id="autoFontSize" checked>
+          Auto-fit verse text size for each card
+        </label>
+        <div class="help-text">
+          Uses the verse size as a maximum and shrinks it so verse + reference fit between top padding and credits.
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="creditText">Credits (bottom center of every card)</label>
+        <input id="creditText" type="text" value="@Zion_Family">
+      </div>
+
+      <div class="field">
+        <label for="creditFontSize">Credits font size (px)</label>
+        <input id="creditFontSize" type="number" min="6" max="30" value="8">
+      </div>
+
+      <div class="field">
+        <label for="textColor">Text color</label>
+        <input id="textColor" type="color" value="#111111">
+      </div>
+
+      <div class="field">
+        <label for="bgColor">Background color (used if no image for that card)</label>
+        <input id="bgColor" type="color" value="#f0f0f0">
+      </div>
+
+      <!-- Text outline / stroke controls -->
+      <div class="field">
+        <label>
+          <input type="checkbox" id="enableStroke" checked>
+          Enable text outline (stroke)
+        </label>
+      </div>
+      <div class="two-cols-inline">
+        <div>
+          <label for="strokeWidth" style="font-weight:500;font-size:12px;">Stroke width (px)</label>
+          <input id="strokeWidth" type="number" min="0" max="10" value="1">
+        </div>
+        <div>
+          <label for="strokeColor" style="font-weight:500;font-size:12px;">Stroke color</label>
+          <input id="strokeColor" type="color" value="#000000">
+        </div>
+      </div>
+      <div class="help-text" style="margin-top:4px;">
+        Stroke is factored into wrapping & auto-fit (so text won’t clip against card edges).
+      </div>
+
+      <!-- Sheet size controls -->
+      <div class="field" style="margin-top:12px;">
+        <label>Sheet size</label>
+        <div class="two-cols-inline">
+          <div>
+            <label for="sheetWidth" style="font-weight:500;font-size:12px;">Width</label>
+            <input id="sheetWidth" type="number" min="1" step="0.01" value="42">
+          </div>
+          <div>
+            <label for="sheetHeight" style="font-weight:500;font-size:12px;">Height</label>
+            <input id="sheetHeight" type="number" min="1" step="0.01" value="29.7">
+          </div>
+        </div>
+        <div style="margin-top:4px;">
+          <label for="sheetUnit" style="font-weight:500;font-size:12px;">Unit</label>
+          <select id="sheetUnit">
+            <option value="cm" selected>cm</option>
+            <option value="in">inches</option>
+          </select>
+        </div>
+        <div class="help-text">
+          Example A3 landscape ≈ 42 × 29.7 cm. For 13×19 inch sheet, set 19 × 13 and choose "inches".
+        </div>
+      </div>
+
+      <!-- Card size controls -->
+      <div class="field">
+        <label>Card size (cm)</label>
+        <div class="two-cols-inline">
+          <div>
+            <label for="cardWidthCm" style="font-weight:500;font-size:12px;">Width</label>
+            <input id="cardWidthCm" type="number" min="0.1" step="0.01" value="2">
+          </div>
+          <div>
+            <label for="cardHeightCm" style="font-weight:500;font-size:12px;">Height</label>
+            <input id="cardHeightCm" type="number" min="0.1" step="0.01" value="4">
+          </div>
+        </div>
+        <div class="help-text">
+          Default cards are 2 × 4 cm. Change this to adjust verse card size.
+        </div>
+      </div>
+
+      <!-- Multiple background images & slider ranges -->
+      <div class="field" style="margin-top:14px;">
+        <label for="bgImagesInput">Background images (optional, multiple)</label>
+        <input id="bgImagesInput" type="file" accept="image/*" multiple>
+        <div class="help-text">
+          Upload up to 10 images. Use sliders to assign verse index ranges (1-based) to each image.
+        </div>
+
+        <div id="bgRangesContainer" style="display:none;"></div>
+      </div>
+
+      <div class="field">
+        <label for="spacingCm">Card spacing (cm)</label>
+        <input id="spacingCm" type="number" min="0" step="0.01" value="0.33">
+        <div class="help-text">
+          Space between cards (horizontally & vertically).
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="posterMarginCm">Sheet margin (cm)</label>
+        <input id="posterMarginCm" type="number" min="0" step="0.01" value="0.33">
+        <div class="help-text">
+          White margin between sheet edge and the outermost cards.
+        </div>
+      </div>
+
+      <div class="field">
+        <label>
+          <input id="showBorders" type="checkbox" checked>
+          Show cutting borders around each card
+        </label>
+      </div>
+
+      <div class="field">
+        <div class="help-text">
+          Physical layout is calculated from the sheet & card sizes above.
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Canvas + actions -->
+    <div class="card">
+      <canvas id="sheetCanvas"></canvas>
+
+      <div class="actions">
+        <button class="btn-primary" id="generateBtn" type="button">Generate Sheet</button>
+        <a id="downloadLink" download="verses_sheet.png">
+          <button class="btn-secondary" type="button">Download PNG</button>
+        </a>
+      </div>
+      <div class="help-text" style="margin-top:8px;text-align:center;">
+        When printing, select the same paper size & orientation you set above, and scale <strong>100%</strong> (no "fit to page").
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ----- Constants / helpers -----
+  const DPI = 300;              // target print resolution
+  const CM_PER_INCH = 2.54;
+  const SHEET_W_CM_DEFAULT = 42.0;      // A3 landscape default width
+  const SHEET_H_CM_DEFAULT = 29.7;      // A3 landscape default height
+  const CARD_W_CM_DEFAULT  = 2.0;       // default card width
+  const CARD_H_CM_DEFAULT  = 4.0;       // default card height
+
+  function cmToPx(cm) {
+    return Math.round(cm * DPI / CM_PER_INCH);
+  }
+
+  // ----- DOM elements -----
+  const canvas = document.getElementById('sheetCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const versesInput = document.getElementById('verses');
+  const fontFamilyInput = document.getElementById('fontFamily');
+  const verseFontSizeInput = document.getElementById('verseFontSize');
+  const refFontSizeInput = document.getElementById('refFontSize');
+  const textColorInput = document.getElementById('textColor');
+  const bgColorInput = document.getElementById('bgColor');
+
+  // Sheet & card size inputs
+  const sheetWidthInput = document.getElementById('sheetWidth');
+  const sheetHeightInput = document.getElementById('sheetHeight');
+  const sheetUnitInput = document.getElementById('sheetUnit');
+  const cardWidthCmInput = document.getElementById('cardWidthCm');
+  const cardHeightCmInput = document.getElementById('cardHeightCm');
+
+  const spacingCmInput = document.getElementById('spacingCm');
+  const posterMarginCmInput = document.getElementById('posterMarginCm');
+  const showBordersInput = document.getElementById('showBorders');
+  const creditTextInput = document.getElementById('creditText');
+  const creditFontSizeInput = document.getElementById('creditFontSize');
+  const autoFontSizeInput = document.getElementById('autoFontSize');
+
+  // Stroke controls
+  const enableStrokeInput = document.getElementById('enableStroke');
+  const strokeWidthInput = document.getElementById('strokeWidth');
+  const strokeColorInput = document.getElementById('strokeColor');
+
+  // Background images (multiple)
+  const bgImagesInput = document.getElementById('bgImagesInput');
+  const bgRangesContainer = document.getElementById('bgRangesContainer');
+
+  const generateBtn = document.getElementById('generateBtn');
+  const downloadLink = document.getElementById('downloadLink');
+
+  // Store background images and ranges
+  // { id, image, name, from, to, url }
+  let bgImages = [];
+
+  // ----- Utility: get verses & count -----
+  function getVersesArray() {
+    return versesInput.value
+      .split('\n')
+      .map(v => v.trim())
+      .filter(v => v.length > 0);
+  }
+
+  // ----- Styled text helpers (supports **bold** markup) -----
+  function parseStyledSegments(text) {
+    const segments = [];
+    let i = 0;
+    while (i < text.length) {
+      if (text.startsWith('**', i)) {
+        const end = text.indexOf('**', i + 2);
+        if (end !== -1) {
+          const inner = text.slice(i + 2, end);
+          segments.push({ text: inner, bold: true });
+          i = end + 2;
+        } else {
+          segments.push({ text: text.slice(i), bold: false });
+          break;
+        }
+      } else {
+        const next = text.indexOf('**', i);
+        if (next === -1) {
+          segments.push({ text: text.slice(i), bold: false });
+          break;
+        } else {
+          segments.push({ text: text.slice(i, next), bold: false });
+          i = next;
+        }
+      }
+    }
+    return segments;
+  }
+
+  function segmentsToWordTokens(segments) {
+    const tokens = [];
+    const re = /(\s+|\S+)/g;
+    segments.forEach(seg => {
+      let m;
+      while ((m = re.exec(seg.text)) !== null) {
+        tokens.push({ text: m[0], bold: seg.bold });
+      }
+    });
+    return tokens;
+  }
+
+  function getWrappedStyledLines(ctx, text, maxWidth, normalFont, boldFont, enableStroke = false, strokeWidth = 0) {
+    const segments = parseStyledSegments(text);
+    const tokens = segmentsToWordTokens(segments);
+    const lines = [];
+    let currentTokens = [];
+    let currentWidth = 0;
+
+    const effectiveMaxWidth =
+      enableStroke && strokeWidth > 0 ? Math.max(0, maxWidth - 2 * strokeWidth) : maxWidth;
+
+    tokens.forEach(token => {
+      ctx.font = token.bold ? boldFont : normalFont;
+      const w = ctx.measureText(token.text).width;
+
+      if (currentTokens.length > 0 && currentWidth + w > effectiveMaxWidth) {
+        lines.push(currentTokens);
+        currentTokens = [token];
+        currentWidth = w;
+      } else {
+        currentTokens.push(token);
+        currentWidth += w;
+      }
+    });
+
+    if (currentTokens.length) {
+      lines.push(currentTokens);
+    }
+    return lines;
+  }
+
+  function drawStyledLinesCentered(
+    ctx,
+    lines,
+    centerX,
+    startY,
+    lineHeight,
+    normalFont,
+    boldFont,
+    fillColor,
+    enableStroke = false,
+    strokeWidth = 0,
+    strokeColor = '#000000'
+  ) {
+    let y = startY;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+
+    lines.forEach(lineTokens => {
+      let lineWidth = 0;
+      lineTokens.forEach(token => {
+        ctx.font = token.bold ? boldFont : normalFont;
+        lineWidth += ctx.measureText(token.text).width;
+      });
+
+      let x = centerX - lineWidth / 2;
+      lineTokens.forEach(token => {
+        ctx.font = token.bold ? boldFont : normalFont;
+        if (enableStroke && strokeWidth > 0) {
+          ctx.lineWidth = strokeWidth;
+          ctx.strokeStyle = strokeColor;
+          ctx.strokeText(token.text, x, y);
+        }
+        ctx.fillStyle = fillColor;
+        ctx.fillText(token.text, x, y);
+        x += ctx.measureText(token.text).width;
+      });
+      y += lineHeight;
+    });
+
+    return y;
+  }
+
+  function splitVerseAndRef(line) {
+    const marker = ' - ';
+    const idx = line.lastIndexOf(marker);
+    if (idx === -1) {
+      return { verseText: line, refText: '' };
+    }
+    const verseText = line.slice(0, idx).trim();
+    const refText = line.slice(idx + marker.length).trim();
+    return { verseText, refText };
+  }
+
+  function getWrappedStyledLinesWithSize(
+    ctx,
+    text,
+    maxWidth,
+    fontSize,
+    fontFamily,
+    enableStroke,
+    strokeWidth
+  ) {
+    const normalFont = fontSize + 'px ' + fontFamily;
+    const boldFont   = 'bold ' + fontSize + 'px ' + fontFamily;
+    return getWrappedStyledLines(ctx, text, maxWidth, normalFont, boldFont, enableStroke, strokeWidth);
+  }
+
+  function autoFitVerseFont(
+    ctx,
+    verseText,
+    maxTextWidth,
+    availableHeight,
+    maxFontSize,
+    fontFamily,
+    refBlockHeight,
+    hasRef,
+    enableStroke,
+    strokeWidth
+  ) {
+    const MIN_FONT = 6;
+    let bestSize = MIN_FONT;
+    let bestLines = [];
+    let bestLineHeight = MIN_FONT * 1.3;
+
+    for (let size = maxFontSize; size >= MIN_FONT; size--) {
+      const lines = getWrappedStyledLinesWithSize(
+        ctx,
+        verseText,
+        maxTextWidth,
+        size,
+        fontFamily,
+        enableStroke,
+        strokeWidth
+      );
+      const lineHeight = size * 1.3;
+      const verseHeight = lines.length * lineHeight;
+      const gap = (lines.length && hasRef) ? lineHeight * 0.3 : 0;
+      const totalHeight = verseHeight + refBlockHeight + gap;
+
+      const totalHeightWithStroke =
+        enableStroke && strokeWidth > 0 ? totalHeight + 2 * strokeWidth : totalHeight;
+
+      if (totalHeightWithStroke <= availableHeight) {
+        return { fontSize: size, lines, lineHeight };
+      }
+
+      if (lines.length && bestLines.length === 0) {
+        bestLines = lines;
+        bestSize = size;
+        bestLineHeight = lineHeight;
+      }
+    }
+
+    return { fontSize: bestSize, lines: bestLines, lineHeight: bestLineHeight };
+  }
+
+  // ----- Background ranges / sliders -----
+  function renderBgRangesUI(totalVerses) {
+    if (!bgImages.length) {
+      bgRangesContainer.style.display = 'none';
+      bgRangesContainer.innerHTML = '';
+      return;
+    }
+
+    bgRangesContainer.style.display = 'block';
+    const maxVerse = Math.max(1, totalVerses || 1);
+
+    let html = '';
+    bgImages.forEach((item, idx) => {
+      const safeFrom = Math.min(Math.max(1, item.from || 1), maxVerse);
+      const safeTo   = Math.min(Math.max(1, item.to || maxVerse), maxVerse);
+
+      item.from = safeFrom;
+      item.to = safeTo;
+
+      const id = item.id;
+
+      html += `
+        <div class="bg-range-block" data-id="${id}">
+          <div class="bg-range-header">
+            <div class="bg-thumb">
+              <img src="${item.url}" alt="bg ${idx + 1}">
+            </div>
+            <div class="bg-header-main">
+              <div class="bg-info-main">Image #${idx + 1} &mdash; ${item.name}</div>
+              <div class="bg-info-range">
+                Verses <span id="bg-from-label-${id}">${safeFrom}</span>
+                &ndash;
+                <span id="bg-to-label-${id}">${safeTo}</span>
+              </div>
+            </div>
+            <button class="bg-remove-btn" type="button" data-id="${id}" title="Remove this image">&times;</button>
+          </div>
+          <div class="bg-sliders">
+            <input type="range"
+                   min="1"
+                   max="${maxVerse}"
+                   value="${safeFrom}"
+                   class="bg-from-slider"
+                   data-id="${id}">
+            <input type="range"
+                   min="1"
+                   max="${maxVerse}"
+                   value="${safeTo}"
+                   class="bg-to-slider"
+                   data-id="${id}">
+          </div>
+        </div>
+      `;
+    });
+
+    bgRangesContainer.innerHTML = html;
+
+    const fromSliders = bgRangesContainer.querySelectorAll('.bg-from-slider');
+    const toSliders = bgRangesContainer.querySelectorAll('.bg-to-slider');
+    const removeBtns = bgRangesContainer.querySelectorAll('.bg-remove-btn');
+
+    fromSliders.forEach(slider => {
+      slider.addEventListener('input', () => {
+        const id = slider.getAttribute('data-id');
+        const item = bgImages.find(b => String(b.id) === id);
+        if (!item) return;
+        let val = parseInt(slider.value, 10) || 1;
+        const maxVal = parseInt(slider.max, 10) || 1;
+        val = Math.min(Math.max(1, val), maxVal);
+        if (val > item.to) val = item.to;
+        item.from = val;
+        slider.value = String(val);
+        const label = document.getElementById(`bg-from-label-${id}`);
+        if (label) label.textContent = String(val);
+        drawSheet();
+      });
+    });
+
+    toSliders.forEach(slider => {
+      slider.addEventListener('input', () => {
+        const id = slider.getAttribute('data-id');
+        const item = bgImages.find(b => String(b.id) === id);
+        if (!item) return;
+        let val = parseInt(slider.value, 10) || 1;
+        const maxVal = parseInt(slider.max, 10) || 1;
+        val = Math.min(Math.max(1, val), maxVal);
+        if (val < item.from) val = item.from;
+        item.to = val;
+        slider.value = String(val);
+        const label = document.getElementById(`bg-to-label-${id}`);
+        if (label) label.textContent = String(val);
+        drawSheet();
+      });
+    });
+
+    removeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const idxToRemove = bgImages.findIndex(b => String(b.id) === id);
+        if (idxToRemove !== -1) {
+          const removed = bgImages[idxToRemove];
+          if (removed.url) {
+            URL.revokeObjectURL(removed.url);
+          }
+          bgImages.splice(idxToRemove, 1);
+        }
+        const verses = getVersesArray();
+        const totalVersesNow = verses.length;
+        renderBgRangesUI(totalVersesNow);
+        drawSheet();
+      });
+    });
+  }
+
+  function updateBgRangesMax(totalVerses) {
+    if (!bgImages.length) return;
+    const maxVerse = Math.max(1, totalVerses || 1);
+
+    const fromSliders = bgRangesContainer.querySelectorAll('.bg-from-slider');
+    const toSliders = bgRangesContainer.querySelectorAll('.bg-to-slider');
+
+    fromSliders.forEach(slider => {
+      slider.max = String(maxVerse);
+    });
+    toSliders.forEach(slider => {
+      slider.max = String(maxVerse);
+    });
+
+    bgImages.forEach(item => {
+      item.from = Math.min(Math.max(1, item.from || 1), maxVerse);
+      item.to = Math.min(Math.max(item.from, item.to || maxVerse), maxVerse);
+    });
+
+    renderBgRangesUI(totalVerses);
+  }
+
+  function getBackgroundForIndex(verseIndex1) {
+    for (const item of bgImages) {
+      if (!item.image) continue;
+      if (verseIndex1 >= item.from && verseIndex1 <= item.to) {
+        return item.image;
+      }
+    }
+    return null;
+  }
+
+  // ----- Main drawing -----
+  function drawSheet() {
+    const verses = getVersesArray();
+    const totalVerses = verses.length;
+
+    const fontFamily = fontFamilyInput.value;
+    const baseVerseFontSize = parseInt(verseFontSizeInput.value, 10) || 10;
+    const refFontSize   = parseInt(refFontSizeInput.value, 10)   || 8;
+    const fontColor = textColorInput.value;
+    const bgColor = bgColorInput.value;
+    const showBorders = showBordersInput.checked;
+    const creditText = (creditTextInput.value.trim() || '@Zion_Family');
+    const creditFontSize = parseInt(creditFontSizeInput.value, 10) || 8;
+
+    const spacingCm = parseFloat(spacingCmInput.value) || 0.33;
+    const posterMarginCm = parseFloat(posterMarginCmInput.value) || 0.33;
+
+    const enableStroke = !!(enableStrokeInput && enableStrokeInput.checked);
+    const strokeWidth  = parseFloat(strokeWidthInput.value) || 0;
+    const strokeColor  = strokeColorInput.value || '#000000';
+
+    // Sheet size from UI
+    const sheetUnit = sheetUnitInput.value || 'cm';
+    let sheetWVal = parseFloat(sheetWidthInput.value);
+    let sheetHVal = parseFloat(sheetHeightInput.value);
+    if (!sheetWVal || sheetWVal <= 0) sheetWVal = SHEET_W_CM_DEFAULT;
+    if (!sheetHVal || sheetHVal <= 0) sheetHVal = SHEET_H_CM_DEFAULT;
+
+    let sheetWcm = sheetUnit === 'in' ? sheetWVal * CM_PER_INCH : sheetWVal;
+    let sheetHcm = sheetUnit === 'in' ? sheetHVal * CM_PER_INCH : sheetHVal;
+
+    const sheetWidthPx  = cmToPx(sheetWcm);
+    const sheetHeightPx = cmToPx(sheetHcm);
+
+    // Card size from UI (in cm)
+    let cardWcm = parseFloat(cardWidthCmInput.value);
+    let cardHcm = parseFloat(cardHeightCmInput.value);
+    if (!cardWcm || cardWcm <= 0) cardWcm = CARD_W_CM_DEFAULT;
+    if (!cardHcm || cardHcm <= 0) cardHcm = CARD_H_CM_DEFAULT;
+
+    const cardWidthPx  = cmToPx(cardWcm);
+    const cardHeightPx = cmToPx(cardHcm);
+
+    // Set canvas internal resolution for export/print
+    canvas.width = sheetWidthPx;
+    canvas.height = sheetHeightPx;
+
+    const spacingPx = cmToPx(spacingCm);
+    const marginPx = cmToPx(posterMarginCm);
+
+    const availableWpx = sheetWidthPx - 2 * marginPx;
+    const availableHpx = sheetHeightPx - 2 * marginPx;
+
+    const cols = Math.max(1, Math.floor((availableWpx + spacingPx) / (cardWidthPx + spacingPx)));
+    const rows = Math.max(1, Math.floor((availableHpx + spacingPx) / (cardHeightPx + spacingPx)));
+    const maxCards = cols * rows;
+
+    const versesToUse = verses.slice(0, maxCards);
+
+    const innerPaddingPx = cmToPx(0.2);
+
+    const refNormalFont   = refFontSize + 'px ' + fontFamily;
+    const refBoldFont     = 'bold ' + refFontSize + 'px ' + fontFamily;
+    const creditNormalFont = creditFontSize + 'px ' + fontFamily;
+    const creditBoldFont   = 'bold ' + creditFontSize + 'px ' + fontFamily;
+
+    const lineHeightRef    = refFontSize * 1.3;
+    const lineHeightCredit = creditFontSize * 1.3;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let index = 0; index < versesToUse.length; index++) {
+      const row = Math.floor(index / cols);
+      const col = index % cols;
+      const verseIndex1 = index + 1;
+
+      const x = marginPx + col * (cardWidthPx + spacingPx);
+      const y = marginPx + row * (cardHeightPx + spacingPx);
+
+      const { verseText, refText } = splitVerseAndRef(versesToUse[index]);
+
+      const maxTextWidth = cardWidthPx - innerPaddingPx * 2;
+      const centerX = x + cardWidthPx / 2;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, cardWidthPx, cardHeightPx);
+      ctx.clip();
+
+      const cardBgImage = getBackgroundForIndex(verseIndex1);
+      if (cardBgImage) {
+        ctx.drawImage(cardBgImage, x, y, cardWidthPx, cardHeightPx);
+      } else {
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(x, y, cardWidthPx, cardHeightPx);
+      }
+
+      const creditLines = getWrappedStyledLines(
+        ctx,
+        creditText,
+        maxTextWidth,
+        creditNormalFont,
+        creditBoldFont,
+        enableStroke,
+        strokeWidth
+      );
+      const creditBlockHeight = creditLines.length * lineHeightCredit;
+      const creditExtraStroke = enableStroke && strokeWidth > 0 ? 2 * strokeWidth : 0;
+      const creditStartY =
+        y + cardHeightPx - innerPaddingPx - creditBlockHeight - creditExtraStroke;
+
+      drawStyledLinesCentered(
+        ctx,
+        creditLines,
+        centerX,
+        creditStartY,
+        lineHeightCredit,
+        creditNormalFont,
+        creditBoldFont,
+        fontColor,
+        enableStroke,
+        strokeWidth,
+        strokeColor
+      );
+
+      const topTextAreaY = y + innerPaddingPx;
+      const bottomTextAreaY = creditStartY - innerPaddingPx;
+      const availableHeight = bottomTextAreaY - topTextAreaY;
+
+      const refLines = refText
+        ? getWrappedStyledLines(
+            ctx,
+            refText,
+            maxTextWidth,
+            refNormalFont,
+            refBoldFont,
+            enableStroke,
+            strokeWidth
+          )
+        : [];
+      const refBlockHeight = refLines.length * lineHeightRef;
+
+      let verseLines = [];
+      let verseLineHeight;
+      let verseFontSizeUsed = baseVerseFontSize;
+
+      if (verseText) {
+        if (autoFontSizeInput && autoFontSizeInput.checked) {
+          const fit = autoFitVerseFont(
+            ctx,
+            verseText,
+            maxTextWidth,
+            availableHeight,
+            baseVerseFontSize,
+            fontFamily,
+            refBlockHeight,
+            refLines.length > 0,
+            enableStroke,
+            strokeWidth
+          );
+          verseFontSizeUsed = fit.fontSize;
+          verseLines = fit.lines;
+          verseLineHeight = fit.lineHeight;
+        } else {
+          verseFontSizeUsed = baseVerseFontSize;
+          verseLineHeight = verseFontSizeUsed * 1.3;
+          const verseNormalFontFixed = verseFontSizeUsed + 'px ' + fontFamily;
+          const verseBoldFontFixed   = 'bold ' + verseFontSizeUsed + 'px ' + fontFamily;
+          verseLines = getWrappedStyledLines(
+            ctx,
+            verseText,
+            maxTextWidth,
+            verseNormalFontFixed,
+            verseBoldFontFixed,
+            enableStroke,
+            strokeWidth
+          );
+        }
+      } else {
+        verseLines = [];
+        verseLineHeight = baseVerseFontSize * 1.3;
+      }
+
+      const verseNormalFont = verseFontSizeUsed + 'px ' + fontFamily;
+      const verseBoldFont   = 'bold ' + verseFontSizeUsed + 'px ' + fontFamily;
+
+      const verseBlockHeight = verseLines.length * verseLineHeight;
+      const gapBetweenBlocks = (verseLines.length && refLines.length) ? verseLineHeight * 0.3 : 0;
+      const baseTotalTextHeight = verseBlockHeight + refBlockHeight + gapBetweenBlocks;
+      const totalTextHeightWithStroke =
+        enableStroke && strokeWidth > 0 ? baseTotalTextHeight + 2 * strokeWidth : baseTotalTextHeight;
+
+      let textStartY = topTextAreaY;
+      if (availableHeight > totalTextHeightWithStroke) {
+        textStartY = topTextAreaY + (availableHeight - totalTextHeightWithStroke) / 2;
+      }
+
+      let currentY = textStartY;
+
+      if (verseLines.length) {
+        currentY = drawStyledLinesCentered(
+          ctx,
+          verseLines,
+          centerX,
+          currentY,
+          verseLineHeight,
+          verseNormalFont,
+          verseBoldFont,
+          fontColor,
+          enableStroke,
+          strokeWidth,
+          strokeColor
+        );
+      }
+
+      if (refLines.length) {
+        currentY += gapBetweenBlocks;
+        drawStyledLinesCentered(
+          ctx,
+          refLines,
+          centerX,
+          currentY,
+          lineHeightRef,
+          refNormalFont,
+          refBoldFont,
+          fontColor,
+          enableStroke,
+          strokeWidth,
+          strokeColor
+        );
+      }
+
+      ctx.restore();
+
+      if (showBorders) {
+        ctx.strokeStyle = '#9ca3af';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, cardWidthPx - 1, cardHeightPx - 1);
+      }
+    }
+
+    updateBgRangesMax(totalVerses);
+
+    const dataURL = canvas.toDataURL('image/png');
+    downloadLink.href = dataURL;
+  }
+
+  // ----- Background file loader (multiple) -----
+  bgImagesInput.addEventListener('change', event => {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) {
+      bgImages.forEach(item => {
+        if (item.url) URL.revokeObjectURL(item.url);
+      });
+      bgImages = [];
+      renderBgRangesUI(getVersesArray().length);
+      drawSheet();
+      return;
+    }
+
+    bgImages.forEach(item => {
+      if (item.url) URL.revokeObjectURL(item.url);
+    });
+    bgImages = [];
+
+    const limitedFiles = files.slice(0, 10);
+    const verses = getVersesArray();
+    const totalVerses = Math.max(1, verses.length || 1);
+    const segmentSize = Math.ceil(totalVerses / limitedFiles.length);
+
+    let loaded = 0;
+
+    limitedFiles.forEach((file, idx) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      const id = Date.now().toString() + '_' + idx;
+
+      img.onload = () => {
+        const from = Math.min(totalVerses, idx * segmentSize + 1);
+        const to = Math.min(totalVerses, from + segmentSize - 1);
+
+        bgImages.push({
+          id,
+          image: img,
+          name: file.name,
+          from,
+          to,
+          url
+        });
+
+        loaded++;
+        if (loaded === limitedFiles.length) {
+          renderBgRangesUI(totalVerses);
+          drawSheet();
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        loaded++;
+        if (loaded === limitedFiles.length) {
+          renderBgRangesUI(totalVerses);
+          drawSheet();
+        }
+      };
+      img.src = url;
+    });
+  });
+
+  // ----- Events: redraw when controls change -----
+  [
+    fontFamilyInput,
+    verseFontSizeInput,
+    refFontSizeInput,
+    textColorInput,
+    bgColorInput,
+    spacingCmInput,
+    posterMarginCmInput,
+    showBordersInput,
+    versesInput,
+    creditTextInput,
+    creditFontSizeInput,
+    autoFontSizeInput,
+    enableStrokeInput,
+    strokeWidthInput,
+    strokeColorInput,
+    sheetWidthInput,
+    sheetHeightInput,
+    sheetUnitInput,
+    cardWidthCmInput,
+    cardHeightCmInput
+  ].forEach(el => {
+    if (el) el.addEventListener('change', drawSheet);
+  });
+
+  generateBtn.addEventListener('click', drawSheet);
+
+  // First draw
+  drawSheet();
+</script>
+
+</body>
+</html>
