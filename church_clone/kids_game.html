@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bible Tug‑of‑War</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #f43f5e;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --text: #f8fafc;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-color);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        .timerBox {
+            margin-top: 15px;
+            font-size: 28px;
+            font-weight: 800;
+            color: #f43f5e;
+        }
+
+        .timerAlert {
+            animation: timerBlink 0.6s infinite;
+        }
+
+        @keyframes timerBlink {
+            0% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+
+            100% {
+                opacity: 1
+            }
+        }
+
+        #topBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 10px 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #topBar button {
+            background: var(--bg-color);
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        #topBar button:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        #resetBtn {
+            background: var(--accent) !important;
+            border: none !important;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        /* --- MODAL STYLES --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.85);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .close-btn {
+            background: none !important;
+            border: none !important;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+            padding: 0 !important;
+        }
+
+        .close-btn:hover {
+            color: white;
+            background: none !important;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .setting-row label {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .setting-row input,
+        .setting-row select {
+            width: 120px;
+            padding: 8px;
+            border-radius: 6px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .save-settings-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            background: var(--primary) !important;
+            color: white;
+            border: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .save-settings-btn:hover {
+            opacity: 0.9;
+        }
+
+        #game {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        /* --- TUG OF WAR VISUALS --- */
+        .tug-container {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            margin: 80px 0 140px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #rope {
+            width: 100%;
+            height: 18px;
+            background: linear-gradient(90deg, #8B4513, #c28b45, #8B4513);
+            border-radius: 10px;
+            position: relative;
+            overflow: visible;
+        }
+
+        /* Middle mark */
+        #rope::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -10px;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 36px;
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+
+        /* The Pulling Flag */
+        #rope::before {
+            content: '🚩';
+            position: absolute;
+            left: calc(50% + var(--offset, 0px));
+            top: -38px;
+            font-size: 32px;
+            transition: left 0.5s ease;
+        }
+
+        .avatars-row {
+            display: flex;
+            justify-content: space-between;
+            width: 110%;
+            position: absolute;
+            top: -140px;
+        }
+
+        .ground-platform {
+            display: none;
+        }
+
+        /* --- CHARACTER SVG STYLES --- */
+        .character-svg {
+            width: 140px;
+            height: 180px;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Character Animations */
+        .idle {
+            animation: idleSway 3s infinite ease-in-out;
+        }
+
+        .pulling-left {
+            animation: pullLeft 0.6s ease;
+        }
+
+        .pulling-right {
+            animation: pullRight 0.6s ease;
+        }
+
+        .stunned {
+            animation: shake 0.4s infinite;
+            filter: grayscale(1) contrast(0.5);
+        }
+
+        @keyframes idleSway {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(1deg);
+            }
+        }
+
+        @keyframes pullLeft {
+            0% {
+                transform: translateX(0)
+            }
+
+            50% {
+                transform: translateX(-25px) rotate(-6deg)
+            }
+
+            100% {
+                transform: translateX(0)
+            }
+        }
+
+        @keyframes pullRight {
+            0% {
+                transform: translateX(0)
+            }
+
+            50% {
+                transform: translateX(25px) rotate(6deg)
+            }
+
+            100% {
+                transform: translateX(0)
+            }
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            20% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+
+            40% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+
+            60% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+
+            80% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+
+            100% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+        }
+
+        /* --- UI PANELS --- */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 650px;
+            width: 90%;
+            z-index: 20;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.3;
+            color: #fff;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .answers button {
+            padding: 20px;
+            font-size: 1.2rem;
+            background: var(--bg-color);
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            font-weight: 600;
+        }
+
+        .answers button:hover:not(:disabled) {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .answers button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .answers button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .stun-timer {
+            margin-top: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Setup Form Styles */
+        .setup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .setup-form select,
+        .setup-form input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .setup-form button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .setup-form button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        .leaderboard-table th {
+            padding: 10px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .leaderboard-table td {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+        }
+
+        .leaderboard-table td:first-child {
+            border-radius: 12px 0 0 12px;
+            font-weight: 700;
+        }
+
+        .leaderboard-table td:last-child {
+            border-radius: 0 12px 12px 0;
+            font-weight: 700;
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            margin-bottom: 4px;
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .activity-log {
+            margin-top: 15px;
+            font-style: italic;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            min-height: 1.2em;
+        }
+
+        /* Debug Console */
+        #debug {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-height: 100px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.8);
+            color: #4ade80;
+            font-family: monospace;
+            font-size: 10px;
+            padding: 5px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1️⃣ HUD – view selector + reset button -->
+    <div id="topBar">
+        <div id="viewSelectors">
+            <button onclick="setView('projector')">🖥️ Projector</button>
+            <button onclick="setView('red')">🔴 Red Team</button>
+            <button onclick="setView('blue')">🔵 Blue Team</button>
+        </div>
+        <button id="settingsBtn" class="hide" onclick="openSettingsModal()">⚙️ Settings</button>
+        <button id="leaderboardBtn" class="hide" onclick="openLeaderboardModal()">🏆 Top Teams</button>
+        <button id="resetBtn" class="hide" onclick="resetMatch()">🔄 New Match</button>
+    </div>
+
+    <div id="game"></div>
+    <div id="debug"></div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ Game Settings</h2>
+                <button class="close-btn" onclick="closeSettingsModal()">✖</button>
+            </div>
+
+            <div class="setting-row">
+                <label for="setCategory">📚 Question Category</label>
+                <select id="setCategory"
+                    style="width:120px; padding:8px; border-radius:8px; background:rgba(0,0,0,0.3); color:white; border:1px solid var(--glass-border);">
+                    <option value="starter">Starter Pack</option>
+                    <option value="genesis">Genesis</option>
+                    <option value="gospels">The Gospels</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <label for="setStun">⚡ Stun Duration (s)<br><small
+                        style="color:#94a3b8; font-weight:400; font-size:0.8rem;">0 = Disable Stun</small></label>
+                <input type="number" id="setStun" min="0" max="60" step="1" value="3">
+            </div>
+            <div class="setting-row">
+                <label for="setPull">💪 Pull Strength</label>
+                <input type="number" id="setPull" min="1" max="50" value="12">
+            </div>
+            <div class="setting-row">
+                <label for="setWin">🏆 Win Threshold<br><small
+                        style="color:#94a3b8; font-weight:400; font-size:0.8rem;">Distance to win</small></label>
+                <input type="number" id="setWin" min="10" max="500" value="100">
+            </div>
+            <div class="setting-row">
+                <label>⏱ Question Timer (sec)</label>
+                <input type="number" id="setTimer" min="5" max="60" value="15">
+            </div>
+            <button class="save-settings-btn" onclick="saveSettings()">Save & Apply</button>
+        </div>
+    </div>
+
+    <!-- LEADERBOARD MODAL -->
+    <div id="leaderboardModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>🌍 Global Top Teams</h2>
+                <button class="close-btn" onclick="closeLeaderboardModal()">✖</button>
+            </div>
+            <div id="leaderboardContent" style="margin-top: 15px;">
+                <p>Loading scores...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --------------------------------------------------------------
+           SOUND EFFECTS ENGINE (Web Audio API)
+           -------------------------------------------------------------- */
+        const SoundFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playOscillator(freq, type, duration, vol = 0.1, slideFreq = null) {
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = type;
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                if (slideFreq) {
+                    osc.frequency.exponentialRampToValueAtTime(slideFreq, this.ctx.currentTime + duration);
+                }
+
+                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + duration);
+            },
+            ding() {
+                this.init();
+                this.playOscillator(880, 'sine', 0.5, 0.2);       // A5
+                setTimeout(() => this.playOscillator(1108.73, 'sine', 0.8, 0.2), 100); // C#6
+            },
+            buzz() {
+                this.init();
+                this.playOscillator(150, 'sawtooth', 0.5, 0.2, 50);
+            },
+            tug() {
+                this.init();
+                this.playOscillator(100, 'triangle', 0.3, 0.3, 50);
+            },
+            fanfare() {
+                this.init();
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                    setTimeout(() => this.playOscillator(freq, 'square', 0.5, 0.1), i * 150);
+                });
+            }
+        };
+
+        // Initialize audio on first click anywhere
+        document.body.addEventListener('click', () => SoundFX.init(), { once: true });
+
+        /* --------------------------------------------------------------
+           SETTINGS – EDIT ONLY THIS SECTION
+           -------------------------------------------------------------- */
+        const SETTINGS = {
+            pullStrength: 12,            // rope movement per correct answer
+            stunMs: 3000,          // how long a wrong answer freezes the player
+            ropeAnimMs: 650,           // rope animation duration (ms)
+            winThreshold: 100,           // rope distance needed to win
+            avatarColours: ['#e53935', '#1e88e5', '#43a047', '#fdd835', '#8e24aa', '#ff6f00'],
+            avatarSize: { w: 80, h: 120 },
+            questionTimer: 15,
+        };
+
+        /* --------------------------------------------------------------
+           INSERT YOUR FIREBASE CONFIG BELOW
+           -------------------------------------------------------------- */
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9Q6K3hjLR9GUkTnDjd5eMOcWNu_NTdW4",
+            authDomain: "my-sunday-school-project.firebaseapp.com",
+            databaseURL: "https://my-sunday-school-project-default-rtdb.firebaseio.com",
+            projectId: "my-sunday-school-project",
+            storageBucket: "my-sunday-school-project.firebasestorage.app",
+            messagingSenderId: "670535850367",
+            appId: "1:670535850367:web:9d49ac0f513f24a14ae24a",
+            measurementId: "G-3XRH7JJVE7"
+            // 👉  Paste your Firebase config object here (apiKey, authDomain, databaseURL, etc.)
+        };
+
+        /* --------------------------------------------------------------
+           QUESTION PACK – 62 kid‑friendly Bible trivia (8‑14 years)
+           -------------------------------------------------------------- */
+        const STARTER_QUESTIONS = [
+            { id: "q1", q: "How many days did God create the world?", a: ["7", "1", "40", "12"], c: 0 },
+            { id: "q2", q: "Who was the first man?", a: ["Adam", "Moses", "Noah", "David"], c: 0 },
+            { id: "q3", q: "What did God tell Noah to build?", a: ["An Ark", "A Temple", "A Pyramid", "A Boat"], c: 0 },
+            { id: "q4", q: "How many of each animal went onto the ark?", a: ["Two", "Ten", "Seven", "One"], c: 0 },
+            { id: "q5", q: "Who fought Goliath?", a: ["David", "Samson", "Joshua", "Moses"], c: 0 },
+            { id: "q6", q: "What was Goliath?", a: ["A Giant", "A King", "A Priest", "A Soldier"], c: 0 },
+            { id: "q7", q: "Jesus was born in which town?", a: ["Bethlehem", "Nazareth", "Jerusalem", "Egypt"], c: 0 },
+            { id: "q8", q: "How many disciples did Jesus have?", a: ["12", "7", "3", "40"], c: 0 },
+            { id: "q9", q: "Who betrayed Jesus?", a: ["Judas", "Peter", "Thomas", "Matthew"], c: 0 },
+            { id: "q10", q: "How many loaves and fish did Jesus use to feed 5 000?", a: ["5 and 2", "12 and 7", "2 and 2", "1 and 1"], c: 0 },
+            { id: "q11", q: "What did Jesus turn water into?", a: ["Wine", "Milk", "Bread", "Oil"], c: 0 },
+            { id: "q12", q: "Who was thrown into the lions den?", a: ["Daniel", "Jonah", "Elijah", "Joseph"], c: 0 },
+            { id: "q13", q: "Who got swallowed by a big fish?", a: ["Jonah", "Noah", "Moses", "Job"], c: 0 },
+            { id: "q14", q: "Which queen saved her people by becoming a spy?", a: ["Esther", "Ruth", "Miriam", "Deborah"], c: 0 },
+            { id: "q15", q: "Who built the ark?", a: ["Noah", "Abraham", "Isaac", "Jacob"], c: 0 },
+            { id: "q16", q: "What is the first book of the Bible?", a: ["Genesis", "Exodus", "Leviticus", "Numbers"], c: 0 },
+            { id: "q17", q: "Who led the Israelites out of Egypt?", a: ["Moses", "Aaron", "Joshua", "David"], c: 0 },
+            { id: "q18", q: "How many people were on the ark?", a: ["Eight", "Six", "Four", "Ten"], c: 0 },
+            { id: "q19", q: "What did God create on the fourth day?", a: ["Sun, Moon, Stars", "Land, Plants", "Animals", "Humans"], c: 0 },
+            { id: "q20", q: "Who was the strongest man in the Bible?", a: ["Samson", "David", "Goliath", "Joshua"], c: 0 },
+            { id: "q21", q: "What miracle did Jesus perform at the wedding in Cana?", a: ["Turned Water into Wine", "Healed the Blind", "Walked on Water", "Fed 5 000"], c: 0 },
+            { id: "q22", q: "Who was the mother of Samuel?", a: ["Hannah", "Sarah", "Rebecca", "Leah"], c: 0 },
+            { id: "q23", q: "Which prophet was swallowed by a great fish?", a: ["Jonah", "Elijah", "Elisha", "Jeremiah"], c: 0 },
+            { id: "q24", q: "What was the name of Abraham’s wife?", a: ["Sarah", "Rebecca", "Rachel", "Leah"], c: 0 },
+            { id: "q25", q: "How many plagues did God send upon Egypt?", a: ["Ten", "Seven", "Twelve", "Five"], c: 0 },
+            { id: "q26", q: "Who was the first king of Israel?", a: ["Saul", "David", "Solomon", "Josiah"], c: 0 },
+            { id: "q27", q: "What is the shortest verse in the Bible?", a: ["Jesus wept.", "God is love.", "I am.", "Amen."], c: 0 },
+            { id: "q28", q: "Who was the tax collector that became a disciple?", a: ["Matthew", "Mark", "Luke", "John"], c: 0 },
+            { id: "q29", q: "Which apostle doubted Jesus’s resurrection until he saw his wounds?", a: ["Thomas", "Peter", "James", "John"], c: 0 },
+            { id: "q30", q: "What animal did God give to Noah after the flood?", a: ["A dove with an olive branch", "A raven", "A sparrow", "A crow"], c: 0 },
+            { id: "q31", q: "Who was the mother of John the Baptist?", a: ["Elizabeth", "Mary", "Martha", "Anna"], c: 0 },
+            { id: "q32", q: "What garden did Adam and Eve live in?", a: ["Eden", "Gilead", "Canaan", "Jericho"], c: 0 },
+            { id: "q33", q: "Who was the first martyr in the New Testament?", a: ["Stephen", "James", "Peter", "Paul"], c: 0 },
+            { id: "q34", q: "Which book tells the story of a dream‑interpretation by Joseph?", a: ["Genesis", "Exodus", "Numbers", "Deuteronomy"], c: 0 },
+            { id: "q35", q: "What was the name of the giant that fell on a pile of stones?", a: ["Goliath", "Nabal", "Adonijah", "Abimelech"], c: 0 },
+            { id: "q36", q: "Which prophet challenged the priests of Baal on Mount Carmel?", a: ["Elijah", "Elisha", "Isaiah", "Jeremiah"], c: 0 },
+            { id: "q37", q: "How many people were saved in the boat during the flood?", a: ["Eight", "Six", "Four", "Ten"], c: 0 },
+            { id: "q38", q: "What is the name of the last book of the Old Testament?", a: ["Malachi", "Zechariah", "Haggai", "Habakkuk"], c: 0 },
+            { id: "q39", q: "Who was the first woman mentioned in the Bible?", a: ["Eve", "Sarah", "Rebecca", "Leah"], c: 0 },
+            { id: "q40", q: "What miracle did Jesus perform for a blind man named Bartimaeus?", a: ["He gave him sight", "He healed his foot", "He fed him", "He raised him from dead"], c: 0 },
+            { id: "q41", q: "Which king built the First Temple in Jerusalem?", a: ["Solomon", "David", "Hezekiah", "Josiah"], c: 0 },
+            { id: "q42", q: "Who was the son of Abraham and Sarah?", a: ["Isaac", "Jacob", "Esau", "Ishmael"], c: 0 },
+            { id: "q43", q: "What is the name of the sea that Moses split?", a: ["Red Sea", "Dead Sea", "Sea of Galilee", "Mediterranean Sea"], c: 0 },
+            { id: "q44", q: "Which disciple betrayed Jesus for 30 pieces of silver?", a: ["Judas Iscariot", "Peter", "John", "James"], c: 0 },
+            { id: "q45", q: "What was the name of the mountain where Jesus was transfigured?", a: ["Mount Tabor", "Mount Sinai", "Mount Zion", "Mount Olive"], c: 0 },
+            { id: "q46", q: "Who was the mother of Moses?", a: ["Jochebed", "Sarah", "Rebecca", "Rachel"], c: 0 },
+            { id: "q47", q: "What did God create on the first day?", a: ["Light", "Land", "Plants", "Stars"], c: 0 },
+            { id: "q48", q: "Who was the first person to see a rainbow according to Genesis?", a: ["Noah", "Abraham", "Moses", "David"], c: 0 },
+            { id: "q49", q: "What was the name of the garden where Jesus prayed before his arrest?", a: ["Gethsemane", "Olive Grove", "Mount of Olives", "Bethany"], c: 0 },
+            { id: "q50", q: "Which Old Testament figure is known for his patience?", a: ["Job", "David", "Solomon", "Samuel"], c: 0 },
+            { id: "q51", q: "Who was the king who wrote many of the Psalms?", a: ["David", "Solomon", "Saul", "Hezekiah"], c: 0 },
+            { id: "q52", q: "How many people lived on the Ark?", a: ["Eight", "Six", "Four", "Ten"], c: 0 },
+            { id: "q53", q: "Which prophet was taken up to heaven in a whirlwind?", a: ["Elijah", "Elisha", "Jeremiah", "Isaiah"], c: 0 },
+            { id: "q54", q: "What is the name of the river where John the Baptist baptized Jesus?", a: ["Jordan", "Nile", "Euphrates", "Tigris"], c: 0 },
+            { id: "q55", q: "Who was the first to hear God’s voice in a burning bush?", a: ["Moses", "Aaron", "Joshua", "Caleb"], c: 0 },
+            { id: "q56", q: "What gifts did the Wise Men bring to baby Jesus?", a: ["Gold, Frankincense, Myrrh", "Silver, Gold, Oil", "Spice, Honey, Bread", "Wine, Bread, Oil"], c: 0 },
+            { id: "q57", q: "Which book contains the story of the Prodigal Son?", a: ["Luke", "Matthew", "Mark", "John"], c: 0 },
+            { id: "q58", q: "Who was the first Christian martyr recorded in Acts?", a: ["Stephen", "James", "Peter", "Paul"], c: 0 },
+            { id: "q59", q: "Which apostle is known as the “rock” on which the Church was built?", a: ["Peter", "John", "Andrew", "James"], c: 0 },
+            { id: "q60", q: "What was the youngest son of Jacob?", a: ["Benjamin", "Joseph", "Judah", "Levi"], c: 0 },
+            { id: "q61", q: "Who was the mother of John the Baptist?", a: ["Elizabeth", "Mary", "Martha", "Anna"], c: 0 },
+            { id: "q62", q: "Which disciple is called the “beloved disciple”?", a: ["John", "Peter", "James", "Andrew"], c: 0 }
+        ];
+
+        const GENESIS_QUESTIONS = [
+            { id: "gen1", q: "What did God create on the first day?", a: ["Light", "Land", "Animals", "Sun"], c: 0 },
+            { id: "gen2", q: "Who was Adam's wife?", a: ["Eve", "Sarah", "Rachel", "Rebekah"], c: 0 },
+            { id: "gen3", q: "Who built the ark?", a: ["Noah", "Moses", "Abraham", "Lot"], c: 0 },
+            { id: "gen4", q: "What bird did Noah send out first?", a: ["Raven", "Dove", "Eagle", "Sparrow"], c: 0 },
+            { id: "gen5", q: "What was the token of God's covenant not to flood the earth again?", a: ["Rainbow", "Dove", "Altar", "Pillar of salt"], c: 0 },
+            { id: "gen6", q: "Who was Abraham's first son?", a: ["Ishmael", "Isaac", "Jacob", "Esau"], c: 0 },
+            { id: "gen7", q: "Who was the mother of Isaac?", a: ["Sarah", "Hagar", "Keturah", "Rachel"], c: 0 },
+            { id: "gen8", q: "What did God ask Abraham to sacrifice on Mount Moriah?", a: ["Isaac", "A lamb", "Ishmael", "A bull"], c: 0 },
+            { id: "gen9", q: "Who sold his birthright for a bowl of stew?", a: ["Esau", "Jacob", "Joseph", "Reuben"], c: 0 },
+            { id: "gen10", q: "Which of Jacob's sons received a coat of many colors?", a: ["Joseph", "Benjamin", "Judah", "Simeon"], c: 0 }
+        ];
+
+        const GOSPELS_QUESTIONS = [
+            { id: "gos1", q: "In what city was Jesus born?", a: ["Bethlehem", "Nazareth", "Jerusalem", "Capernaum"], c: 0 },
+            { id: "gos2", q: "Who baptized Jesus?", a: ["John the Baptist", "Peter", "James", "Matthew"], c: 0 },
+            { id: "gos3", q: "What was Jesus' first miracle?", a: ["Water to wine", "Feeding 5000", "Walking on water", "Healing the blind"], c: 0 },
+            { id: "gos4", q: "How many disciples did Jesus choose?", a: ["12", "10", "7", "40"], c: 0 },
+            { id: "gos5", q: "Who walked on water towards Jesus?", a: ["Peter", "John", "Judas", "Thomas"], c: 0 },
+            { id: "gos6", q: "How many loaves of bread did Jesus use to feed the 5000?", a: ["5", "2", "7", "12"], c: 0 },
+            { id: "gos7", q: "Which disciple betrayed Jesus?", a: ["Judas Iscariot", "Peter", "Thomas", "Matthew"], c: 0 },
+            { id: "gos8", q: "Which disciple denied Jesus three times?", a: ["Peter", "John", "Judas", "Andrew"], c: 0 },
+            { id: "gos9", q: "Who was the Roman governor that sentenced Jesus?", a: ["Pilate", "Herod", "Caesar", "Augustus"], c: 0 },
+            { id: "gos10", q: "On what day did Jesus rise from the dead?", a: ["Third day", "Second day", "Fourth day", "Seventh day"], c: 0 }
+        ];
+
+        /* --------------------------------------------------------------
+           GLOBAL STATE
+           -------------------------------------------------------------- */
+        let db, matchRef, questionsRef;
+        let matchId = null;               // unique ID for the current match
+        let playerTeam = null;            // 0 = Red, 1 = Blue
+        let viewMode = null;              // 'projector','red','blue'
+        let allQuestions = [];            // all questions loaded from DB or starter pack
+        let isLoadingQuestion = false;    // prevent concurrent question loads
+        let lastKnownState = null;        // Local cache for heartbeat refreshes
+        let questionStartTime = 0;
+        let buzzerPlayed = false;
+
+        /* --------------------------------------------------------------
+           INITIALISE FIREBASE
+           -------------------------------------------------------------- */
+        if (!firebaseConfig.apiKey) {
+            alert('⚠️ Please paste your Firebase config into the file (line ~30).');
+        }
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+
+        /* --------------------------------------------------------------
+           HELPER – generate a short random ID for a match
+           -------------------------------------------------------------- */
+        function newMatchId() {
+            return 'm_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        /* --------------------------------------------------------------
+           DEBUG LOGGING
+           -------------------------------------------------------------- */
+        function logDebug(msg) {
+            console.log(msg);
+            const d = document.getElementById('debug');
+            if (d) {
+                const div = document.createElement('div');
+                div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+                d.appendChild(div);
+                d.scrollTop = d.scrollHeight;
+            }
+        }
+
+        /* --------------------------------------------------------------
+           SET VIEW (projector / red / blue)
+           -------------------------------------------------------------- */
+        function setView(mode) {
+            viewMode = mode;
+            if (mode === 'red') playerTeam = 0;
+            if (mode === 'blue') playerTeam = 1;
+
+            // URL Sync: Ensure MATCH and ROLE are in the URL
+            const params = new URLSearchParams(window.location.search);
+            matchId = params.get('MATCH') || params.get('MATCH_ID');
+
+            if (!matchId) {
+                matchId = localStorage.getItem('matchId') || newMatchId();
+                localStorage.setItem('matchId', matchId);
+                params.set('MATCH', matchId);
+            } else {
+                // Standardize on MATCH parameter
+                params.set('MATCH', matchId);
+            }
+
+            params.set('ROLE', mode);
+            window.history.replaceState({}, '', '?' + params.toString());
+
+            // Hide the view selection once a mode is picked
+            document.getElementById('viewSelectors').classList.add('hide');
+
+            // Show admin buttons only on projector
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) resetBtn.classList.toggle('hide', mode !== 'projector');
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (settingsBtn) settingsBtn.classList.toggle('hide', mode !== 'projector');
+            const leaderboardBtn = document.getElementById('leaderboardBtn');
+            if (leaderboardBtn) leaderboardBtn.classList.toggle('hide', mode !== 'projector');
+
+            initGame();
+        }
+
+        /* --------------------------------------------------------------
+           MAIN ENTRY – runs once after the user clicks a view button
+           -------------------------------------------------------------- */
+        function initGame() {
+            const gameDiv = document.getElementById('game');
+            gameDiv.innerHTML = '';
+
+            logDebug(`Initializing Match ${matchId} Questions...`);
+            questionsRef = db.ref('questions');
+            questionsRef.once('value').then(snap => {
+                logDebug('Questions data received.');
+                if (!snap.exists()) {
+                    logDebug('No questions in DB. Seeding starter pack...');
+                    questionsRef.set(STARTER_QUESTIONS).catch(e => logDebug(`!!! SEED ERROR: ${e.message}`));
+                    allQuestions = STARTER_QUESTIONS;
+                } else {
+                    const val = snap.val();
+                    let raw = Array.isArray(val) ? val : Object.values(val);
+
+                    // MIGRATION: Ensure every question has an 'id'
+                    let needsUpdate = false;
+                    allQuestions = raw.map((q, i) => {
+                        if (!q.id) {
+                            needsUpdate = true;
+                            return { ...q, id: `q${i}` };
+                        }
+                        return q;
+                    });
+
+                    if (needsUpdate) {
+                        logDebug('Database questions missing IDs. Migrating...');
+                        questionsRef.set(allQuestions).then(() => logDebug('Migration complete.'))
+                            .catch(e => logDebug(`!!! MIGRATE ERROR: ${e.message}`));
+                    }
+                }
+
+                if (allQuestions.length === 0) {
+                    logDebug('Loaded 0 questions. Using local starter pack.');
+                    allQuestions = STARTER_QUESTIONS;
+                } else {
+                    logDebug(`Loaded ${allQuestions.length} questions.`);
+                }
+
+                matchRef = db.ref('match/' + matchId);
+                matchRef.once('value').then(snap => {
+                    const exists = snap.exists();
+                    logDebug(`Match exists: ${exists}`);
+                    if (viewMode === 'projector') {
+                        if (!exists || (snap.val() && snap.val().status === 'finished')) {
+                            logDebug('Projector creating/resetting match...');
+                            createMatch();
+
+                        }
+                    } else if (!exists) {
+                        logDebug('Controller waiting for Projector to create match...');
+                        gameDiv.innerHTML = '<div class="card"><h3>Looking for match...</h3><p>Ensure the Projector is open and ready.</p></div>';
+                    }
+                    joinMatch(matchId);
+                }).catch(e => {
+                    logDebug(`!!! MATCH READ ERROR: ${e.message}`);
+                    if (e.message.includes('permission_denied')) {
+                        alert('Firebase Error: Make sure your Database Rules are set to Public (true) for testing.');
+                    }
+                });
+            }).catch(e => {
+                logDebug(`!!! Q-READ ERROR: ${e.message}`);
+            });
+
+            // HEARTBEAT: Refresh UI for time-based events every 500ms
+            setInterval(() => {
+
+                if (lastKnownState && lastKnownState.question) {
+                    const timerEl = document.querySelector('.timerBox');
+                    if (timerEl) {
+                        const limit = (lastKnownState.settings?.questionTimer || 15) * 1000;
+                        const elapsed = Date.now() - questionStartTime;
+                        const remain = Math.ceil((limit - elapsed) / 1000);
+
+                        if (remain > 0) {
+                            timerEl.innerHTML = `⏱ ${remain}s`;
+                        } else {
+                            timerEl.innerHTML = "⏰ ANSWER NOW!";
+                            timerEl.classList.add('timerAlert');
+
+                            if (!buzzerPlayed) {
+                                SoundFX.buzz();
+                                buzzerPlayed = true;
+                            }
+                        }
+                    }
+                }
+                if (!lastKnownState) return;
+                const now = Date.now();
+                if (viewMode === 'projector') {
+                    // Update animation classes without rebuilding the whole DOM
+                    ['Red', 'Blue'].forEach((team, i) => {
+                        const svgs = document.querySelectorAll('.avatars-row svg');
+                        if (svgs[i]) {
+                            let animClass = 'character-svg idle';
+                            if (lastKnownState.stunned && now < lastKnownState.stunned[i]) {
+                                animClass = 'character-svg stunned';
+                            } else if (lastKnownState.lastAction && (now - lastKnownState.lastAction.time) < 600 && lastKnownState.lastAction.team === i && lastKnownState.lastAction.msg.includes('pulled')) {
+                                animClass = i === 0 ? 'character-svg pulling-left' : 'character-svg pulling-right';
+                            }
+                            svgs[i].setAttribute('class', animClass);
+                        }
+                    });
+                } else if (lastKnownState.status === 'active' && lastKnownState.question) {
+                    // Controller heartbeat: tick stun timer and check buttons natively
+                    const myStunned = lastKnownState.stunned ? lastKnownState.stunned[playerTeam] : 0;
+                    const isStunned = now < myStunned;
+
+                    const buttons = document.querySelectorAll('.answers button');
+                    buttons.forEach(btn => btn.disabled = isStunned);
+
+                    const timer = document.getElementById('stunTimerText');
+                    if (isStunned) {
+                        const remaining = Math.ceil((myStunned - now) / 1000);
+                        if (timer) timer.innerHTML = `⚡ Stunned! Wait ${remaining}s`;
+                    } else if (timer) {
+                        timer.remove();
+                    }
+                }
+            }, 500);
+
+        }
+
+        /* --------------------------------------------------------------
+           CREATE A NEW MATCH IN THE DATABASE
+           -------------------------------------------------------------- */
+        function createMatch() {
+            logDebug('Executing createMatch...');
+            matchRef = db.ref('match/' + matchId);
+            matchRef.set({
+                status: 'waiting',
+                rope: 0,
+                stunned: [0, 0],
+                usedIds: [],
+                question: null,
+                answers: { "0": null, "1": null }, // Explicit keys for team 0 and 1
+                winner: null,
+                lastAction: null,
+                settings: {
+                    gameMode: 'tug',
+                    stunMs: SETTINGS.stunMs,
+                    pullStrength: SETTINGS.pullStrength,
+                    winThreshold: SETTINGS.winThreshold
+                },
+                teams: {
+                    0: { name: '', score: 0, corrects: 0, wrongs: 0, gender: 'boy', shirt: SETTINGS.avatarColours[0] },
+                    1: { name: '', score: 0, corrects: 0, wrongs: 0, gender: 'boy', shirt: SETTINGS.avatarColours[1] }
+                }
+            }).then(() => logDebug('Match created successfully.'))
+                .catch(e => logDebug(`!!! MATCH CREATE ERROR: ${e.message}`));
+        }
+
+        /* --------------------------------------------------------------
+           SETTINGS MODAL LOGIC
+           -------------------------------------------------------------- */
+        function openSettingsModal() {
+            if (!lastKnownState) return;
+            const currentSettings = lastKnownState.settings || SETTINGS;
+            document.getElementById('setStun').value = Math.round(currentSettings.stunMs / 1000);
+            document.getElementById('setPull').value = currentSettings.pullStrength;
+            document.getElementById('setWin').value = currentSettings.winThreshold;
+            document.getElementById('setCategory').value = currentSettings.category || 'starter';
+            document.getElementById('settingsModal').classList.add('active');
+            if (typeof SoundFX !== 'undefined' && !SoundFX.ctx) SoundFX.init();
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function openLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.add('active');
+            const contentDiv = document.getElementById('leaderboardContent');
+            contentDiv.innerHTML = '<p>Fetching global scores...</p>';
+
+            db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value').then(snap => {
+                const data = snap.val();
+                if (!data) {
+                    contentDiv.innerHTML = '<p>No scores recorded yet. Play a match to get on the board!</p>';
+                    return;
+                }
+
+                // Convert to array and sort descending
+                const scores = Object.entries(data)
+                    .map(([key, value]) => ({ key, ...value }))
+                    .sort((a, b) => b.score - a.score);
+
+                let html = `
+                    <table class="leaderboard-table" style="width:100%; text-align:left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(255,255,255,0.2);">
+                                <th style="padding:10px;">Rank</th>
+                                <th style="padding:10px;">Team Name</th>
+                                <th style="padding:10px;">Score</th>
+                                <th style="padding:10px;">Date</th>
+                                <th style="padding:10px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                scores.forEach((entry, idx) => {
+                    const rowClass = idx === 0 ? 'color: #ffd700; font-weight: 800;' :
+                        idx === 1 ? 'color: #c0c0c0; font-weight: 700;' :
+                            idx === 2 ? 'color: #cd7f32; font-weight: 700;' : '';
+
+                    const dateStr = entry.date ? new Date(entry.date).toLocaleDateString() : 'Unknown';
+
+                    html += `
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); ${rowClass}">
+                            <td style="padding:10px;">#${idx + 1}</td>
+                            <td style="padding:10px;">${entry.name}</td>
+                            <td style="padding:10px;">${entry.score}</td>
+                            <td style="padding:10px; font-size:0.8rem; opacity:0.7;">${dateStr}</td>
+                            <td style="padding:10px;">
+                            <button onclick="deleteLeaderboard('${entry.key}')"
+                            style="
+                            background:#f43f5e;
+                            border:none;
+                            color:white;
+                            padding:5px 10px;
+                            border-radius:6px;
+                            cursor:pointer;
+                            ">
+                            🗑 Delete
+                            </button>
+                            </td>
+                            </tr>
+                            `;
+                });
+
+                html += `</tbody></table>`;
+                contentDiv.innerHTML = html;
+            }).catch(err => {
+                contentDiv.innerHTML = `<p style="color:red;">Failed to load leaderboard...</p>`;
+            });
+
+            if (typeof SoundFX !== 'undefined' && !SoundFX.ctx) SoundFX.init();
+        }
+
+        function closeLeaderboardModal() {
+            document.getElementById('leaderboardModal').classList.remove('active');
+        }
+        function deleteLeaderboard(id) {
+            console.log(id);
+            if (!confirm("Delete this leaderboard entry?")) return;
+
+            db.ref('leaderboard/' + id).remove()
+                .then(() => {
+                    alert("Entry deleted");
+                    openLeaderboardModal(); // refresh leaderboard
+                })
+                .catch(err => {
+                    alert("Failed to delete entry");
+                    console.error(err);
+                });
+
+        }
+
+        function saveSettings() {
+            const stunSec = parseInt(document.getElementById('setStun').value) || 0;
+            const pullStr = parseInt(document.getElementById('setPull').value) || 12;
+            const winThresh = parseInt(document.getElementById('setWin').value) || 100;
+            const category = document.getElementById('setCategory').value;
+            const timer = parseInt(document.getElementById('setTimer').value) || 15;
+
+            matchRef.child('settings').update({
+                stunMs: stunSec * 1000,
+                pullStrength: pullStr,
+                winThreshold: winThresh,
+                category: category,
+                questionTimer: timer
+            }).then(() => {
+                closeSettingsModal();
+                logDebug('Settings saved and successfully applied across all clients.');
+            }).catch(e => {
+                alert('Error saving settings: ' + e.message);
+            });
+        }
+
+        /* --------------------------------------------------------------
+           JOIN AN EXISTING MATCH (called on every device)
+           -------------------------------------------------------------- */
+        function joinMatch(id) {
+            logDebug(`Joining Match: ${id}`);
+            matchRef = db.ref('match/' + id);
+            matchRef.on('value', snap => {
+                const state = snap.val();
+                if (!state) {
+                    logDebug('!!! JOIN ERROR: No data found at match path.');
+                    return;
+                }
+                lastKnownState = state; // Update cache
+                render(state);
+
+                // --- NEW: Projector handles round processing centrally ---
+                if (viewMode === 'projector' && state.status === 'active' && state.question) {
+                    const a = state.answers || {};
+                    if (a[0] !== null && a[0] !== undefined && a[1] !== null && a[1] !== undefined) {
+                        // Prevent double processing by briefly modifying status locally or trusting Firebase transactions.
+                        // For safe multi-client architecture, one host (projector) does the math.
+                        if (!window.isProcessingRound) {
+                            window.isProcessingRound = true;
+                            processRound();
+                            setTimeout(() => { window.isProcessingRound = false; }, 2000); // 2s debounce
+                        }
+                    }
+                }
+            });
+        }
+
+        /* --------------------------------------------------------------
+           LOAD THE NEXT QUESTION – guarantees no repeats.
+           -------------------------------------------------------------- */
+        function loadNextQuestion() {
+            questionStartTime = Date.now();
+            buzzerPlayed = false;
+            if (isLoadingQuestion) return;
+            if (!allQuestions || allQuestions.length === 0) {
+                logDebug('Questions not ready yet - reloading from starter pack');
+                allQuestions = STARTER_QUESTIONS;
+            }
+            isLoadingQuestion = true;
+            logDebug('Picking next question...');
+
+            // Wait slightly to ensure DB state has settled (handles rapid join events)
+            setTimeout(() => {
+                matchRef.once('value').then(snap => {
+                    const state = snap.val();
+                    if (!state || state.status === 'finished') {
+                        isLoadingQuestion = false;
+                        return;
+                    }
+
+                    // Determine active question pool locally based on settings
+                    const category = state.settings ? state.settings.category : 'starter';
+                    let pool = STARTER_QUESTIONS;
+                    if (category === 'genesis') pool = GENESIS_QUESTIONS;
+                    else if (category === 'gospels') pool = GOSPELS_QUESTIONS;
+
+                    // Ensure state.usedIds is an array
+                    let used = state.usedIds;
+                    if (!Array.isArray(used)) {
+                        used = used ? Object.values(used) : [];
+                    }
+                    used = used.filter(id => id !== undefined && id !== null);
+
+                    const remaining = pool.filter(q => q && q.id && !used.includes(q.id));
+
+                    if (remaining.length === 0) {
+                        logDebug(`All questions used for ${category}. Resetting pool.`);
+                        matchRef.update({ usedIds: [] }).then(() => {
+                            isLoadingQuestion = false;
+                            buzzerPlayed = false;
+                            loadNextQuestion();
+                        }).catch(e => {
+                            logDebug(`!!! RESET ERROR: ${e.message}`);
+                            isLoadingQuestion = false;
+                        });
+                        return;
+                    }
+
+                    const next = remaining[Math.floor(Math.random() * remaining.length)];
+                    if (!next || !next.id) {
+                        logDebug('!!! ERROR: Failed to pick valid question.');
+                        isLoadingQuestion = false;
+                        return;
+                    }
+
+                    const newUsed = Array.from(new Set([...used, next.id]));
+
+                    logDebug(`Selected: ${next.id}. Updating DB...`);
+                    matchRef.update({
+                        question: next,
+                        usedIds: newUsed,
+                        status: 'active',
+                        answers: { "0": null, "1": null } // Explicit keys reset
+                    }).then(() => {
+                        logDebug('DB updated with new question.');
+                        setTimeout(() => { isLoadingQuestion = false; }, 800); // Debounce
+                    }).catch(e => {
+                        logDebug(`!!! DB UPDATE ERROR: ${e.message}`);
+                        isLoadingQuestion = false;
+                    });
+                }).catch(e => {
+                    logDebug(`!!! LOAD Q ERROR: ${e.message}`);
+                    isLoadingQuestion = false;
+                });
+            }, 500);
+        }
+
+        /* --------------------------------------------------------------
+           HANDLE ANSWER SUBMISSION
+           -------------------------------------------------------------- */
+        function submitAnswer(idx) {
+            matchRef.once('value').then(snap => {
+                const state = snap.val();
+                const now = Date.now();
+                if (now < (state.stunned || [0, 0])[playerTeam]) return; // still stunned
+
+                // Record the answer for this player
+                const upd = {};
+                upd[`answers/${playerTeam}`] = idx;
+                logDebug(`Updating Firebase with answer ${idx} for team ${playerTeam}...`);
+                matchRef.update(upd).then(() => {
+                    logDebug(`Recorded answer ${idx} for team ${playerTeam}`);
+                    // The Projector's joinMatch listener will handle processRound()
+                }).catch(e => logDebug(`!!! UPDATE ANS ERROR: ${e.message}`));
+            });
+        }
+
+        /* --------------------------------------------------------------
+           PROCESS ROUND – Calculates results for both teams at once
+           -------------------------------------------------------------- */
+        function processRound() {
+            logDebug('Processing ROUND results...');
+            matchRef.once('value').then(snap => {
+                const state = snap.val();
+                if (!state || !state.question) return;
+
+                const correctIdx = state.question.c;
+                const ans0 = state.answers[0];
+                const ans1 = state.answers[1];
+                const now = Date.now();
+                const matchSettings = state.settings || SETTINGS;
+
+                const upd = {
+                    lastAction: {
+                        time: firebase.database.ServerValue.TIMESTAMP,
+                        msg: 'Round Complete!'
+                    },
+                    stunned: [...(state.stunned || [0, 0])],
+                    rope: state.rope || 0,
+                    teams: { ...state.teams }
+                };
+
+                // Process Team 0
+                if (ans0 === correctIdx) {
+                    upd.rope -= matchSettings.pullStrength;
+                    upd.teams[0].score = (upd.teams[0].score || 0) + 1;
+                    upd.teams[0].corrects = (upd.teams[0].corrects || 0) + 1;
+                    SoundFX.tug();
+                } else {
+                    upd.stunned[0] = now + matchSettings.stunMs;
+                    upd.teams[0].wrongs = (upd.teams[0].wrongs || 0) + 1;
+                }
+
+                // Process Team 1
+                if (ans1 === correctIdx) {
+                    upd.rope += matchSettings.pullStrength;
+                    upd.teams[1].score = (upd.teams[1].score || 0) + 1;
+                    upd.teams[1].corrects = (upd.teams[1].corrects || 0) + 1;
+                    SoundFX.tug();
+                } else {
+                    upd.stunned[1] = now + matchSettings.stunMs;
+                    upd.teams[1].wrongs = (upd.teams[1].wrongs || 0) + 1;
+                }
+
+                // Check win condition
+                const winThresh = matchSettings.winThreshold || 100;
+                if (matchSettings.gameMode === 'race') {
+                    const p0 = (upd.teams[0].score || 0) * (matchSettings.pullStrength || 12);
+                    const p1 = (upd.teams[1].score || 0) * (matchSettings.pullStrength || 12);
+                    if (p0 >= winThresh || p1 >= winThresh) {
+                        if (p0 === p1) {
+                            upd.winner = 0; // Tie breaker goes to Red for simplicity if both cross at exact same time with same score
+                        } else {
+                            upd.winner = p0 > p1 ? 0 : 1;
+                        }
+                        upd.status = 'finished';
+                    }
+                } else {
+                    if (Math.abs(upd.rope) >= winThresh) {
+                        upd.winner = upd.rope > 0 ? 1 : 0;
+                        upd.status = 'finished';
+                    }
+                }
+
+                // NEW: Save to global leaderboard on game finish
+                if (upd.status === 'finished') {
+                    const winningTeam = upd.teams[upd.winner];
+                    if (winningTeam && winningTeam.name) {
+                        db.ref('leaderboard').push({
+                            name: winningTeam.name,
+                            score: winningTeam.score || 0,
+                            date: firebase.database.ServerValue.TIMESTAMP
+                        }).catch(e => logDebug(`!!! LEADERBOARD EXCEPTION: ${e.message}`));
+                    }
+                }
+
+                // Reset answers for next question load
+                upd.answers = { 0: null, 1: null };
+
+                matchRef.update(upd).then(() => {
+                    if (upd.status !== 'finished') {
+                        loadNextQuestion();
+                    }
+                });
+            });
+        }
+
+        /* --------------------------------------------------------------
+           RESET MATCH – only visible on projector view
+           -------------------------------------------------------------- */
+        function resetMatch() {
+            if (confirm('Reset the match? This will return everyone to the lobby.')) {
+                createMatch();
+            }
+        }
+
+        /* --------------------------------------------------------------
+           RENDER UI BASED ON CURRENT STATE & VIEW
+           -------------------------------------------------------------- */
+        /* --- SVG TEMPLATES --- */
+        function getAvatarSVG(gender, shirtColor, extraClass = '') {
+            const hue = SETTINGS.avatarColours.indexOf(shirtColor) * 60;
+            const filterId = `hue-shift-${Math.random().toString(36).substr(2, 5)}`;
+
+            if (gender === 'boy') {
+                return `
+                <svg class="character-svg ${extraClass}" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Head -->
+                  <circle cx="50" cy="30" r="20" fill="#ffdbac"/>
+                  <!-- Hair -->
+                  <path d="M30 30 Q30 15 50 15 Q70 15 70 30" fill="#4b2c20"/>
+                  <!-- Eyes -->
+                  <circle cx="43" cy="28" r="2" fill="#000"/>
+                  <circle cx="57" cy="28" r="2" fill="#000"/>
+                  <!-- Smile -->
+                  <path d="M45 38 Q50 42 55 38" stroke="#000" fill="transparent" stroke-width="1.5"/>
+                  <!-- Shirt -->
+                  <rect x="30" y="50" width="40" height="50" rx="10" fill="${shirtColor}"/>
+                  <!-- Arms -->
+                  <path d="M30 55 L15 80" stroke="#ffdbac" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M70 55 L85 80" stroke="#ffdbac" stroke-width="8" stroke-linecap="round"/>
+                </svg>`;
+            } else {
+                return `
+                <svg class="character-svg ${extraClass}" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Head -->
+                  <circle cx="50" cy="30" r="20" fill="#ffdbac"/>
+                  <!-- Hair -->
+                  <path d="M25 30 Q25 5 50 5 Q75 5 75 30 L80 60 Q50 55 20 60 Z" fill="#4b2c20"/>
+                  <!-- Eyes -->
+                  <circle cx="43" cy="28" r="2" fill="#000"/>
+                  <circle cx="57" cy="28" r="2" fill="#000"/>
+                  <!-- Smile -->
+                  <path d="M45 38 Q50 42 55 38" stroke="#000" fill="transparent" stroke-width="1.5"/>
+                  <!-- Shirt -->
+                  <path d="M30 50 L70 50 L75 100 L25 100 Z" fill="${shirtColor}"/>
+                  <!-- Arms -->
+                  <path d="M30 55 L15 80" stroke="#ffdbac" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M70 55 L85 80" stroke="#ffdbac" stroke-width="8" stroke-linecap="round"/>
+                </svg>`;
+            }
+        }
+
+        function render(state) {
+            const gameDiv = document.getElementById('game');
+            const timerDiv = document.createElement('div');
+            timerDiv.className = 'timerBox';
+
+            // PREVENT DESTRUCTIVE RENDER WHILE TYPING NAME
+            if (viewMode !== 'projector') {
+                const my = state.teams[playerTeam];
+                if (!my || !my.name) {
+                    if (document.getElementById('setupForm')) return; // Do not interrupt typing!
+                }
+            }
+
+            gameDiv.innerHTML = '';
+            const now = Date.now();
+            // logDebug(`Rendering... now=${now}`); // Uncomment for heavy debugging
+
+            // ---------- PROJECTOR ----------
+            if (viewMode === 'projector') {
+                const title = document.createElement('h2');
+                title.textContent = '🏆 Bible Tug‑of‑War';
+                gameDiv.appendChild(title);
+
+                if (state.status === 'waiting') {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h2>⚙️ Match Setup</h2>
+                        <div style="display:flex; justify-content:space-around; margin:20px 0; font-size:1.2rem;">
+                            <div>🔴 Red: ${state.teams[0].name ? '✅ Ready (' + state.teams[0].name + ')' : '⏳ Joining...'}</div>
+                            <div>🔵 Blue: ${state.teams[1].name ? '✅ Ready (' + state.teams[1].name + ')' : '⏳ Joining...'}</div>
+                        </div>
+                        <div style="background:var(--bg-color); padding:20px; border-radius:8px; margin-top:20px; text-align:left;">
+                            <div class="setting-row" style="margin-bottom:10px; border:none; padding:0;">
+                                <label>🎮 Game Mode:</label>
+                                <select id="setupMode" style="width:180px; padding:5px; border-radius:4px;">
+                                    <option value="tug" ${state.settings.gameMode === 'tug' ? 'selected' : ''}>🪢 Tug of War</option>
+                                    <option value="race" ${state.settings.gameMode === 'race' ? 'selected' : ''}>🏁 Race to Center</option>
+                                </select>
+                            </div>
+                            <div class="setting-row" style="margin-bottom:10px; border:none; padding:0;">
+                                <label>🏆 Points to Win:</label>
+                                <input id="setupWin" type="number" value="${state.settings.winThreshold / (SETTINGS.pullStrength || 12)}" min="1" max="50" style="width:80px; padding:5px; border-radius:4px; text-align:center;">
+                            </div>
+                            <div class="setting-row" style="margin-bottom:0px; border:none; padding:0;">
+                                <label>📚 Questions:</label>
+                                <select id="setupCat" style="width:180px; padding:5px; border-radius:4px;">
+                                    <option value="starter" ${state.settings.category === 'starter' ? 'selected' : ''}>Starter Pack</option>
+                                    <option value="genesis" ${state.settings.category === 'genesis' ? 'selected' : ''}>Genesis</option>
+                                    <option value="gospels" ${state.settings.category === 'gospels' ? 'selected' : ''}>The Gospels</option>
+                                </select>
+                            
+                        </div>
+                        <button id="startMatchBtn" class="save-settings-btn" style="margin-top:20px; font-size:1.5rem; padding: 20px;">▶ Start Match</button>
+                    `;
+                    gameDiv.appendChild(card);
+                    const base = window.location.origin + window.location.pathname;
+
+                    const redLink = `${base}?MATCH=${matchId}&ROLE=red`;
+                    const blueLink = `${base}?MATCH=${matchId}&ROLE=blue`;
+
+                    const qrDiv = document.createElement('div');
+                    qrDiv.style.display = "flex";
+                    qrDiv.style.justifyContent = "space-around";
+                    qrDiv.style.marginTop = "20px";
+
+                    qrDiv.innerHTML = `
+                                    <div>
+                                    <p>🔴 Red Team</p>
+                                    <div id="qrRed"></div>
+                                    </div>
+                                    <div>
+                                    <p>🔵 Blue Team</p>
+                                    <div id="qrBlue"></div>
+                                    </div>
+                                    `;
+
+                    card.appendChild(qrDiv);
+
+                    new QRCode(document.getElementById("qrRed"), redLink);
+                    new QRCode(document.getElementById("qrBlue"), blueLink);
+
+                    const share = document.createElement('button');
+                    share.textContent = "📤 Share Join Links";
+                    share.onclick = () => {
+                        navigator.clipboard.writeText(
+                            `Red Team: ${redLink}\nBlue Team: ${blueLink}`
+                        );
+                        alert("Links copied!");
+                    };
+                    card.appendChild(share);
+                    document.getElementById('startMatchBtn').onclick = () => {
+                        const mode = document.getElementById('setupMode').value;
+                        const wins = parseInt(document.getElementById('setupWin').value) || 5;
+                        const cat = document.getElementById('setupCat').value;
+
+                        matchRef.update({
+                            status: 'active',
+                            'settings/gameMode': mode,
+                            'settings/winThreshold': wins * SETTINGS.pullStrength,
+                            'settings/category': cat
+                        }).then(() => loadNextQuestion());
+                    };
+
+                    // Live-sync setup input so it doesn't revert if a player joins midway
+                    ['setupMode', 'setupWin', 'setupCat'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.addEventListener('change', (e) => {
+                                let val = e.target.value;
+                                if (id === 'setupWin') matchRef.update({ 'settings/winThreshold': (parseInt(val) || 5) * SETTINGS.pullStrength });
+                                if (id === 'setupMode') matchRef.update({ 'settings/gameMode': val });
+                                if (id === 'setupCat') matchRef.update({ 'settings/category': val });
+                            });
+                        }
+                    });
+
+                    return;
+                }
+
+                // Self-healing: if active but no question, load one
+                if (state.status === 'active' && !state.question && state.winner == null) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>Loading Next Question...</h3>
+                        <p>Hang tight, picking a good one!</p>
+                        <button onclick="loadNextQuestion()" style="margin-top:20px;">Force Load Question</button>
+                    `;
+                    gameDiv.appendChild(card);
+
+                    if (!isLoadingQuestion) loadNextQuestion();
+                    return;
+                }
+
+                const tugContainer = document.createElement('div');
+                tugContainer.className = 'tug-container';
+
+                // Avatars Row
+                const avatars = document.createElement('div');
+                avatars.className = 'avatars-row';
+                const mode = (state.settings && state.settings.gameMode) || 'tug';
+
+                ['Red', 'Blue'].forEach((team, i) => {
+                    const avContainer = document.createElement('div');
+                    avContainer.style.textAlign = 'center';
+
+                    if (mode === 'race') {
+                        // Calculate percentage of winThreshold reached
+                        const winThresh = state.settings.winThreshold || 100;
+                        const pullStr = state.settings.pullStrength || 12;
+                        const progress = Math.min(100, Math.floor(((state.teams[i].score || 0) * pullStr) / winThresh * 100));
+                        avContainer.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        // Max pixel movement to center is about 380px out of 900px wide tug-container
+                        const maxDist = 380;
+                        const pxMove = (progress / 100) * maxDist;
+                        avContainer.style.transform = `translateX(${i === 0 ? pxMove : -pxMove}px)`;
+                    }
+
+                    const gender = (state.teams[i].gender || 'boy');
+                    const shirt = (state.teams[i].shirt || SETTINGS.avatarColours[i === 0 ? 0 : 1]);
+
+                    // Determine animation class
+                    let animClass = 'idle';
+                    if (state.stunned && now < state.stunned[i]) {
+                        animClass = 'stunned';
+                    } else if (state.lastAction && (now - state.lastAction.time) < 600 && state.lastAction.team === i && state.lastAction.msg.includes('pulled')) {
+                        animClass = i === 0 ? 'pulling-left' : 'pulling-right';
+                    }
+
+                    avContainer.innerHTML = getAvatarSVG(gender, shirt, animClass);
+
+                    // Show answer status icon
+                    const ansValue = state.answers ? state.answers[i] : null;
+                    const hasAnswered = ansValue !== null && ansValue !== undefined;
+                    const statusIcon = document.createElement('div');
+                    statusIcon.style.fontSize = '24px';
+                    statusIcon.style.marginTop = '5px';
+                    statusIcon.textContent = hasAnswered ? '✅' : '⏳';
+                    avContainer.appendChild(statusIcon);
+
+                    const name = document.createElement('div');
+                    name.textContent = state.teams[i].name || (team + ' Team');
+                    name.style.marginTop = '5px';
+                    name.style.fontWeight = '700';
+                    avContainer.appendChild(name);
+                    avatars.appendChild(avContainer);
+                });
+                tugContainer.appendChild(avatars);
+
+                // Rope
+                const ropeDiv = document.createElement('div');
+                ropeDiv.id = 'rope';
+                if (mode === 'race') {
+                    // Center flag stays still in race mode
+                    ropeDiv.style.setProperty('--offset', '0px');
+                } else {
+                    ropeDiv.style.setProperty('--offset', (state.rope || 0) + 'px');
+                }
+                tugContainer.appendChild(ropeDiv);
+
+                gameDiv.appendChild(tugContainer);
+
+                // Question Card
+                if (state.question && state.winner == null) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `<div class="question">${state.question.q}</div>`;
+                    gameDiv.appendChild(card);
+                }
+
+                // Win Screen
+                if (state.status === 'finished' && state.winner !== null) {
+                    if (!window.winSoundPlayed) {
+                        SoundFX.fanfare();
+                        window.winSoundPlayed = true;
+                    }
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h2>${state.winner === 0 ? '🔴 Red Team' : '🔵 Blue Team'} - ${state.teams[state.winner].name} Wins!</h2>
+                        <div class="leaderboard">
+                          <table class="leaderboard-table">
+                            <thead><tr><th>Team</th><th>Score</th></tr></thead>
+                            <tbody>
+                              ${Object.entries(state.teams).map(([k, v]) => `
+                                <tr><td>${v.name}</td><td>${v.score || 0}</td></tr>
+                              `).join('')}
+                            </tbody>
+                          </table>
+                        </div>
+                    `;
+                    gameDiv.appendChild(card);
+                }
+                return;
+            }
+
+            // ---------- CONTROLLERS ----------
+            const opponentIdx = playerTeam === 0 ? 1 : 0;
+            const opp = state.teams[opponentIdx];
+            const my = state.teams[playerTeam];
+
+            if (!my || !my.name) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.id = 'setupForm';
+                card.innerHTML = `
+                    <h3>Setup Your Team</h3>
+                    <div class="setup-form">
+                        <select id="genderSel">
+                            <option value="boy">👦 Boy</option>
+                            <option value="girl">👧 Girl</option>
+                        </select>
+                        <select id="colorSel">
+                            ${SETTINGS.avatarColours.map(c => `<option value="${c}" style="background:${c}">${c}</option>`).join('')}
+                        </select>
+                        <input id="nameInp" placeholder="Enter Team Name"/>
+                        <button id="saveBtn">Join Match</button>
+                    </div>
+                `;
+                gameDiv.appendChild(card);
+                document.getElementById('saveBtn').onclick = () => {
+                    const gender = document.getElementById('genderSel').value;
+                    const shirt = document.getElementById('colorSel').value;
+                    const name = document.getElementById('nameInp').value || (viewMode === 'red' ? 'Red' : 'Blue');
+
+                    const upd = {};
+                    upd[`teams/${playerTeam}/gender`] = gender;
+                    upd[`teams/${playerTeam}/shirt`] = shirt;
+                    upd[`teams/${playerTeam}/name`] = name;
+
+                    // Only update my team. The host decides when to start via the "Start Match" button.
+                    matchRef.update(upd);
+                };
+                return;
+            }
+
+            // Game Action View
+            const actionCard = document.createElement('div');
+            actionCard.className = 'card';
+            actionCard.appendChild(timerDiv);
+
+            // Default status to 'waiting' if missing
+            const status = state.status || 'waiting';
+
+            if (status === 'waiting') {
+                actionCard.innerHTML = `
+                    <h3>Waiting for Players...</h3>
+                    <p>Get ready, ${my.name}!</p>
+                    <div style="margin-top:20px; font-size:0.9rem; border-top:1px solid var(--glass-border); padding-top:10px;">
+                        Opponent Status: ${opp.name ? '✅ Ready' : '⏳ Joining...'}
+                    </div>
+                `;
+            } else if (status === 'active' && state.question && state.winner == null) {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question';
+                qDiv.textContent = state.question.q;
+                actionCard.appendChild(qDiv);
+
+                const ansDiv = document.createElement('div');
+                ansDiv.className = 'answers';
+
+                const ansValue = state.answers ? state.answers[playerTeam] : null;
+                const hasAnswered = ansValue !== null && ansValue !== undefined;
+
+                if (hasAnswered) {
+                    if (!window[`soundPlayed_${state.question.id}_${playerTeam}`]) {
+                        SoundFX.ding(); // positive ping for answering
+                        window[`soundPlayed_${state.question.id}_${playerTeam}`] = true;
+                    }
+                    const msg = document.createElement('div');
+                    msg.style.gridColumn = '1 / span 2';
+                    msg.style.padding = '20px';
+                    msg.style.fontSize = '1.2rem';
+                    msg.style.fontWeight = '700';
+                    msg.style.color = 'var(--secondary)';
+                    msg.innerHTML = '✅ Answer Submitted!<br><small>Waiting for opponent...</small>';
+                    ansDiv.appendChild(msg);
+                } else {
+                    state.question.a.forEach((opt, i) => {
+                        const btn = document.createElement('button');
+                        btn.textContent = opt;
+                        const disabled = now < (state.stunned || [0, 0])[playerTeam];
+                        btn.disabled = disabled;
+                        btn.onclick = () => submitAnswer(i);
+                        ansDiv.appendChild(btn);
+                    });
+                }
+                actionCard.appendChild(ansDiv);
+
+                if (state.stunned && now < state.stunned[playerTeam]) {
+                    if (!window[`stunSound_${state.question.id}_${playerTeam}`]) {
+                        SoundFX.buzz();
+                        window[`stunSound_${state.question.id}_${playerTeam}`] = true;
+                    }
+                    const remaining = Math.ceil((state.stunned[playerTeam] - now) / 1000);
+                    const timer = document.createElement('div');
+                    timer.className = 'stun-timer';
+                    timer.id = 'stunTimerText';
+                    timer.innerHTML = `⚡ Stunned! Wait ${remaining}s`;
+                    actionCard.appendChild(timer);
+                }
+
+                // Activity Log and Stats
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'stats-panel';
+                statsDiv.innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-label">Opponent (${opp.name})</span>
+                        <div class="stat-value">✅${opp.corrects || 0} | ❌${opp.wrongs || 0}</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Your Strength</span>
+                        <div class="stat-value">💪 ${my.corrects || 0}</div>
+                    </div>
+                `;
+                actionCard.appendChild(statsDiv);
+
+                const logDiv = document.createElement('div');
+                logDiv.className = 'activity-log';
+                if (state.lastAction && (now - state.lastAction.time) < 3000) {
+                    logDiv.textContent = state.lastAction.msg;
+                }
+                actionCard.appendChild(logDiv);
+
+            } else if (status === 'finished') {
+                actionCard.innerHTML = `<h2>${state.winner === playerTeam ? '🏁 You Won!' : '💀 You Lost!'}</h2>`;
+            } else {
+                actionCard.innerHTML = `
+                    <h3>Waiting for Game to Start...</h3>
+                    <p>The projector should pick a question soon.</p>
+                    <button onclick="loadNextQuestion()" style="margin-top:10px;">Manually Load Question</button>
+                `;
+                // Controller self-healing logic: if match is active but no question, attempt to load one
+                if (status === 'active' && !state.question && !isLoadingQuestion) {
+                    logDebug('Active match missing question. Attempting auto-load...');
+                    setTimeout(() => loadNextQuestion(), 1000);
+                }
+            }
+            gameDiv.appendChild(actionCard);
+        }
+
+        /* --------------------------------------------------------------
+           STARTUP – Check URL for Role & MATCH
+           -------------------------------------------------------------- */
+        function checkURL() {
+            const params = new URLSearchParams(window.location.search);
+            const role = params.get('ROLE');
+            if (role) {
+                setView(role);
+            }
+        }
+        checkURL();
+
+        window.addEventListener('online', () => { location.reload(); });
+        window.addEventListener('offline', () => { alert('You are offline.'); });
+
+
+        // OVERRIDE NATIVE CONFIRM
+        window.confirm = function (message) {
+
+            return new Promise(resolve => {
+
+                const modal = document.getElementById("globalConfirmModal");
+                const msg = document.getElementById("confirmMessage");
+
+                msg.textContent = message;
+
+                modal.classList.add("active");
+
+                const yes = document.getElementById("confirmYesBtn");
+                const no = document.getElementById("confirmNoBtn");
+
+                function cleanup() {
+                    modal.classList.remove("active");
+                    yes.onclick = null;
+                    no.onclick = null;
+                }
+
+                yes.onclick = () => {
+                    cleanup();
+                    resolve(true);
+                };
+
+                no.onclick = () => {
+                    cleanup();
+                    resolve(false);
+                };
+
+            });
+
+        };
+    </script>
+    <!-- GLOBAL CONFIRM MODAL -->
+    <div id="globalConfirmModal" class="modal">
+        <div class="modal-content" style="max-width:420px;text-align:center">
+
+            <h2 id="confirmTitle">Confirm</h2>
+            <p id="confirmMessage">Are you sure?</p>
+
+            <div style="margin-top:20px;display:flex;gap:15px;justify-content:center">
+
+                <button id="confirmYesBtn"
+                    style="background:#f43f5e;border:none;color:white;padding:10px 20px;border-radius:8px;cursor:pointer">
+                    Yes
+                </button>
+
+                <button id="confirmNoBtn"
+                    style="background:#334155;border:none;color:white;padding:10px 20px;border-radius:8px;cursor:pointer">
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
