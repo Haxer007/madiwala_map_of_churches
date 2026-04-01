@@ -1,1 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bible Tug Of War</title>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/sprites.css" />
+</head>
+<body>
+  <div id="topBar">
+    <div id="viewSelectors">
+      <button onclick="setView('projector')">🎞️ Projector</button>
+      <button onclick="setView('red')">🔴 Red Team</button>
+      <button onclick="setView('blue')">🔵 Blue Team</button>
+      <a href="admin.html" class="topbar-link">🖥️ AdminController</a>
+    </div>
+    <button id="settingsBtn" class="hide" onclick="openSettingsModal()">Settings</button>
+    <button id="leaderboardBtn" class="hide" onclick="openLeaderboardModal()">Top Teams</button>
+    <button id="resetBtn" class="hide" onclick="resetMatch()">New Match</button>
+    <button id="debugBtn" class="hide" onclick="toggleDebugConsole()">Console</button>
+  </div>
+
+  <div id="game"></div>
+  <div id="debug"></div>
+
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Game Settings</h2>
+        <button class="close-btn" onclick="closeSettingsModal()">x</button>
+      </div>
+
+      <div class="setting-row">
+        <label for="setCategory">Question Category</label>
+        <select id="setCategory">
+          <option value="starter">Starter Pack</option>
+          <option value="ot_trivia">OT Trivia</option>
+          <option value="gospel_quiz">Gospel Quiz</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <label for="setStun">Stun Duration (s)<br><small style="color:#7c6a52; font-weight:400;">0 = Disable Stun</small></label>
+        <input type="number" id="setStun" min="0" max="60" step="1" value="3">
+      </div>
+
+      <div class="setting-row">
+        <label for="setPull">Pull Strength</label>
+        <input type="number" id="setPull" min="1" max="50" value="12">
+      </div>
+
+      <div class="setting-row">
+        <label for="setWin">Win Threshold<br><small style="color:#7c6a52; font-weight:400;">Distance to win</small></label>
+        <input type="number" id="setWin" min="10" max="500" value="100">
+      </div>
+
+      <div class="setting-row">
+        <label for="setTimer">Question Timer (sec)</label>
+        <input type="number" id="setTimer" min="5" max="60" value="15">
+      </div>
+
+      <button class="save-settings-btn" onclick="saveSettings()">Save & Apply</button>
+    </div>
+  </div>
+
+  <div id="leaderboardModal" class="modal">
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2>Global Top Teams</h2>
+        <button class="close-btn" onclick="closeLeaderboardModal()">x</button>
+      </div>
+      <div id="leaderboardContent" style="margin-top: 15px;">
+        <p>Loading scores...</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="globalConfirmModal" class="modal">
+    <div class="modal-content" style="max-width:420px;text-align:center">
+      <h2 id="confirmTitle">Confirm</h2>
+      <p id="confirmMessage">Are you sure?</p>
+
+      <div style="margin-top:20px;display:flex;gap:15px;justify-content:center;flex-wrap:wrap">
+        <button id="confirmYesBtn"
+          style="background:#b91c1c;border:none;color:white;padding:10px 20px;border-radius:10px;cursor:pointer;font-weight:700">
+          Yes
+        </button>
+
+        <button id="confirmNoBtn"
+          style="background:#334155;border:none;color:white;padding:10px 20px;border-radius:10px;cursor:pointer;font-weight:700">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>
 
