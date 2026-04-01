@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bible Tug Of War Admin</title>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/sprites.css" />
+</head>
+<body class="admin">
+  <div class="admin-shell">
+    <h1>Bible Tug Of War Admin</h1>
+
+    <div id="passcodeGate" class="admin-card passcode-card">
+      <h3>Admin Access</h3>
+      <p>Enter the shared passcode to manage questions.</p>
+      <form id="passcodeForm" class="admin-form">
+        <input type="password" id="passcodeInput" placeholder="Passcode" />
+        <div class="admin-actions">
+          <button type="submit">Unlock</button>
+        </div>
+      </form>
+      <p id="passcodeError" style="color:#b91c1c; display:none;">Incorrect passcode.</p>
+    </div>
+
+    <div id="adminApp" class="hide">
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>Pack Management</h3>
+          <div class="admin-form">
+            <label>Choose Pack</label>
+            <select id="packSelect"></select>
+            <label>Pack Name</label>
+            <input id="packName" placeholder="Starter Pack" />
+          <div class="admin-actions">
+            <button id="savePackBtn" type="button">Save Pack Info</button>
+          </div>
+          <div class="admin-actions" style="margin-top:10px;">
+            <button id="fixEncodingBtn" type="button" class="ghost">Fix Weird Characters (All Packs)</button>
+          </div>
+        </div>
+
+          <hr style="margin:18px 0; border-color: rgba(0,0,0,0.08);" />
+
+          <div class="admin-form">
+            <label>New Pack Id</label>
+            <input id="newPackId" placeholder="new-pack-id" />
+            <label>New Pack Name</label>
+            <input id="newPackName" placeholder="New Pack" />
+            <div class="admin-actions">
+              <button id="createPackBtn" type="button" class="secondary">Create Pack</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3>Questions</h3>
+          <div class="admin-form">
+            <label>Question</label>
+            <textarea id="questionText" rows="3" placeholder="Type the question"></textarea>
+            <label>Answers (comma separated)</label>
+            <input id="questionAnswers" placeholder="Answer 1, Answer 2, Answer 3, Answer 4" />
+            <label>Correct Index (0-3)</label>
+            <input id="questionCorrect" type="number" min="0" max="3" value="0" />
+            <div class="admin-actions">
+              <button id="addQuestionBtn" type="button">Add Question</button>
+              <button id="updateQuestionBtn" type="button" class="secondary">Update Selected</button>
+              <button id="resetFormBtn" type="button" class="ghost">Clear</button>
+            </div>
+          </div>
+          <div class="question-list" id="questionList"></div>
+        </div>
+      </div>
+
+      <div class="admin-card" style="margin-top:24px;">
+        <h3>Apply Pack To Match</h3>
+        <div class="admin-form">
+          <label>Match Id</label>
+          <input id="matchIdInput" placeholder="m_abc123" />
+          <div class="admin-actions">
+            <button id="applyPackBtn" type="button">Apply Pack</button>
+          </div>
+          <p id="applyStatus" style="font-weight:700; color:#0f766e;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
