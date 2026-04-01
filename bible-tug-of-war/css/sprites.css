@@ -1,0 +1,535 @@
+﻿.sprite {
+  --sprite-w: 120px;
+  --sprite-h: 160px;
+  width: var(--sprite-w);
+  height: var(--sprite-h);
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  transform-origin: center bottom;
+}
+
+.sprite .sprite-head,
+.sprite .sprite-body,
+.sprite .sprite-hair,
+.sprite .sprite-arm,
+.sprite .sprite-leg {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.sprite .sprite-head {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--skin);
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08);
+  z-index: 3;
+}
+
+.sprite .sprite-hair {
+  width: 52px;
+  height: 26px;
+  border-radius: 18px 18px 12px 12px;
+  background: var(--hair);
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+.sprite[data-gender="girl"] .sprite-hair {
+  height: 34px;
+  border-radius: 20px 20px 16px 16px;
+}
+
+.sprite[data-gender="girl"] .sprite-body {
+  border-radius: 18px 18px 22px 22px;
+}
+
+.sprite[data-gender="girl"]::after {
+  content: '';
+  position: absolute;
+  width: 72px;
+  height: 28px;
+  background: var(--shirt);
+  border-radius: 0 0 30px 30px;
+  top: 112px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: inset 0 -8px 0 rgba(0, 0, 0, 0.08);
+  z-index: 0;
+}
+
+.sprite .sprite-body {
+  width: 62px;
+  height: 70px;
+  border-radius: 18px;
+  background: var(--shirt);
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: inset 0 -10px 0 rgba(0, 0, 0, 0.08);
+  z-index: 1;
+}
+
+.sprite .sprite-arm {
+  width: 14px;
+  height: 42px;
+  background: var(--skin);
+  top: 62px;
+  border-radius: 10px;
+  transform-origin: top center;
+  z-index: 2;
+}
+
+.sprite .sprite-arm.left {
+  left: calc(50% - 42px);
+  transform: rotate(8deg);
+}
+
+.sprite .sprite-arm.right {
+  left: calc(50% + 28px);
+  transform: rotate(-8deg);
+}
+
+.sprite .sprite-leg {
+  width: 16px;
+  height: 46px;
+  background: #2f2b25;
+  bottom: 6px;
+  border-radius: 10px;
+  z-index: 0;
+}
+
+.sprite .sprite-leg.left {
+  left: calc(50% - 22px);
+}
+
+.sprite .sprite-leg.right {
+  left: calc(50% + 6px);
+}
+
+.sprite.state-idle {
+  animation: spriteIdle 2.6s ease-in-out infinite;
+}
+
+.sprite.state-pulling {
+  animation: spritePull 0.35s ease-in-out;
+}
+
+.sprite.state-stunned {
+  animation: spriteStun 0.35s infinite;
+  filter: grayscale(0.85);
+}
+
+.sprite.state-celebrate {
+  animation: spriteCelebrate 0.7s ease-in-out infinite;
+}
+
+@keyframes spriteIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes spritePull {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes spriteStun {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  25% { transform: translate(-2px, 0) rotate(-2deg); }
+  50% { transform: translate(2px, -1px) rotate(2deg); }
+  75% { transform: translate(-1px, 2px) rotate(-1deg); }
+  100% { transform: translate(1px, -2px) rotate(1deg); }
+}
+
+@keyframes spriteCelebrate {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(-2deg); }
+  50% { transform: translateY(0) rotate(2deg); }
+  75% { transform: translateY(-4px) rotate(-1deg); }
+}
+
+.avatar-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 180px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+}
+
+.kenney-sprite {
+  position: relative;
+  width: 140px;
+  height: 240px;
+  margin: 0 auto;
+  transform-origin: center bottom;
+  transition: transform 0.2s ease;
+}
+
+.pc-sprite {
+  position: relative;
+  width: 140px;
+  height: 200px;
+  margin: 0 auto;
+  transform-origin: center bottom;
+  transition: transform 0.2s ease;
+}
+
+.pc-layer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  image-rendering: pixelated;
+}
+
+.pc-body-back,
+.pc-body-front {
+  width: 60px;
+  bottom: 74px;
+}
+
+.pc-leg {
+  width: 39px;
+  bottom: 32px;
+}
+
+.pc-leg.left {
+  left: 95px;
+}
+
+.pc-leg.right {
+  left: 50px;
+  transform: translateX(-50%) scaleX(-1);
+}
+
+.pc-head {
+  width: 70px;
+  top: 8px;
+}
+
+.pc-arm-group {
+  position: absolute;
+  top: 70px;
+  width: 36px;
+  height: 60px;
+  transform-origin: 50% 0%;
+}
+
+.pc-arm-group.left {
+  left: 18px;
+  transform: rotate(var(--arm-left-rot, -6deg));
+}
+
+.pc-arm-group.right {
+  right: 18px;
+  transform: rotate(var(--arm-right-rot, 6deg)) scaleX(-1);
+}
+
+.pc-arm {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 24px;
+  transform: translateX(-50%);
+}
+
+.pc-hand {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  width: 18px;
+  transform: translateX(-50%);
+}
+
+.pc-arm-group .hand-grip {
+  position: absolute;
+  top: 44px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(calc(-50% + var(--hand-x, 0px)));
+  opacity: 0;
+}
+
+.avatar-wrap .pc-arm-group .hand-grip {
+  opacity: 1;
+}
+
+.avatar-wrap.pulling .pc-arm-group {
+  animation: pcPullArm 0.35s ease-in-out;
+}
+
+.avatar-wrap.pulling .pc-arm-group .hand-grip {
+  animation: pcHandPull 0.35s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .pc-sprite {
+    width: 120px;
+    height: 180px;
+  }
+  .pc-body-back,
+  .pc-body-front { width: 110px; }
+  .pc-head { width: 62px; top: 6px; }
+  .pc-leg { width: 34px; }
+  .pc-arm-group { top: 64px; width: 32px; }
+  .pc-arm { width: 20px; }
+  .pc-hand { width: 16px; top: 32px; }
+}
+
+@keyframes pcPullArm {
+  0% { transform: rotate(0deg) translateX(0); }
+  50% { transform: rotate(-12deg) translateX(4px); }
+  100% { transform: rotate(0deg) translateX(0); }
+}
+
+@keyframes pcHandPull {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(calc(var(--pull-dir, 1) * 4px)); }
+  100% { transform: translateX(0); }
+}
+
+.avatar-preview .hand-grip,
+.avatar-grid .hand-grip {
+  display: none;
+}
+
+.avatar-preview .pc-arm,
+.avatar-grid .pc-arm {
+  opacity: 1;
+}
+
+.kenney-layer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  image-rendering: auto;
+}
+
+.kenney-shirt {
+  top: 54px;
+  width: 125px;
+  z-index: 2;
+}
+
+.kenney-neck {
+  top: 44px;
+  width: 52px;
+  z-index: 3;
+}
+
+.kenney-arm {
+  top: 70px;
+  width: 78px;
+  transform-origin: 22% 22%;
+  z-index: 3;
+}
+
+.kenney-arm.left {
+  left: 0px;
+  transform: rotate(10deg);
+}
+
+.kenney-arm.right {
+  right: 0px;
+  transform: scaleX(-1) rotate(10deg);
+}
+
+.avatar-wrap[data-side="left"] .kenney-arm.right {
+  transform: scaleX(-1) rotate(-18deg) translateX(4px);
+}
+
+.avatar-wrap[data-side="right"] .kenney-arm.left {
+  transform: rotate(18deg) translateX(-4px);
+}
+
+.kenney-pants {
+  bottom: 30px;
+  width: 125px;
+  z-index: 1;
+}
+
+.kenney-shoes {
+  bottom: 6px;
+  width: 72px;
+  z-index: 1;
+}
+
+.kenney-face {
+  top: 10px;
+  width: 78px;
+  z-index: 4;
+}
+
+.kenney-hair {
+  top: -30px;
+  width: 112px;
+  z-index: 5;
+}
+
+.avatar-wrap.pulling .kenney-sprite {
+  transform: translateX(calc(var(--pull-dir, 1) * 10px)) rotate(calc(var(--pull-dir, 1) * -4deg));
+}
+
+.tug-active .avatar-wrap {
+  animation: tugShake 0.22s ease-in-out 2;
+}
+
+.tug-active .hand-grip::after {
+  animation: ropeGrab 0.35s ease-in-out;
+}
+
+@keyframes tugShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(calc(var(--pull-dir, 1) * -2px)); }
+  50% { transform: translateX(calc(var(--pull-dir, 1) * 3px)); }
+  75% { transform: translateX(calc(var(--pull-dir, 1) * -1px)); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes ropeGrab {
+  0% { transform: scaleX(1) rotate(0deg); }
+  50% { transform: scaleX(1.15) rotate(6deg); }
+  100% { transform: scaleX(1) rotate(0deg); }
+}
+
+.avatar-wrap.pulling[data-side="left"] .kenney-arm.right {
+  transform: scaleX(-1) rotate(-42deg) translateX(12px);
+}
+
+.avatar-wrap.pulling[data-side="right"] .kenney-arm.left {
+  transform: rotate(42deg) translateX(-12px);
+}
+
+.avatar-wrap.pulling[data-side="left"] .sprite .sprite-arm.right {
+  transform: rotate(-35deg) translateX(4px);
+}
+
+.avatar-wrap.pulling[data-side="right"] .sprite .sprite-arm.left {
+  transform: rotate(35deg) translateX(-4px);
+}
+
+.avatar-wrap.celebrate .kenney-sprite {
+  transform: translateY(-6px) rotate(calc(var(--pull-dir, 1) * 2deg));
+}
+
+@media (max-width: 768px) {
+  .kenney-sprite {
+    width: 120px;
+    height: 210px;
+  }
+  .kenney-shirt,
+  .kenney-pants { width: 110px; }
+  .kenney-shoes { width: 62px; }
+  .kenney-face { width: 70px; }
+  .kenney-hair { width: 100px; top: -26px; }
+  .kenney-arm { width: 70px; top: 64px; }
+  .kenney-neck { width: 46px; top: 42px; }
+}
+
+.hand-grip {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #c28b5a;
+  box-shadow: 0 2px 6px rgba(60, 30, 10, 0.35);
+  z-index: 6;
+}
+
+body.projector-mode .hand-grip {
+  opacity: 0;
+}
+
+.hand-grip::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 8px;
+  background: #c68c46;
+  border-radius: 8px;
+  top: 3px;
+  left: -4px;
+  box-shadow: 0 2px 4px rgba(60, 30, 10, 0.25);
+}
+
+.avatar-wrap[data-side="left"] .hand-grip::after {
+  transform: rotate(-8deg);
+}
+
+.avatar-wrap[data-side="right"] .hand-grip::after {
+  transform: rotate(8deg);
+}
+
+.sprite .hand-grip {
+  top: 78px;
+}
+
+.kenney-sprite .hand-grip {
+  top: 112px;
+}
+
+.avatar-wrap[data-side="left"] .kenney-sprite .hand-grip {
+  right: 14px;
+}
+
+.avatar-wrap[data-side="right"] .kenney-sprite .hand-grip {
+  left: 14px;
+}
+
+.avatar-wrap[data-side="left"] .hand-grip {
+  right: 6px;
+}
+
+.avatar-wrap[data-side="right"] .hand-grip {
+  left: 6px;
+}
+
+.rope-link {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tug-container #rope {
+  z-index: 1;
+}
+
+.avatars-row {
+  z-index: 2;
+}
+
+.rope-link line,
+.rope-link path {
+  stroke: #c68c46;
+  stroke-width: 8;
+  stroke-linecap: round;
+  filter: drop-shadow(0 3px 6px rgba(70, 40, 10, 0.35));
+}
+
+.avatar-figure {
+  display: flex;
+  justify-content: center;
+}
+
+.team-slot.blue .avatar-figure {
+  transform: scaleX(-1);
+}
+
+@media (max-width: 768px) {
+  .sprite {
+    --sprite-w: 110px;
+    --sprite-h: 170px;
+  }
+}
