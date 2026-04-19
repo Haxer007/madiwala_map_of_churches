@@ -1,1 +1,390 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Song Lyrics PPT Generator</title>
+
+  <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 { margin-top: 0; }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 250px;
+      resize: vertical;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    button {
+      margin-top: 24px;
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #111827;
+      color: white;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 14px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #111827;
+      transition: width 0.2s ease;
+    }
+
+    .status {
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Song Lyrics PPT Generator</h1>
+
+  <label>Song Title</label>
+  <input id="title" value="My Song Lyrics" />
+
+  <label>Paste Lyrics (one line per row)</label>
+  <textarea id="lyrics">Line 1
+Line 2
+
+Line 3
+Line 4
+
+
+
+Chorus Line 1
+Chorus Line 2</textarea>
+
+  <div class="grid">
+    <div>
+      <label>Split Mode</label>
+      <select id="splitMode">
+        <option value="lines" selected>By Number of Lines</option>
+        <option value="emptyline">By Empty New Line</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Lines Per Slide</label>
+      <input id="linesPerSlide" type="number" value="2" min="1" />
+    </div>
+
+    <div>
+      <label>Font Size</label>
+      <input id="fontSize" type="number" value="28" min="12" />
+    </div>
+
+    <div>
+      <label>Text Position</label>
+      <select id="textPosition">
+        <option value="top">Top</option>
+        <option value="middle" selected>Middle</option>
+        <option value="bottom">Bottom</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <label>Background Color (HEX)</label>
+      <input id="bgColor" value="0F0F28" />
+    </div>
+
+    <div>
+      <label>Font Color (HEX)</label>
+      <input id="fontColor" value="FFFFFF" />
+    </div>
+  </div>
+
+  <label>Custom Background Image (optional)</label>
+  <input id="bgImage" type="file" accept="image/*" />
+
+  <label>Text Top Margin (inches)</label>
+  <input id="textTopMargin" type="number" value="1.0" step="0.1" min="0" />
+
+  <label>Text Bottom Margin (inches)</label>
+  <input id="textBottomMargin" type="number" value="1.0" step="0.1" min="0" />
+
+  <button id="generateBtn">Generate / Download PowerPoint</button>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+function setStatus(message) {
+  document.getElementById("status").textContent = message;
+}
+
+function setProgress(percent, message) {
+  const safe = Math.max(0, Math.min(100, percent));
+  document.getElementById("progressFill").style.width = safe + "%";
+  if (message) setStatus(message);
+}
+
+function chunkLines(lines, size, splitMode = "lines") {
+  const result = [];
+
+  if (splitMode === "emptyline") {
+    let block = [];
+    for (const raw of lines) {
+      const line = String(raw || "");
+      if (line.trim() === "") {
+        if (block.length) {
+          result.push([...block]);
+          block = [];
+        }
+        continue;
+      }
+      block.push(line.trim());
+    }
+    if (block.length) result.push([...block]);
+    return result;
+  }
+
+  let current = [];
+  let emptyCount = 0;
+
+  for (const raw of lines) {
+    const line = String(raw || "");
+
+    if (line.trim() === "") {
+      emptyCount++;
+      if (emptyCount >= 4) {
+        if (current.length) {
+          result.push([...current]);
+          current = [];
+        }
+        emptyCount = 0;
+      }
+      continue;
+    }
+
+    emptyCount = 0;
+    current.push(line.trim());
+
+    if (current.length >= size) {
+      result.push([...current]);
+      current = [];
+    }
+  }
+
+  if (current.length) result.push([...current]);
+  return result;
+}
+
+function validateInputs(title, linesPerSlide, fontSize, lines) {
+  if (!title) throw new Error("Song title is required.");
+  if (!lines.some(l => String(l).trim() !== "")) {
+    throw new Error("Please enter at least one lyric line.");
+  }
+  if (!Number.isInteger(linesPerSlide) || linesPerSlide < 1) {
+    throw new Error("Lines per slide must be at least 1.");
+  }
+  if (!Number.isInteger(fontSize) || fontSize < 12) {
+    throw new Error("Font size must be at least 12.");
+  }
+}
+
+function fileToBase64(file) {
+  if (!file) return Promise.resolve(null);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function generatePPT() {
+  try {
+    if (typeof PptxGenJS === "undefined") {
+      throw new Error("PptxGenJS library failed to load.");
+    }
+
+    setProgress(5, "Preparing PowerPoint...");
+
+    const title = document.getElementById("title").value.trim();
+    const lyrics = document.getElementById("lyrics").value;
+    const splitMode = document.getElementById("splitMode").value;
+    const linesPerSlide = parseInt(document.getElementById("linesPerSlide").value, 10);
+    const fontSize = parseInt(document.getElementById("fontSize").value, 10);
+    const bgColor = document.getElementById("bgColor").value.replace("#", "").trim();
+    const fontColor = document.getElementById("fontColor").value.replace("#", "").trim();
+    const textPosition = document.getElementById("textPosition").value;
+    const topMargin = parseFloat(document.getElementById("textTopMargin").value || "1");
+    const bottomMargin = parseFloat(document.getElementById("textBottomMargin").value || "1");
+    const bgImageFile = document.getElementById("bgImage").files[0];
+
+    const lines = lyrics.split("\n");
+
+    validateInputs(title, linesPerSlide, fontSize, lines);
+
+    const grouped = chunkLines(lines, linesPerSlide, splitMode);
+    setProgress(20, `Prepared ${grouped.length} slides...`);
+
+    const bgImageData = await fileToBase64(bgImageFile);
+    setProgress(30, "Background ready...");
+
+    const pptx = new PptxGenJS();
+    pptx.layout = "LAYOUT_WIDE";
+    pptx.author = "ChatGPT";
+    pptx.title = title;
+
+    const titleSlide = pptx.addSlide();
+    if (bgImageData) {
+      titleSlide.addImage({ data: bgImageData, x: 0, y: 0, w: 13.33, h: 7.5 });
+    } else {
+      titleSlide.background = { color: bgColor };
+    }
+
+    titleSlide.addText(title, {
+      x: 0.5,
+      y: 2.2,
+      w: 12,
+      h: 1,
+      align: "center",
+      fontFace: "Arial",
+      fontSize: 30,
+      bold: true,
+      color: fontColor
+    });
+
+    grouped.forEach((group, index) => {
+      const slide = pptx.addSlide();
+
+      if (bgImageData) {
+        slide.addImage({ data: bgImageData, x: 0, y: 0, w: 13.33, h: 7.5 });
+      } else {
+        slide.background = { color: bgColor };
+      }
+
+      let y = topMargin;
+      let valign = "mid";
+
+      if (textPosition === "bottom") {
+        y = Math.max(0.5, 7.5 - bottomMargin - 2.5);
+        valign = "bot";
+      } else if (textPosition === "top") {
+        valign = "top";
+      }
+
+      slide.addText(group.join("\n"), {
+        x: 0.5,
+        y: y,
+        w: 12,
+        h: Math.max(2, 7.5 - topMargin - bottomMargin),
+        align: "center",
+        valign: valign,
+        fontFace: "Arial",
+        fontSize: fontSize,
+        bold: true,
+        color: fontColor,
+        margin: 0.1
+      });
+
+      const progress = 30 + Math.round(((index + 1) / grouped.length) * 55);
+      setProgress(progress, `Generating slide ${index + 1} of ${grouped.length}...`);
+    });
+
+    // Add one final empty slide at the end
+const finalEmptySlide = pptx.addSlide();
+
+if (bgImageData) {
+  finalEmptySlide.addImage({
+    data: bgImageData,
+    x: 0,
+    y: 0,
+    w: 13.33,
+    h: 7.5
+  });
+} else {
+  finalEmptySlide.background = { color: bgColor };
+}
+
+setProgress(88, "Adding final empty slide...");
+    const fileName = title.replace(/\s+/g, "_") + ".pptx";
+    setProgress(90, "Preparing download...");
+    await pptx.writeFile({ fileName });
+    setProgress(100, "Download started successfully.");
+  } catch (error) {
+    console.error(error);
+    setProgress(0, "Generation failed.");
+    setStatus(error.message || "Something went wrong.");
+    alert(error.message || "Failed to generate PowerPoint.");
+  }
+}
+
+console.assert(chunkLines(["a","b","c","d"], 2).length === 2, "split count failed");
+console.assert(chunkLines(["a","b","c"], 2)[1].length === 1, "final chunk failed");
+console.assert(chunkLines(["a", "", "", "", "", "b"], 10, "lines").length === 2, "4 blank split failed");
+console.assert(chunkLines(["a", "", "b", "", "c"], 10, "emptyline").length === 3, "empty line split failed");
+console.assert(typeof fileToBase64 === "function", "fileToBase64 missing");
+console.assert(typeof setProgress === "function", "setProgress missing");
+
+document.getElementById("generateBtn").addEventListener("click", generatePPT);
+</script>
+</body>
+</html>
