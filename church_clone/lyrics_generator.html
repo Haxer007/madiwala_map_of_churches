@@ -441,13 +441,44 @@ setProgress(88, "Adding final empty slide...");
   }
 }
 
-console.assert(chunkLines(["a","b","c","d"], 2).length === 2, "split count failed");
-console.assert(chunkLines(["a","b","c"], 2)[1].length === 1, "final chunk failed");
-console.assert(chunkLines(["a", "", "", "", "", "b"], 10, "lines").length === 2, "4 blank split failed");
-console.assert(chunkLines(["a", "", "b", "", "c"], 10, "emptyline").length === 3, "empty line split failed");
-console.assert(typeof fileToBase64 === "function", "fileToBase64 missing");
-console.assert(typeof setProgress === "function", "setProgress missing");
+// console.assert(chunkLines(["a","b","c","d"], 2).length === 2, "split count failed");
+// console.assert(chunkLines(["a","b","c"], 2)[1].length === 1, "final chunk failed");
+// console.assert(chunkLines(["a", "", "", "", "", "b"], 10, "lines").length === 2, "4 blank split failed");
+// console.assert(chunkLines(["a", "", "b", "", "c"], 10, "emptyline").length === 3, "empty line split failed");
+// console.assert(typeof fileToBase64 === "function", "fileToBase64 missing");
+// console.assert(typeof setProgress === "function", "setProgress missing");
 
+console.assert(
+  chunkLines(["a","b","c","d"], 2, "lines").length === 2,
+  "split count failed"
+);
+
+const testChunk = chunkLines(["a","b","c"], 2, "lines");
+console.assert(
+  testChunk.length === 2 && testChunk[1].length === 1,
+  "final chunk failed"
+);
+
+console.assert(
+  chunkLines(["a", "", "", "", "", "b"], 10, "lines").length === 2,
+  "4 blank split failed"
+);
+
+console.assert(
+  chunkLines(["a", "", "b", "", "c"], 10, "emptyline").length === 3,
+  "empty line split failed"
+);
+
+console.assert(
+  typeof fileToBase64 === "function",
+  "fileToBase64 missing"
+);
+
+console.assert(
+  typeof setProgress === "function",
+  "setProgress missing"
+);
+  
 document.getElementById("generateBtn").addEventListener("click", generatePPT);
 </script>
 </body>
