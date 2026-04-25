@@ -387,17 +387,33 @@ async function generatePPT() {
     // Add one final empty slide at the end
 const finalEmptySlide = pptx.addSlide();
 
-if (bgImageData) {
-  finalEmptySlide.addImage({
-    data: bgImageData,
-    x: 0,
-    y: 0,
-    w: 13.33,
-    h: 7.5
-  });
-} else {
-  finalEmptySlide.background = { color: bgColor };
-}
+// if (bgImageData) {
+//   finalEmptySlide.addImage({
+//     data: bgImageData,
+//     x: 0,
+//     y: 0,
+//     w: 13.33,
+//     h: 7.5
+//   });
+// } else {
+//   finalEmptySlide.background = { color: bgColor };
+// }
+  if (bgImageData) {
+    slide.addImage({
+      path: bgImageData.startsWith("data:")
+        ? undefined
+        : bgImageData,
+      data: bgImageData.startsWith("data:")
+        ? bgImageData
+        : undefined,
+      x: 0,
+      y: 0,
+      w: 13.33,
+      h: 7.5
+    });
+  } else {
+    slide.background = { color: bgColor };
+  }
 
 setProgress(88, "Adding final empty slide...");
     const fileName = title.replace(/\s+/g, "_") + ".pptx";
