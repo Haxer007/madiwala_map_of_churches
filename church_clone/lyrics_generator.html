@@ -156,6 +156,11 @@ Chorus Line 2</textarea>
     </div>
   </div>
 
+  <label>
+  <input type="checkbox" id="useDefaultBg" checked />
+    Enable Default Background (default_slide.webp)
+  </label>
+
   <label>Custom Background Image (optional)</label>
   <input id="bgImage" type="file" accept="image/*" />
 
@@ -277,7 +282,9 @@ async function generatePPT() {
     const textPosition = document.getElementById("textPosition").value;
     const topMargin = parseFloat(document.getElementById("textTopMargin").value || "1");
     const bottomMargin = parseFloat(document.getElementById("textBottomMargin").value || "1");
+    // const bgImageFile = document.getElementById("bgImage").files[0];
     const bgImageFile = document.getElementById("bgImage").files[0];
+    const useDefaultBg = document.getElementById("useDefaultBg").checked;
 
     const lines = lyrics.split("\n");
 
@@ -286,7 +293,22 @@ async function generatePPT() {
     const grouped = chunkLines(lines, linesPerSlide, splitMode);
     setProgress(20, `Prepared ${grouped.length} slides...`);
 
-    const bgImageData = await fileToBase64(bgImageFile);
+    // const bgImageData = await fileToBase64(bgImageFile);
+    // setProgress(30, "Background ready...");
+
+    let bgImageData = null;
+
+    // Priority:
+    // 1. Custom uploaded image
+    // 2. default_slide.webp if enabled
+    // 3. fallback to background color
+    
+    if (bgImageFile) {
+      bgImageData = await fileToBase64(bgImageFile);
+    } else if (useDefaultBg) {
+      bgImageData = "default_bg.webp";
+    }
+    
     setProgress(30, "Background ready...");
 
     const pptx = new PptxGenJS();
@@ -317,7 +339,19 @@ async function generatePPT() {
       const slide = pptx.addSlide();
 
       if (bgImageData) {
-        slide.addImage({ data: bgImageData, x: 0, y: 0, w: 13.33, h: 7.5 });
+        // slide.addImage({ data: bgImageData, x: 0, y: 0, w: 13.33, h: 7.5 });
+        slide.addImage({
+          path: bgImageData.startsWith("data:")
+            ? undefined
+            : bgImageData,
+          data: bgImageData.startsWith("data:")
+            ? bgImageData
+            : undefined,
+          x: 0,
+          y: 0,
+          w: 13.33,
+          h: 7.5
+        });
       } else {
         slide.background = { color: bgColor };
       }
