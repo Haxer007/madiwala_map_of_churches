@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <meta name="description"
+    content="Zion Assemblies of God Church, Madiwala – Encounter the Saviour, worship together, and grow in faith. Sunday services in Kannada, Tamil, Telugu &amp; English. 450+ believers since the 1980s." />
+  <title>Zion AG Church – Madiwala, Bengaluru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ══ AMBIENT PARTICLES ══ -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- ══ THEME TOGGLE ══ -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle Light Mode">
+    <span class="theme-icon">☀️</span>
+  </button>
+
+  <!-- ══ FLOATING NAV ══ -->
+  <button id="menuToggle" class="menu-toggle" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="sideNav" class="side-nav">
+    <button id="menuClose" class="menu-close" aria-label="Close menu">✕</button>
+    <div class="nav-logo">✝ ZION AG</div>
+    <ul>
+      <li><a href="#hero">🏠 Home</a></li>
+      <li><a href="#about">✝ About Church</a></li>
+      <li><a href="#ministries">🕊️ Ministries</a></li>
+      <li><a href="#announcements">📢 Announcements</a></li>
+      <li><a href="#services">🎵 Services</a></li>
+      <li><a href="#dailymanna">📖 Daily Manna</a></li>
+      <li><a href="#contact">📞 Contact Us</a></li>
+      <li><a href="#prayer">🙏 Prayer Request</a></li>
+    </ul>
+    <div class="nav-social">
+      <a href="https://www.youtube.com/@ZionAGChurchMadiwala" target="_blank" aria-label="YouTube">▶</a>
+      <a href="https://www.facebook.com/ZionAGMadiwala/" target="_blank" aria-label="Facebook">f</a>
+      <a href="https://www.instagram.com/zion_agchurch" target="_blank" aria-label="Instagram">&#9670;</a>
+      <a href="https://wa.me/917760404798" target="_blank" aria-label="WhatsApp">💬</a>
+    </div>
+  </nav>
+  <div id="navOverlay" class="nav-overlay"></div>
+
+  <!-- ══ SCROLL DOTS ══ -->
+  <div id="scrollDots" class="scroll-dots">
+    <button class="dot active" data-idx="0" aria-label="Home"></button>
+    <button class="dot" data-idx="1" aria-label="About"></button>
+    <button class="dot" data-idx="2" aria-label="Ministries"></button>
+    <button class="dot" data-idx="3" aria-label="Announcements"></button>
+    <button class="dot" data-idx="4" aria-label="Services"></button>
+    <button class="dot" data-idx="5" aria-label="Daily Manna"></button>
+    <button class="dot" data-idx="6" aria-label="Contact"></button>
+  </div>
+
+  <!-- ══════════ SECTION 1 — HERO ══════════ -->
+  <section id="hero" class="slide slide-hero">
+    <div class="slide-content hero-content" data-animate>
+      <div class="hero-badge">✦ Welcome ✦</div>
+      <h1 class="hero-title">ZION AG CHURCH<br /><span class="hero-sub">WELCOMES YOU!</span></h1>
+      <div class="glass-card address-card">
+        <div class="card-tag">📍 Updated Sunday Service Address</div>
+        <p class="notice-text">Please note that <strong>ONLY our Sunday Morning services</strong> have been moved to a
+          new
+          location. Kindly update your records and plan your visit accordingly.</p>
+        <div class="venue-block">
+          <div class="venue-name">Christ University College</div>
+          <div class="venue-detail">Dharmaram Auditorium · Bhavani Nagar<br />Hosur Road, Sudugunte
+            Palya<br />Bengaluru, Karnataka – 560029</div>
+        </div>
+        <div class="timings-grid">
+          <div class="timing-chip">
+            <span class="chip-lang">🕗 8:00 AM</span>
+            <span class="chip-service">Kannada / Tamil</span>
+          </div>
+          <div class="timing-chip">
+            <span class="chip-lang">🕘 9:30 AM</span>
+            <span class="chip-service">Telugu / English</span>
+          </div>
+        </div>
+        <p class="share-note">We look forward to worshipping together. Kindly share this with others. 🙏</p>
+      </div>
+      <div class="hero-cta">
+        <a href="https://maps.app.goo.gl/DcuMnrf7eNiaG2Am7" target="_blank" class="btn btn-glow">📍 Get Directions</a>
+        <a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" class="btn btn-glass">📺 Watch
+          Live</a>
+        <!-- <a href="#contact" class="btn btn-glass">📞 Contact Church</a> -->
+      </div>
+  </section>
+
+  <!-- ══════════ SECTION 2 — ABOUT ══════════ -->
+  <section id="about" class="slide slide-about">
+    <div class="slide-content about-content" data-animate>
+      <div class="section-eyebrow">✦ Our Story ✦</div>
+      <h2 class="section-title">About Our Church</h2>
+      <div class="glass-card about-card">
+        <!-- <div class="church-stats">
+          <div class="stat-chip"><span class="stat-n">450+</span><span class="stat-l">Believers</span></div>
+          <div class="stat-chip"><span class="stat-n">1980s</span><span class="stat-l">Est.</span></div>
+          <div class="stat-chip"><span class="stat-n">4</span><span class="stat-l">Languages</span></div>
+        </div> -->
+        <p>Zion AG Church is located on Maruthi Nagar Main Road, Madiwala — easily accessible from BTM Layout,
+          Koramangala, HSR Layout, Electronic City and Bannerghatta Road.</p>
+        <!-- <p>Though the church started in the <strong>late 1980s</strong>, it has grown steadily. After expanding by one
+          floor, we moved to two services, then four — to support different language congregations. Today the church has
+          <strong>over 450 believers</strong>.
+        </p> -->
+        <p>Zion AG Church is your sacred space to <em>encounter the Saviour of your soul</em>. Come with an <strong>OPEN
+            HEART</strong> — the peace, joy, strength, and transformation He provides are best experienced, not just
+          explained.</p>
+        <p class="stay-connected">📱 Stay connected beyond Sundays! Explore our sermons, updates, and upcoming events.
+        </p>
+        <blockquote class="pastor-quote">"Join us and discover what it truly means to live in the light of God's love
+          and purpose!"</blockquote>
+        <div class="pastor-sig">
+          <div class="sig-line"></div>
+          <div class="pastor-name">Rev. Ps. David Paul</div>
+          <div class="pastor-title">Senior Pastor · Zion AG Church, Madiwala</div>
+          <div class="pastor-bio">Graduated from Southern Asia Bible College. Rev. David and his wife <strong>Pastor
+              Sheeba</strong>, along with their two children, serve the Lord in the bustling hub of Madiwala, Bengaluru.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 3 — MINISTRIES ══════════ -->
+  <section id="ministries" class="slide slide-ministries">
+    <div class="min-overlay"></div>
+    <div class="slide-content min-content" data-animate>
+      <div class="section-eyebrow">✦ Grow With Us ✦</div>
+      <h2 class="section-title">Our Ministries</h2>
+      <div class="ministry-grid">
+        <div class="glass-card min-card">
+          <div class="min-icon">🙌</div>
+          <div class="min-name">Healing Service</div>
+          <div class="min-desc">Our Lord is a miracle-working God. Every Sunday a dedicated healing meeting is held
+            where many receive miracles.</div>
+          <div class="min-time">⏰ Every Sunday · 7:30 PM</div>
+        </div>
+        <div class="glass-card min-card">
+          <div class="min-icon">🕊️</div>
+          <div class="min-name">Fasting Prayer</div>
+          <div class="min-desc">Fasting prayer to help people overcome barriers. As Esther's story shows — prayer can
+            break any barrier.</div>
+          <div class="min-time">⏰ Every Saturday · 10 AM – 12 PM</div>
+        </div>
+        <div class="glass-card min-card">
+          <div class="min-icon">📖</div>
+          <div class="min-name">Bible Study</div>
+          <div class="min-desc">Well-trained and certified scholars teach the truth on Google Meet. We help people
+            think, question, and grow.</div>
+          <div class="min-time">⏰ Every Wednesday · 7 PM (Online)</div>
+        </div>
+        <div class="glass-card min-card">
+          <div class="min-icon">👧</div>
+          <div class="min-name">Kids Bible Club</div>
+          <div class="min-desc">Fun-filled program with games, puppet shows, fancy dress competitions, and moral value
+            teaching for children.</div>
+          <div class="min-time">⏰ Every Sunday · 5 PM</div>
+        </div>
+        <div class="glass-card min-card">
+          <div class="min-icon">🧑‍🤝‍🧑</div>
+          <div class="min-name">Teens Fellowship</div>
+          <div class="min-desc">Equipping teens to face spiritual, school, and life challenges with trained professional
+            spiritual teachers.</div>
+          <div class="min-time">⏰ Every Saturday · 7 PM</div>
+        </div>
+        <div class="glass-card min-card">
+          <div class="min-icon">⚡</div>
+          <div class="min-name">Youth Fellowship</div>
+          <div class="min-desc">Fun-filled activities, mentorship, and Bible teaching to help youth overcome everyday
+            life barriers.</div>
+          <div class="min-time">⏰ Every Saturday · 7 PM</div>
+        </div>
+        <div class="glass-card min-card">
+          <div class="min-icon">🌸</div>
+          <div class="min-name">Women's Fellowship</div>
+          <div class="min-desc">A safe space for women to vent, support each other spiritually, and uphold one another
+            in prayer.</div>
+          <div class="min-time">⏰ Regular Gatherings</div>
+        </div>
+        <div class="glass-card min-card">
+          <div class="min-icon">🌅</div>
+          <div class="min-name">Promise Prayers</div>
+          <div class="min-desc">Begin each month in God's presence. The promise word of the month is shared through the
+            man of God.</div>
+          <div class="min-time">⏰ Every Month 1st Day · 5 AM</div>
+        </div>
+      </div>
+      <!-- Special Events row -->
+      <div class="glass-card events-strip">
+        <div class="events-label">🗓️ Annual Special Events</div>
+        <div class="events-row">
+          <span class="ev-chip">💝 Valentine's Day</span>
+          <!-- <span class="ev-chip">👷 Labour Day</span>
+          <span class="ev-chip">🇮🇳 Independence Day</span> -->
+          <span class="ev-chip">🎄 Christmas</span>
+          <span class="ev-chip">👧 Children's Day</span>
+          <span class="ev-chip">🌸 Women's Day</span>
+          <!-- <span class="ev-chip">🌾 Kannada Rajyotsava</span> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 4 — ANNOUNCEMENTS ══════════ -->
+  <section id="announcements" class="slide slide-announcements">
+    <div class="ann-overlay"></div>
+    <div class="slide-content ann-content" data-animate>
+      <div class="section-eyebrow">✦ Stay Updated ✦</div>
+      <h2 class="section-title">Announcements</h2>
+      <div class="carousel-wrapper">
+        <div class="carousel-track" id="posterTrack">
+          <div class="poster-slide"><img src="assets/images/poster_prayer.png" alt="Prayer Night" loading="lazy" />
+            <div class="poster-label">🙏 Prayer Night</div>
+          </div>
+          <div class="poster-slide"><img src="assets/images/poster_youth.png" alt="Youth Meeting" loading="lazy" />
+            <div class="poster-label">⚡ Youth Alive</div>
+          </div>
+          <div class="poster-slide"><img src="assets/images/poster_women.png" alt="Women Fellowship" loading="lazy" />
+            <div class="poster-label">🌸 Women of Faith</div>
+          </div>
+          <div class="poster-slide"><img src="assets/images/poster_revival.png" alt="Revival Meeting" loading="lazy" />
+            <div class="poster-label">🔥 Revival Fire</div>
+          </div>
+          <div class="poster-slide"><img src="assets/images/poster_christmas.png" alt="Christmas Celebration"
+              loading="lazy" />
+            <div class="poster-label">🎄 Christmas</div>
+          </div>
+          <div class="poster-slide clone"><img src="assets/images/poster_prayer.png" alt="Prayer Night"
+              loading="lazy" />
+            <div class="poster-label">🙏 Prayer Night</div>
+          </div>
+          <div class="poster-slide clone"><img src="assets/images/poster_youth.png" alt="Youth Meeting"
+              loading="lazy" />
+            <div class="poster-label">⚡ Youth Alive</div>
+          </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn prev" id="prevBtn" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" id="nextBtn" aria-label="Next">›</button>
+      </div>
+      <div class="glass-card calendar-card">
+        <div class="cal-header">
+          <span class="cal-month" id="calMonthLabel"></span>
+          <div class="cal-nav">
+            <button id="calPrev" aria-label="Previous month">‹</button>
+            <button id="calNext" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span class="leg-dot sunday"></span>Sunday
+          <span class="leg-dot special"></span>Special Event
+          <span class="leg-dot prayer"></span>Prayer Day
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 5 — SERVICES ══════════ -->
+  <section id="services" class="slide slide-services">
+    <div class="services-overlay"></div>
+    <div class="slide-content svc-content" data-animate>
+      <div class="section-eyebrow">✦ Worship With Us ✦</div>
+      <h2 class="section-title">Our Services</h2>
+      <p class="svc-intro">At Zion AG Church in Madiwala, we offer Sunday services in four languages, each thoughtfully
+        planned so everyone can worship comfortably. For those unable to attend, we livestream on YouTube and Facebook.
+      </p>
+      <div class="svc-grid">
+        <div class="glass-card svc-card">
+          <div class="svc-icon">🌿</div>
+          <div class="svc-lang">Kannada</div>
+          <div class="svc-time">8:00 AM</div>
+          <div class="svc-links">
+            <a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" class="btn-live yt">▶
+              YouTube</a>
+            <a href="https://www.facebook.com/ZionAGMadiwala/" class="btn-live fb">Facebook</a>
+          </div>
+        </div>
+        <div class="glass-card svc-card">
+          <div class="svc-icon">🌺</div>
+          <div class="svc-lang">Tamil</div>
+          <div class="svc-time">8:00 AM</div>
+          <div class="svc-links">
+            <a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" class="btn-live yt">▶
+              YouTube</a>
+            <a href="https://www.facebook.com/ZionAGMadiwala/" class="btn-live fb">Facebook</a>
+          </div>
+        </div>
+        <div class="glass-card svc-card">
+          <div class="svc-icon">🕊️</div>
+          <div class="svc-lang">Telugu</div>
+          <div class="svc-time">9:30 AM</div>
+          <div class="svc-links">
+            <a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" class="btn-live yt">▶
+              YouTube</a>
+            <a href="https://www.facebook.com/ZionAGMadiwala/" class="btn-live fb">Facebook</a>
+          </div>
+        </div>
+        <div class="glass-card svc-card">
+          <div class="svc-icon">✨</div>
+          <div class="svc-lang">English</div>
+          <div class="svc-time">9:30 AM</div>
+          <div class="svc-links">
+            <a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" class="btn-live yt">▶
+              YouTube</a>
+            <a href="https://www.facebook.com/ZionAGMadiwala/" class="btn-live fb">Facebook</a>
+          </div>
+        </div>
+      </div>
+      <!-- Special Lent Service -->
+      <div class="glass-card lent-card">
+        <div class="lent-badge">✦ Special</div>
+        <div class="lent-name">Lent Service</div>
+        <div class="lent-time">⏰ Every Sunday · 7:30 PM</div>
+      </div>
+      <div class="live-banner glass-card">
+        <div class="live-dot"></div>
+        <span>Live Stream — Every Sunday from <strong>8:00 AM</strong> onwards</span>
+        <a href="https://www.youtube.com/@ZionAGChurchMadiwala/streams" target="_blank" class="btn btn-glow sm">Watch
+          Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 6 — DAILY MANNA ══════════ -->
+  <section id="dailymanna" class="slide slide-manna">
+    <div class="manna-overlay"></div>
+    <div class="slide-content manna-content" data-animate>
+      <div class="section-eyebrow">✦ Daily Devotion ✦</div>
+      <h2 class="section-title">Daily Manna</h2>
+      <div class="glass-card manna-card">
+        <div class="manna-icon">📖</div>
+        <p class="manna-verse-label">Verse of the Day</p>
+        <blockquote class="manna-verse" id="mannaVerse">"For I know the plans I have for you," declares the LORD, "plans
+          to prosper you and not to harm you, plans to give you hope and a future."</blockquote>
+        <p class="manna-ref" id="mannaRef">— Jeremiah 29:11</p>
+        <div class="manna-reflection">
+          <div class="manna-ref-label">📝 Reflection</div>
+          <p id="mannaReflection">God's plans for us are always good — even when our circumstances are hard. Trust His
+            timing, His purpose, and His love. Today, choose to rest in the peace that comes from knowing He holds your
+            future.</p>
+        </div>
+        <div class="manna-actions">
+          <button class="btn btn-glow sm" id="newManna">New Verse ↻</button>
+          <!-- <a href="https://www.zionagmadiwala.com/Archive" target="_blank" class="btn btn-glass sm">📚 Full Archive</a> -->
+        </div>
+      </div>
+      <div class="glass-card promise-card">
+        <div class="promise-icon">🌅</div>
+        <div class="promise-title">Promise Prayers</div>
+        <p class="promise-text">Start every month in the presence of God. The <strong>promise word of the month</strong>
+          is shared through the man of God at 5 AM on the 1st of every month.</p>
+        <a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Promise%20Prayer%20-%20Zion%20AG%20Church&dates=20260501T050000/20260501T060000&details=Join+the+upcoming+church+session+at+ZION+AG+CHURCH.&location=22,%20Maruthi%20Nagar%20Main%20Rd,%20beside%20Amravati%20Hotel,%20Zuzuvadi,%20Maruti%20Nagar,%201st%20Stage,%20BTM%201st%20Stage,%20Bengaluru,%20Karnataka%20560068&pli=1"
+          id="joinPromiseBtn" target="_blank" class="btn btn-glow sm">Join Next Session 🗓️</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SECTION 7 — CONTACT ══════════ -->
+  <section id="contact" class="slide-contact">
+    <div class="contact-overlay"></div>
+    <div class="slide-content contact-content" data-animate>
+      <div class="section-eyebrow">✦ Reach Out ✦</div>
+      <h2 class="section-title">Connect With Us</h2>
+      <div class="contact-grid">
+        <div class="glass-card contact-card">
+          <div class="cc-icon">📍</div>
+          <div class="cc-label">Main Church</div>
+          <div class="cc-value">22, Maruthi Nagar Main Rd<br />beside Amravati Hotel, Zuzuvadi<br />BTM Layout,
+            Bengaluru – 560068</div>
+          <a href="https://www.google.com/maps/place/Zion+A.G+Church/@12.9255995,77.6154682,17z/data=!3m1!4b1!4m6!3m5!1s0x3bae1456588acf47:0x60f9345a86ccfede!8m2!3d12.9255995!4d77.6154682!16s%2Fg%2F1vs1q9b1"
+            target="_blank" class="btn btn-glass sm">Open Maps</a>
+        </div>
+        <div class="glass-card contact-card">
+          <div class="cc-icon">🏛️</div>
+          <div class="cc-label">Sunday Venue</div>
+          <div class="cc-value">Christ University College<br />Dharmaram Auditorium<br />Hosur Road – 560029</div>
+          <a href="https://maps.app.goo.gl/wsf6hg6kVydMF6L58" target="_blank" class="btn btn-glass sm">Get
+            Directions</a>
+        </div>
+        <div class="glass-card contact-card">
+          <div class="cc-icon">📍</div>
+          <div class="cc-label">Hosa Road Branch</div>
+          <div class="cc-value">324, Hosa Rd, Akshaya Layout<br />Sai Sree Layout, Rayasandra<br />Bengaluru – 560100
+          </div>
+          <a href="https://goo.gl/maps/jjZiBd2kbBqK7bXd8" target="_blank" class="btn btn-glass sm">Open Maps</a>
+        </div>
+        <div class="glass-card contact-card">
+          <div class="cc-icon">📞</div>
+          <div class="cc-label">Call / WhatsApp</div>
+          <div class="cc-value">+91 77604 04798</div>
+          <div class="cc-sub-value">info@zionagchurch.co.in</div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-top:.5rem">
+            <a href="tel:+917760404798" class="btn btn-glass sm">📞 Call</a>
+            <a href="https://wa.me/917760404798" target="_blank" class="btn btn-glow sm">💬 WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="follow-strip glass-card">
+        <span class="follow-label">Follow us @ZionAGMadiwala</span>
+        <div class="social-row">
+          <a href="https://www.youtube.com/@ZionAGChurchMadiwala" target="_blank" class="social-btn yt"
+            aria-label="YouTube">▶ YouTube</a>
+          <a href="https://www.facebook.com/ZionAGMadiwala/" target="_blank" class="social-btn fb"
+            aria-label="Facebook">Facebook</a>
+          <a href="https://www.instagram.com/zion_agchurch" target="_blank" class="social-btn ig"
+            aria-label="Instagram">&#9670; Instagram</a>
+          <a href="mailto:zionagchurch@gmail.com" class="social-btn em" aria-label="Email">✉ Email</a>
+        </div>
+      </div>
+      <!-- Prayer Request -->
+      <div class="glass-card prayer-req-card" id="prayer">
+        <div class="cc-icon">🙏</div>
+        <div class="cc-label">Send a Prayer Request</div>
+        <textarea id="prayerText" placeholder="Share your prayer request... we pray for every request."
+          rows="3"></textarea>
+          
+        <a href="#" class="btn btn-glow sm" id="sendPrayer">Send via WhatsApp</a>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-cross">✝</div>
+      <div class="footer-name">Zion Assemblies of God Church, Madiwala</div>
+      <div class="footer-links">
+        <a href="https://www.zionagmadiwala.com" target="_blank">Original Website</a> ·
+        <a href="mailto:zionagchurch@gmail.com">zionagchurch@gmail.com</a> ·
+        <a href="tel:+917760404798">+91 77604 04798</a>
+      </div>
+      <div class="footer-copy">© 2026 Zion AG Church. All rights reserved. · We are not far, but reachable in Madiwala,
+        Bengaluru.</div>
+      <div class="footer-verse">"For I know the plans I have for you," declares the LORD — Jeremiah 29:11</div>
+    </footer>
+  </section>
+
+  <!-- ══ FLOATING BUTTONS ══ -->
+  <a href="https://wa.me/917760404798" target="_blank" class="float-wa" aria-label="WhatsApp">💬</a>
+
+  <a href="#prayer" class="float-prayer" id="floatPrayer" aria-label="Prayer request">🙏</a>
+
+
+  <!-- ══ LIGHTBOX MODAL ══ -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Poster preview">
+    <div class="lightbox-backdrop"></div>
+    <div class="lightbox-inner">
+      <img id="lightboxImg" src="" alt="" />
+      <div class="lightbox-label" id="lightboxLabel"></div>
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
