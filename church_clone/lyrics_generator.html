@@ -317,8 +317,21 @@ async function generatePPT() {
     pptx.title = title;
 
     const titleSlide = pptx.addSlide();
+
+    
     if (bgImageData) {
-      titleSlide.addImage({ data: bgImageData, x: 0, y: 0, w: 13.33, h: 7.5 });
+      titleSlide.addImage({
+      path: bgImageData.startsWith("data:")
+        ? undefined
+        : bgImageData,
+      data: bgImageData.startsWith("data:")
+        ? bgImageData
+        : undefined,
+      x: 0,
+      y: 0,
+      w: 13.33,
+      h: 7.5
+    });
     } else {
       titleSlide.background = { color: bgColor };
     }
@@ -399,7 +412,7 @@ const finalEmptySlide = pptx.addSlide();
 //   finalEmptySlide.background = { color: bgColor };
 // }
   if (bgImageData) {
-    slide.addImage({
+    finalEmptySlide.addImage({
       path: bgImageData.startsWith("data:")
         ? undefined
         : bgImageData,
@@ -412,7 +425,7 @@ const finalEmptySlide = pptx.addSlide();
       h: 7.5
     });
   } else {
-    slide.background = { color: bgColor };
+    finalEmptySlide.background = { color: bgColor };
   }
 
 setProgress(88, "Adding final empty slide...");
