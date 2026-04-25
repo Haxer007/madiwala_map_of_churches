@@ -190,7 +190,7 @@ function setProgress(percent, message) {
   if (message) setStatus(message);
 }
 
-function chunkLines(lines, size, splitMode = "lines") {
+function chunkLines(lines, size, splitMode = "emptyline") {
   const result = [];
 
   if (splitMode === "emptyline") {
