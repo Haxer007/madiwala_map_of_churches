@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Telugu + English Lyrics Stitcher</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+textarea{
+    width:100%;
+    height:350px;
+    padding:10px;
+    font-size:16px;
+    box-sizing:border-box;
+}
+
+.row{
+    display:flex;
+    gap:20px;
+}
+
+.col{
+    flex:1;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 24px;
+    cursor:pointer;
+}
+
+#output{
+    margin-top:20px;
+    white-space:pre-wrap;
+    border:1px solid #ccc;
+    padding:15px;
+    background:#f8f8f8;
+}
+
+.copy-success{
+    color:green;
+    margin-left:10px;
+}
+</style>
+</head>
+<body>
+
+<h2>Telugu + English Lyrics Stitcher</h2>
+
+<div class="row">
+
+    <div class="col">
+        <h3>Telugu Lyrics</h3>
+        <textarea id="telugu"></textarea>
+    </div>
+
+    <div class="col">
+        <h3>English Transliteration</h3>
+        <textarea id="english"></textarea>
+    </div>
+
+</div>
+
+<button onclick="stitchLyrics()">Stitch Lyrics</button>
+<button onclick="copyOutput()">Copy Result</button>
+<span id="copyMsg" class="copy-success"></span>
+
+<div id="output"></div>
+
+<script>
+
+function stitchLyrics() {
+
+    const teluguLines =
+        document.getElementById("telugu")
+        .value
+        .split("\n");
+
+    const englishLines =
+        document.getElementById("english")
+        .value
+        .split("\n");
+
+    const maxLines =
+        Math.max(
+            teluguLines.length,
+            englishLines.length
+        );
+
+    let result = [];
+
+    for(let i=0;i<maxLines;i++){
+
+        const telugu =
+            (teluguLines[i] || "").trim();
+
+        const english =
+            (englishLines[i] || "").trim();
+
+        if(!telugu && !english){
+            result.push("");
+            continue;
+        }
+
+        if(telugu){
+            result.push(telugu);
+        }
+
+        if(english){
+            result.push(english);
+        }
+
+        result.push("");
+    }
+
+    document.getElementById("output").textContent =
+        result.join("\n");
+}
+
+function copyOutput(){
+
+    const text =
+        document.getElementById("output").textContent;
+
+    navigator.clipboard.writeText(text);
+
+    document.getElementById("copyMsg").textContent =
+        "Copied!";
+
+    setTimeout(()=>{
+        document.getElementById("copyMsg").textContent="";
+    },2000);
+}
+
+</script>
+
+</body>
+</html>
